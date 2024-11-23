@@ -15,9 +15,13 @@ build/
 *.user
 *.exe
 *.zip
+*.7z
 *.ncb
 *.msi
 *.wix???
+*.sdf
+.vs
+*.opensdf
 
 # Link to make debug easier #
 tools

@@ -207,7 +207,7 @@ private: System::Void btnCommandHelp_Click(System::Object^  sender, System::Even
 			 Process^ p = gcnew Process();
 			 p->StartInfo->FileName = "tools/flac.exe";
 			 p->StartInfo->UseShellExecute = false;
-			 p->StartInfo->Arguments = "-H";
+			 p->StartInfo->Arguments = "-h";
 			 p->Start();
 			 p->WaitForExit();
 
