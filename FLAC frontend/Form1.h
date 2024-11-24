@@ -52,83 +52,129 @@ namespace FLACfrontend {
 			}
 		}
 
-	private: System::Windows::Forms::ListBox^  lstFiles;
-	protected: 
+	private: System::Windows::Forms::ListBox^ lstFiles;
+	protected:
 
-	private: System::Windows::Forms::Button^  btnAdd;
-	private: System::Windows::Forms::Button^  btnRemove;
-	private: System::Windows::Forms::Button^  btnClear;
-	private: System::Windows::Forms::OpenFileDialog^  dlgAddFile;
-	private: System::Windows::Forms::GroupBox^  gbEncoding;
+	private: System::Windows::Forms::Button^ btnAdd;
+	private: System::Windows::Forms::Button^ btnRemove;
+	private: System::Windows::Forms::Button^ btnClear;
+	private: System::Windows::Forms::OpenFileDialog^ dlgAddFile;
+	private: System::Windows::Forms::GroupBox^ gbEncoding;
 
-	private: System::Windows::Forms::TextBox^  textLevel;
-	private: System::Windows::Forms::Label^  lblLevel;
-
-
-	private: System::Windows::Forms::TrackBar^  tbLevel;
-	private: System::Windows::Forms::CheckBox^  chkReplayGainAlbum;
-
-	private: System::Windows::Forms::CheckBox^  chkReplayGain;
-	private: System::Windows::Forms::CheckBox^  chkVerify;
-	private: System::Windows::Forms::FolderBrowserDialog^  dlgOutputDirectory;
-	private: System::Windows::Forms::GroupBox^  gbOutputDir;
+	private: System::Windows::Forms::TextBox^ textLevel;
+	private: System::Windows::Forms::Label^ lblLevel;
 
 
+	private: System::Windows::Forms::TrackBar^ tbLevel;
+	private: System::Windows::Forms::CheckBox^ chkReplayGainAlbum;
 
-	private: System::Windows::Forms::Button^  btnSelectDirectory;
-	private: System::Windows::Forms::TextBox^  txtOutputDirectory;
-	private: System::Windows::Forms::Button^  btnOutputDirSameAsInput;
+	private: System::Windows::Forms::CheckBox^ chkReplayGain;
+	private: System::Windows::Forms::CheckBox^ chkVerify;
+	private: System::Windows::Forms::FolderBrowserDialog^ dlgOutputDirectory;
+	private: System::Windows::Forms::GroupBox^ gbOutputDir;
 
 
 
-	private: System::Windows::Forms::Button^  btnEncode;
-	private: System::Windows::Forms::Button^  btnDecode;
-	private: System::Windows::Forms::Button^  btnTest;
-	private: System::Windows::Forms::Button^  btnFingerprint;
-	private: System::Windows::Forms::Button^  btnExit;
+	private: System::Windows::Forms::Button^ btnSelectDirectory;
+	private: System::Windows::Forms::TextBox^ txtOutputDirectory;
+	private: System::Windows::Forms::Button^ btnOutputDirSameAsInput;
 
 
 
-	private: System::Windows::Forms::GroupBox^  gbGeneral;
-
-	private: System::Windows::Forms::CheckBox^  chkOggFlac;
-
-	private: System::Windows::Forms::CheckBox^  chkDeleteInput;
-	private: System::Windows::Forms::CheckBox^  chkKeepForeign;
-	private: System::Windows::Forms::GroupBox^  gbDecoding;
-	private: System::Windows::Forms::CheckBox^  chkDecodeThroughErrors;
+	private: System::Windows::Forms::Button^ btnEncode;
+	private: System::Windows::Forms::Button^ btnDecode;
+	private: System::Windows::Forms::Button^ btnTest;
+	private: System::Windows::Forms::Button^ btnFingerprint;
+	private: System::Windows::Forms::Button^ btnExit;
 
 
 
-	private: System::Windows::Forms::Button^  btnHelp;
+	private: System::Windows::Forms::GroupBox^ gbGeneral;
 
-	private: System::Windows::Forms::Button^  btnAdvanced;
+	private: System::Windows::Forms::CheckBox^ chkOggFlac;
+
+	private: System::Windows::Forms::CheckBox^ chkDeleteInput;
+	private: System::Windows::Forms::CheckBox^ chkKeepForeign;
+	private: System::Windows::Forms::GroupBox^ gbDecoding;
+	private: System::Windows::Forms::CheckBox^ chkDecodeThroughErrors;
+
+
+
+	private: System::Windows::Forms::Button^ btnHelp;
+
+	private: System::Windows::Forms::Button^ btnAdvanced;
 
 	private: Advanced_options^ AdvDialog;
-	private: System::Windows::Forms::ToolTip^  ttHelp;
-	private: System::Windows::Forms::Button^  btnAbout;
-	private: System::Windows::Forms::GroupBox^  groupBox1;
-	private: System::Windows::Forms::TextBox^  textBoxR;
-	private: System::Windows::Forms::TrackBar^  trackBarR;
-	private: System::Windows::Forms::CheckBox^  checkBoxOptionR;
-	private: System::Windows::Forms::CheckBox^  checkBoxNoPadding;
-	private: System::Windows::Forms::TextBox^  textBoxMT;
-	private: System::Windows::Forms::TextBox^  textBoxPrefixUser;
-	private: System::Windows::Forms::CheckBox^  checkBoxOptionP;
-	private: System::Windows::Forms::CheckBox^  checkBoxAddPrefix;
-	private: System::Windows::Forms::CheckBox^  checkBoxOverwrite;
-	private: System::Windows::Forms::CheckBox^  checkBoxOptionE;
-	private: System::Windows::Forms::CheckBox^  checkBoxOptionMT;
+	private: System::Windows::Forms::ToolTip^ ttHelp;
+	private: System::Windows::Forms::Button^ btnAbout;
+	private: System::Windows::Forms::GroupBox^ groupBox1;
+	private: System::Windows::Forms::TextBox^ textBoxR;
+	private: System::Windows::Forms::TrackBar^ trackBarR;
+	private: System::Windows::Forms::CheckBox^ checkBoxOptionR;
+	private: System::Windows::Forms::CheckBox^ checkBoxNoPadding;
+	private: System::Windows::Forms::TextBox^ textBoxMT;
+	private: System::Windows::Forms::TextBox^ textBoxPrefixUser;
+	private: System::Windows::Forms::CheckBox^ checkBoxOptionP;
+	private: System::Windows::Forms::CheckBox^ checkBoxAddPrefix;
+	private: System::Windows::Forms::CheckBox^ checkBoxOverwrite;
+	private: System::Windows::Forms::CheckBox^ checkBoxOptionE;
+	private: System::Windows::Forms::CheckBox^ checkBoxOptionMT;
 
 
 
 
-	private: System::ComponentModel::IContainer^  components;
+	private: System::ComponentModel::IContainer^ components;
 
 
 
 
-	protected: 
+	private: void SaveSettings(String^ path) {
+		StreamWriter^ writer = gcnew StreamWriter(path);
+		writer->WriteLine(tbLevel->Value.ToString());
+		writer->WriteLine(chkVerify->Checked.ToString());
+		writer->WriteLine(chkReplayGain->Checked.ToString());
+
+		writer->WriteLine(checkBoxOptionP->Checked.ToString());
+		writer->WriteLine(checkBoxOptionE->Checked.ToString());
+		writer->WriteLine(checkBoxOptionMT->Checked.ToString());
+		writer->WriteLine(textBoxMT->Text);
+		writer->WriteLine(checkBoxAddPrefix->Checked.ToString());
+		writer->WriteLine(textBoxPrefixUser->Text);
+		writer->WriteLine(checkBoxOptionR->Checked.ToString());
+		writer->WriteLine(trackBarR->Value.ToString());
+		writer->WriteLine(checkBoxNoPadding->Checked.ToString());
+
+		writer->Close();
+	}
+
+	private: void LoadSettings(String^ path) {
+		if (File::Exists(path)) {
+			StreamReader^ reader = gcnew StreamReader(path);
+
+			tbLevel->Value = Int32::Parse(reader->ReadLine());
+			chkVerify->Checked = Boolean::Parse(reader->ReadLine());
+			chkReplayGain->Checked = Boolean::Parse(reader->ReadLine());
+
+			checkBoxOptionP->Checked = Boolean::Parse(reader->ReadLine());
+			checkBoxOptionE->Checked = Boolean::Parse(reader->ReadLine());
+			checkBoxOptionMT->Checked = Boolean::Parse(reader->ReadLine());
+			textBoxMT->Text = reader->ReadLine();
+			checkBoxAddPrefix->Checked = Boolean::Parse(reader->ReadLine());
+			textBoxPrefixUser->Text = reader->ReadLine();
+			checkBoxOptionR->Checked = Boolean::Parse(reader->ReadLine());
+			trackBarR->Value = Int32::Parse(reader->ReadLine());
+			checkBoxNoPadding->Checked = Boolean::Parse(reader->ReadLine());
+
+
+
+
+
+
+			reader->Close();
+		}
+	}
+
+	protected:
 
 	private:
 		/// <summary>
@@ -144,7 +190,7 @@ namespace FLACfrontend {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->lstFiles = (gcnew System::Windows::Forms::ListBox());
 			this->btnAdd = (gcnew System::Windows::Forms::Button());
 			this->btnRemove = (gcnew System::Windows::Forms::Button());
@@ -190,11 +236,11 @@ namespace FLACfrontend {
 			this->trackBarR = (gcnew System::Windows::Forms::TrackBar());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->gbEncoding->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->tbLevel))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->tbLevel))->BeginInit();
 			this->gbOutputDir->SuspendLayout();
 			this->gbGeneral->SuspendLayout();
 			this->gbDecoding->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->trackBarR))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarR))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -242,7 +288,7 @@ namespace FLACfrontend {
 			// 
 			// dlgAddFile
 			// 
-			this->dlgAddFile->Filter = L"Supported Files|*.wav;*.flac;*.ogg;*.oga;*.aiff;*.w64;*.raw|FLAC files|*.flac|Unc" 
+			this->dlgAddFile->Filter = L"Supported Files|*.wav;*.flac;*.ogg;*.oga;*.aiff;*.w64;*.raw|FLAC files|*.flac|Unc"
 				L"ompressed files|*.wav;*.w64;*.aiff;*.raw|OGG Files|*.ogg;*.oga";
 			this->dlgAddFile->Multiselect = true;
 			this->dlgAddFile->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &Form1::dlgAddFile_FileOk);
@@ -309,7 +355,7 @@ namespace FLACfrontend {
 			this->textLevel->TabIndex = 2;
 			this->textLevel->Text = L"8";
 			this->textLevel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->ttHelp->SetToolTip(this->textLevel, L"The compression level, a higher level makes smaller files, but takes longer to en" 
+			this->ttHelp->SetToolTip(this->textLevel, L"The compression level, a higher level makes smaller files, but takes longer to en"
 				L"code");
 			// 
 			// lblLevel
@@ -323,12 +369,13 @@ namespace FLACfrontend {
 			// 
 			// tbLevel
 			// 
+			this->tbLevel->LargeChange = 1;
 			this->tbLevel->Location = System::Drawing::Point(75, 23);
 			this->tbLevel->Maximum = 8;
 			this->tbLevel->Name = L"tbLevel";
 			this->tbLevel->Size = System::Drawing::Size(119, 45);
 			this->tbLevel->TabIndex = 0;
-			this->ttHelp->SetToolTip(this->tbLevel, L"Set the compression level, a higher level makes smaller files, but takes longer t" 
+			this->ttHelp->SetToolTip(this->tbLevel, L"Set the compression level, a higher level makes smaller files, but takes longer t"
 				L"o encode");
 			this->tbLevel->Value = 8;
 			this->tbLevel->ValueChanged += gcnew System::EventHandler(this, &Form1::tbLevel_ValueChanged);
@@ -451,7 +498,7 @@ namespace FLACfrontend {
 			this->chkKeepForeign->Size = System::Drawing::Size(133, 17);
 			this->chkKeepForeign->TabIndex = 2;
 			this->chkKeepForeign->Text = L"Keep foreign metadata";
-			this->ttHelp->SetToolTip(this->chkKeepForeign, L"Keep foreign metadata (like BWF-chunks), see the flac website for more informatio" 
+			this->ttHelp->SetToolTip(this->chkKeepForeign, L"Keep foreign metadata (like BWF-chunks), see the flac website for more informatio"
 				L"n");
 			this->chkKeepForeign->UseVisualStyleBackColor = true;
 			// 
@@ -463,7 +510,7 @@ namespace FLACfrontend {
 			this->chkOggFlac->Size = System::Drawing::Size(153, 17);
 			this->chkOggFlac->TabIndex = 1;
 			this->chkOggFlac->Text = L"Create/read as OGG-FLAC";
-			this->ttHelp->SetToolTip(this->chkOggFlac, L"Create a FLAC-file in the OGG container or force the input file to be read as OGG" 
+			this->ttHelp->SetToolTip(this->chkOggFlac, L"Create a FLAC-file in the OGG container or force the input file to be read as OGG"
 				L"");
 			this->chkOggFlac->UseVisualStyleBackColor = true;
 			// 
@@ -554,7 +601,7 @@ namespace FLACfrontend {
 			this->textBoxMT->TabIndex = 22;
 			this->textBoxMT->Text = L"1";
 			this->textBoxMT->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->ttHelp->SetToolTip(this->textBoxMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with lat" 
+			this->ttHelp->SetToolTip(this->textBoxMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with lat"
 				L"est builds of flac.exe\r\nfrom https://github.com/xiph/flac/actions");
 			this->textBoxMT->TextChanged += gcnew System::EventHandler(this, &Form1::textBoxMT_TextChanged);
 			// 
@@ -578,7 +625,7 @@ namespace FLACfrontend {
 			this->checkBoxOptionP->Size = System::Drawing::Size(79, 17);
 			this->checkBoxOptionP->TabIndex = 16;
 			this->checkBoxOptionP->Text = L"Option \"-p\"";
-			this->ttHelp->SetToolTip(this->checkBoxOptionP, L"-p, --qlp-coeff-precision-search\r\nDo exhaustive search of LP coefficient quantiza" 
+			this->ttHelp->SetToolTip(this->checkBoxOptionP, L"-p, --qlp-coeff-precision-search\r\nDo exhaustive search of LP coefficient quantiza"
 				L"tion (expensive!);\r\noverrides -q;\r\ndoes nothing if using -l 0\r\n");
 			this->checkBoxOptionP->UseVisualStyleBackColor = true;
 			this->checkBoxOptionP->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionP_CheckedChanged);
@@ -624,14 +671,12 @@ namespace FLACfrontend {
 			// checkBoxOptionMT
 			// 
 			this->checkBoxOptionMT->AutoSize = true;
-			this->checkBoxOptionMT->Checked = true;
-			this->checkBoxOptionMT->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxOptionMT->Location = System::Drawing::Point(13, 65);
 			this->checkBoxOptionMT->Name = L"checkBoxOptionMT";
 			this->checkBoxOptionMT->Size = System::Drawing::Size(140, 17);
 			this->checkBoxOptionMT->TabIndex = 18;
 			this->checkBoxOptionMT->Text = L"Multithreading. Threads:";
-			this->ttHelp->SetToolTip(this->checkBoxOptionMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with lat" 
+			this->ttHelp->SetToolTip(this->checkBoxOptionMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with lat"
 				L"est builds of flac.exe\r\nfrom https://github.com/xiph/flac/actions");
 			this->checkBoxOptionMT->UseVisualStyleBackColor = true;
 			this->checkBoxOptionMT->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionMT_CheckedChanged);
@@ -646,7 +691,7 @@ namespace FLACfrontend {
 			this->checkBoxOptionR->Size = System::Drawing::Size(79, 17);
 			this->checkBoxOptionR->TabIndex = 24;
 			this->checkBoxOptionR->Text = L"Option \"-r\":";
-			this->ttHelp->SetToolTip(this->checkBoxOptionR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde" 
+			this->ttHelp->SetToolTip(this->checkBoxOptionR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
 				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
 			this->checkBoxOptionR->UseVisualStyleBackColor = true;
 			this->checkBoxOptionR->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionR_CheckedChanged);
@@ -661,17 +706,18 @@ namespace FLACfrontend {
 			this->textBoxR->TabIndex = 26;
 			this->textBoxR->Text = L"8";
 			this->textBoxR->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->ttHelp->SetToolTip(this->textBoxR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde" 
+			this->ttHelp->SetToolTip(this->textBoxR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
 				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
 			// 
 			// trackBarR
 			// 
+			this->trackBarR->LargeChange = 1;
 			this->trackBarR->Location = System::Drawing::Point(326, 13);
 			this->trackBarR->Maximum = 8;
 			this->trackBarR->Name = L"trackBarR";
 			this->trackBarR->Size = System::Drawing::Size(119, 45);
 			this->trackBarR->TabIndex = 25;
-			this->ttHelp->SetToolTip(this->trackBarR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde" 
+			this->ttHelp->SetToolTip(this->trackBarR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
 				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
 			this->trackBarR->Value = 8;
 			this->trackBarR->ValueChanged += gcnew System::EventHandler(this, &Form1::trackBarR_ValueChanged);
@@ -720,7 +766,7 @@ namespace FLACfrontend {
 			this->Controls->Add(this->btnAdd);
 			this->Controls->Add(this->lstFiles);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"Form1";
 			this->Text = L"FLAC Frontend-H";
@@ -729,14 +775,14 @@ namespace FLACfrontend {
 			this->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &Form1::lstFiles_DragEnter);
 			this->gbEncoding->ResumeLayout(false);
 			this->gbEncoding->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->tbLevel))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->tbLevel))->EndInit();
 			this->gbOutputDir->ResumeLayout(false);
 			this->gbOutputDir->PerformLayout();
 			this->gbGeneral->ResumeLayout(false);
 			this->gbGeneral->PerformLayout();
 			this->gbDecoding->ResumeLayout(false);
 			this->gbDecoding->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->trackBarR))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarR))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
@@ -744,451 +790,480 @@ namespace FLACfrontend {
 		}
 #pragma endregion
 
-// -------------------------------//
-// --- Right column of buttons --- //
-// -------------------------------//
+		// -------------------------------//
+		// --- Right column of buttons --- //
+		// -------------------------------//
 
-private: System::Void btnAdd_Click(System::Object^  sender, System::EventArgs^  e) {
-			 dlgAddFile->ShowDialog();
-		 }
+	private: System::Void btnAdd_Click(System::Object^ sender, System::EventArgs^ e) {
+		dlgAddFile->ShowDialog();
+	}
 
-private: System::Void dlgAddFile_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-			 lstFiles->Items->AddRange(dlgAddFile->FileNames);
-		 }
+	private: System::Void dlgAddFile_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+		lstFiles->Items->AddRange(dlgAddFile->FileNames);
+	}
 
-private: System::Void btnClear_Click(System::Object^  sender, System::EventArgs^  e) {
-			 lstFiles->Items->Clear();
-		 }
+	private: System::Void btnClear_Click(System::Object^ sender, System::EventArgs^ e) {
+		lstFiles->Items->Clear();
+	}
 
-private: System::Void btnRemove_Click(System::Object^  sender, System::EventArgs^  e) {
-			 lstFiles->Items->Remove(lstFiles->SelectedItem);	 
-		 }
+	private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^ e) {
+		lstFiles->Items->Remove(lstFiles->SelectedItem);
+	}
 
-private: System::Void btnAdvanced_Click(System::Object^  sender, System::EventArgs^  e) {
-			 AdvDialog->ShowDialog();
-		 }
+	private: System::Void btnAdvanced_Click(System::Object^ sender, System::EventArgs^ e) {
+		AdvDialog->ShowDialog();
+	}
 
-private: System::Void btnHelp_Click(System::Object^  sender, System::EventArgs^  e) {
-			 ttHelp->Show("Place your mouse pointer over a specific option to get more information",btnHelp);
-		 }
+	private: System::Void btnHelp_Click(System::Object^ sender, System::EventArgs^ e) {
+		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
+	}
 
-private: System::Void btnAbout_Click(System::Object^  sender, System::EventArgs^  e) {
-			 MessageBox::Show("FLAC Frontend-H v2.1 build 20241123.1933, using FLAC 1.4.3","FLAC Frontend version info",MessageBoxButtons::OK,MessageBoxIcon::Information);
-		 }
+	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
+		MessageBox::Show("FLAC Frontend-H v2.1 build 20241123.1933, using FLAC 1.4.3", "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
 
-// ----------------------------------//
-// --- Setting fields interaction --- //
-// ----------------------------------//
+		   // ----------------------------------//
+		   // --- Setting fields interaction --- //
+		   // ----------------------------------//
 
-private: System::Void tbLevel_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-			 textLevel->Text = tbLevel->Value.ToString();
-		 }
+	private: System::Void tbLevel_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		textLevel->Text = tbLevel->Value.ToString();
+	}
 
-private: System::Void trackBarR_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-			 textBoxR->Text = trackBarR->Value.ToString();
-		 }
+	private: System::Void trackBarR_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		textBoxR->Text = trackBarR->Value.ToString();
+	}
 
-private: System::Void chkReplayGain_CheckStateChanged(System::Object^  sender, System::EventArgs^  e) {
-			 if(chkReplayGain->Checked == true){
-				 chkReplayGainAlbum->Enabled = true;
-			 }else{
-				 chkReplayGainAlbum->Checked = false;
-				 chkReplayGainAlbum->Enabled = false;
-			 }
+	private: System::Void chkReplayGain_CheckStateChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (chkReplayGain->Checked == true) {
+			chkReplayGainAlbum->Enabled = true;
+		}
+		else {
+			chkReplayGainAlbum->Checked = false;
+			chkReplayGainAlbum->Enabled = false;
+		}
 
-		 }
+	}
 
-// ---------------------------------//
-// --- Output directory buttons --- //
-// ---------------------------------//
+		   // ---------------------------------//
+		   // --- Output directory buttons --- //
+		   // ---------------------------------//
 
-private: System::Void btnSelectDirectory_Click(System::Object^  sender, System::EventArgs^  e) {
-			 dlgOutputDirectory->ShowDialog();
-			 if(!String::IsNullOrEmpty(dlgOutputDirectory->SelectedPath))
-				txtOutputDirectory->Text = dlgOutputDirectory->SelectedPath;
-		 }
+	private: System::Void btnSelectDirectory_Click(System::Object^ sender, System::EventArgs^ e) {
+		dlgOutputDirectory->ShowDialog();
+		if (!String::IsNullOrEmpty(dlgOutputDirectory->SelectedPath))
+			txtOutputDirectory->Text = dlgOutputDirectory->SelectedPath;
+	}
 
-private: System::Void btnOutputDirSameAsInput_Click(System::Object^  sender, System::EventArgs^  e) {
-			 txtOutputDirectory->Text = "<< Same as input directory >>";
-		 }
-
-
-// ---------------------------//
-// --- Last row of buttons --- //
-// ---------------------------//
-
-private: System::Void btnEncode_Click(System::Object^  sender, System::EventArgs^  e) {
-			 String ^ fileargs = "";
-			 String ^ command  = "tools/flac.exe";
-			 String ^ args = "";
-			 String ^ fileTemp = "";
-			 String ^ ext = ".flac";
-			 COORD c;
-			 int numberOfFiles = lstFiles->Items->Count;
-			 int i;
-
-			 // Check whether possible
-			 if(chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == true && numberOfFiles > 50){
-				 MessageBox::Show("Adding Album ReplayGain for more then 50 files is not possible","Too many files",MessageBoxButtons::OK,MessageBoxIcon::Error);
-				 return;
-			 }
-			 if(chkReplayGain->Checked == true && chkOggFlac->Checked == true){
-				 MessageBox::Show("Adding ReplayGain to OGG-FLAC files is currently not supported","No ReplayGain with Ogg",MessageBoxButtons::OK,MessageBoxIcon::Error);
-				 return;
-			 }
-
-			 // Retrieve settings and transform to command-line options
-			 args += "-" + tbLevel->Value.ToString() + " ";
-			 if(chkVerify->Checked == true)		    args += "-V ";
-			 if(checkBoxOptionE->Checked == true)	args += "-e ";
-			 if(checkBoxOptionP->Checked == true)	args += "-p ";
-			 if(checkBoxNoPadding->Checked == true)	args += "--no-padding ";
-			 if(checkBoxOverwrite->Checked == true)	args += "-f ";
-			 if(checkBoxOptionMT->Checked == true)	args += "-j" + textBoxMT->Text + " ";
-			 if(checkBoxOptionR->Checked == true)	args += "-r" + textBoxR->Text + " ";
-			 if(checkBoxAddPrefix->Checked == true)	args += "--output-prefix=" + textBoxPrefixUser->Text;
-			 if(chkDeleteInput->Checked == true)	args += "--delete-input-file ";
-			 if(chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
-			 if(chkOggFlac->Checked == true){	    args += "--ogg "; ext = ".oga"; }
-			 if(AdvDialog->chkIgnoreChunkSize->Checked == true)	    args += "--ignore-chunk-sizes ";
-			 if(chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false)
-				 args += "--replay-gain ";
-			 if(!String::IsNullOrEmpty(AdvDialog->txtCuesheet->Text))
-				 args += "--cuesheet \"" + AdvDialog->txtCuesheet->Text + "\" ";
-			 args += AdvDialog->txtCommandLine->Text + " ";
-
-			 // Get console ready and populate proces
-			 FreeConsole();
-			 AllocConsole();
-			 c.X = 80; c.Y= 8000;
-			 SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),c);
-			 Process^ p = gcnew Process();
-			 p->StartInfo->FileName = command;
-			 p->StartInfo->UseShellExecute = false;
-			  
-			 if(txtOutputDirectory->Text != "<< Same as input directory >>"){
-				  // Proces each file seperate if output directory is specified
-				  for(i=0; i<numberOfFiles; i++){
-					  fileTemp = "" + lstFiles->Items[i];
-					  fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
-					  fileTemp = fileTemp->Substring(0,fileTemp->LastIndexOf(".")) + ext;
-					  p->StartInfo->Arguments = args + "-o " + "\"" + fileTemp + "\" \"" + lstFiles->Items[i] + "\"";
-					  p->Start();
-					  p->WaitForExit();
-				  }
-			  } else if(chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false){
-				  // Proces files in batches of 50 if output directory is same as input
-				  // and (not-album) ReplayGain processing is required
-				  for(i=0; i<numberOfFiles; i++){
-					  if (i % 50 == 49){
-						  p->StartInfo->Arguments = args + fileargs;
-						  p->Start();
-						  p->WaitForExit();
-						  fileargs = "";
-					  }
-					  fileargs += "\"" + lstFiles->Items[i] + "\" ";
-				  }
-				  // Run remainder
-				  p->StartInfo->Arguments = args + fileargs;
-				  p->Start();
-				  p->WaitForExit();	
-			  } else {
-				  // Proces files in batches of 50 if output directory is same as input
-				  // and ReplayGain processing is not required or Album gain has to be calculated seperately
-				  for(i=0; i<numberOfFiles; i++){
-					  if (i % 50 == 49){
-						  p->StartInfo->Arguments = args + fileargs;
-						  p->Start();
-						  p->WaitForExit();
-						  fileargs = "";
-					  }
-					  fileargs += "\"" + lstFiles->Items[i] + "\" ";
-				  }
-				  // Run remainder
-				  p->StartInfo->Arguments = args + fileargs;
-				  p->Start();
-				  p->WaitForExit();	
-			  }
-
-			 // Add ReplayGain tags if album-tags have to be added 
-		     if(chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == true){
-				 fileargs = "";
-				 Console::WriteLine("");
-				 Console::WriteLine("Now adding ReplayGain, this can take a while... ");
-				 p->StartInfo->FileName = "tools/metaflac.exe";
-				 args = "--add-replay-gain ";
-				 for(i=0; i<numberOfFiles; i++){
-					 if(txtOutputDirectory->Text != "<< Same as input directory >>"){
-						fileTemp = "" + lstFiles->Items[i];
-						fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
-						fileTemp = fileTemp->Substring(0,fileTemp->LastIndexOf(".")) + ext;
-						fileargs += "\"" + fileTemp + "\" ";
-					 } else {
-						fileTemp = "" + lstFiles->Items[i];
-						fileTemp = fileTemp->Substring(0,fileTemp->LastIndexOf(".")) + ext;
-						fileargs += "\"" + fileTemp + "\" ";
-					 }
-				 }
-				 p->StartInfo->Arguments = args + fileargs;
-				 p->Start();
-				 p->WaitForExit();
-			 }
-
-			 // Add pause to let console window stay 
-			 p->StartInfo->FileName = "cmd";
-			 p->StartInfo->Arguments = "/c PAUSE";
-			 p->Start();
-			 p->WaitForExit();
-			 FreeConsole();
-		 }
-
-private: System::Void btnDecode_Click(System::Object^  sender, System::EventArgs^  e) {
-			 String ^ fileargs = "";
-			 String ^ command  = "tools/flac.exe";
-			 String ^ args = "-d ";
-			 String ^ fileTemp = "";
-			 COORD c;
-			 int numberOfFiles = lstFiles->Items->Count;
-			 int i;
-
-			 // Retrieve settings
-			  if(chkDeleteInput->Checked == true)	args += "--delete-input-file ";
-			  if(chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
-			  if(chkOggFlac->Checked == true)	    args += "--ogg ";
-			  if(chkDecodeThroughErrors->Checked == true)	    args += "-F ";
-
-			  args += AdvDialog->txtCommandLine->Text + " ";
-
-			 // Get console ready and populate proces
-			 FreeConsole();
-			 AllocConsole();
-			 c.X = 80; c.Y = 8000;
-			 SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),c);
-			 Process^ p = gcnew Process();
-			 p->StartInfo->FileName = command;
-			 p->StartInfo->UseShellExecute = false;
+	private: System::Void btnOutputDirSameAsInput_Click(System::Object^ sender, System::EventArgs^ e) {
+		txtOutputDirectory->Text = "<< Same as input directory >>";
+	}
 
 
-			  if(txtOutputDirectory->Text != "<< Same as input directory >>"){
-				  // Proces each file seperate if output directory is specified
-				  for(i=0; i<numberOfFiles; i++){
-						  fileTemp = "" + lstFiles->Items[i];
-						  fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
-						  fileTemp = fileTemp->Substring(0,fileTemp->LastIndexOf(".")) + ".wav";
-						  p->StartInfo->Arguments = args + "-o " + "\"" + fileTemp + "\" \"" + lstFiles->Items[i] + "\"";
-						  p->Start();
-						  p->WaitForExit();
-					  }
-			  } else {
-				  // Proces in batches of 50 if file is processed in same directory
-				  for(i=0; i<numberOfFiles; i++){
-					  if (i % 50 == 49){
-						  p->StartInfo->Arguments = args + fileargs;
-						  p->Start();
-						  p->WaitForExit();
-						  fileargs = "";
-					  }
-					  fileargs += "\"" + lstFiles->Items[i] + "\" ";
-				  }
-				  // Run remainder
-				  p->StartInfo->Arguments = args + fileargs;
-				  p->Start();
-				  p->WaitForExit();				  
-			  }
+		   // ---------------------------//
+		   // --- Last row of buttons --- //
+		   // ---------------------------//
 
-			 // Add pause to let console window stay 
-			 p->StartInfo->FileName = "cmd";
-			 p->StartInfo->Arguments = "/c PAUSE";
-			 p->Start();
-			 p->WaitForExit();
-			 FreeConsole();
-		 }
+	private: System::Void btnEncode_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ fileargs = "";
+		String^ command = "tools/flac.exe";
+		String^ args = "";
+		String^ fileTemp = "";
+		String^ ext = ".flac";
+		COORD c;
+		int numberOfFiles = lstFiles->Items->Count;
+		int i;
 
-private: System::Void btnTest_Click(System::Object^  sender, System::EventArgs^  e) {
-			 // Let's first create some kind of BAT-file
-			 String ^ fileargs = "";
-			 String ^ command  = "tools/flac.exe";
-			 String ^ args = "-t ";
-			 COORD c;
-			 int numberOfFiles = lstFiles->Items->Count;
-			 int i;
+		// Check whether possible
+		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == true && numberOfFiles > 50) {
+			MessageBox::Show("Adding Album ReplayGain for more then 50 files is not possible", "Too many files", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		if (chkReplayGain->Checked == true && chkOggFlac->Checked == true) {
+			MessageBox::Show("Adding ReplayGain to OGG-FLAC files is currently not supported", "No ReplayGain with Ogg", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 
-			 if(chkDecodeThroughErrors->Checked == true)	args += "-F ";
-			 
-			 // Get console ready and populate proces
-			 FreeConsole();
-			 AllocConsole();
-			 c.X = 80; c.Y = 8000;
-			 SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),c);
-			 Process^ p = gcnew Process();
-			 p->StartInfo->FileName = command;
-			 p->StartInfo->UseShellExecute = false;
+		// Retrieve settings and transform to command-line options
+		args += "-" + tbLevel->Value.ToString() + " ";
+		if (chkVerify->Checked == true)		    args += "-V ";
+		if (checkBoxOptionE->Checked == true)	args += "-e ";
+		if (checkBoxOptionP->Checked == true)	args += "-p ";
+		if (checkBoxNoPadding->Checked == true)	args += "--no-padding ";
+		if (checkBoxOverwrite->Checked == true)	args += "-f ";
+		if (checkBoxOptionMT->Checked == true)	args += "-j" + textBoxMT->Text + " ";
+		if (checkBoxOptionR->Checked == true)	args += "-r" + textBoxR->Text + " ";
+		if (checkBoxAddPrefix->Checked == true)	args += "--output-prefix=" + textBoxPrefixUser->Text;
+		if (chkDeleteInput->Checked == true)	args += "--delete-input-file ";
+		if (chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
+		if (chkOggFlac->Checked == true) { args += "--ogg "; ext = ".oga"; }
+		if (AdvDialog->chkIgnoreChunkSize->Checked == true)	    args += "--ignore-chunk-sizes ";
+		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false)
+			args += "--replay-gain ";
+		if (!String::IsNullOrEmpty(AdvDialog->txtCuesheet->Text))
+			args += "--cuesheet \"" + AdvDialog->txtCuesheet->Text + "\" ";
+		args += AdvDialog->txtCommandLine->Text + " ";
 
+		// Get console ready and populate proces
+		FreeConsole();
+		AllocConsole();
+		c.X = 80; c.Y = 8000;
+		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		Process^ p = gcnew Process();
+		p->StartInfo->FileName = command;
+		p->StartInfo->UseShellExecute = false;
 
-			 // Process in batches of 50
-			 for(i=0; i<numberOfFiles; i++){
-				 if (i % 50 == 49){
-				    p->StartInfo->Arguments = args + fileargs;
+		if (txtOutputDirectory->Text != "<< Same as input directory >>") {
+			// Proces each file seperate if output directory is specified
+			for (i = 0; i < numberOfFiles; i++) {
+				fileTemp = "" + lstFiles->Items[i];
+				fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
+				fileTemp = fileTemp->Substring(0, fileTemp->LastIndexOf(".")) + ext;
+				p->StartInfo->Arguments = args + "-o " + "\"" + fileTemp + "\" \"" + lstFiles->Items[i] + "\"";
+				p->Start();
+				p->WaitForExit();
+			}
+		}
+		else if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false) {
+			// Proces files in batches of 50 if output directory is same as input
+			// and (not-album) ReplayGain processing is required
+			for (i = 0; i < numberOfFiles; i++) {
+				if (i % 50 == 49) {
+					p->StartInfo->Arguments = args + fileargs;
 					p->Start();
 					p->WaitForExit();
 					fileargs = "";
-				 }
-				 fileargs += "\"" + lstFiles->Items[i] + "\" ";
-			 }
-			 
-			 // Run remainder
-		     p->StartInfo->Arguments = args + fileargs;
-			 p->Start();
-			 p->WaitForExit();
-
-			 // Add pause to let console window stay 
-			 p->StartInfo->FileName = "cmd";
-			 p->StartInfo->Arguments = "/c PAUSE";
-			 p->Start();
-			 p->WaitForExit();
-			 FreeConsole();
-			 
-		 }
-
-private: System::Void btnFingerprint_Click(System::Object^  sender, System::EventArgs^  e) {
-			 // Let's first create some kind of BAT-file
-			 String ^ fileargs = "";
-			 String ^ command = "tools/metaflac.exe";
-			 String ^ args = "--show-md5sum ";
-			 COORD c;
-			 int numberOfFiles = lstFiles->Items->Count;
-			 int i;
-
-			 // Get console ready and populate proces
-			 FreeConsole();
-			 AllocConsole();
-			 c.X = 80; c.Y = 8000;
-			 SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),c);
-			 Process^ p = gcnew Process();
-			 p->StartInfo->FileName = command;
-			 p->StartInfo->UseShellExecute = false;
-			 
-			 // Proces files in batches of 50
-			 for(i=0; i<numberOfFiles; i++){
-				 if (i % 50 == 49){
-				    p->StartInfo->Arguments = args + fileargs;
-					p->Start();
-					p->WaitForExit();
-					fileargs = "";
-				 }
-				 fileargs += "\"" + lstFiles->Items[i] + "\" ";
-			 }
-
-			 // Run remainder
-		     p->StartInfo->Arguments = args + fileargs;
-			 p->Start();
-			 p->WaitForExit();
-
-			 // Add pause to let console window stay 
-			 p->StartInfo->FileName = "cmd";
-			 p->StartInfo->Arguments = "/c PAUSE";
-			 p->Start();
-			 p->WaitForExit();
-			 FreeConsole();
-		 }
-
-private: System::Void btnExit_Click(System::Object^  sender, System::EventArgs^  e) {
-			 this->Close();
-		 }
-
-// ---------------------------//
-// --- Drag and drop stuff --- //
-// ---------------------------//
-
-private: System::Void lstFiles_DragEnter(System::Object^  sender, System::Windows::Forms::DragEventArgs^  e) {
-			 // Show user that dragdrop is possible
-			 if(e->Data->GetDataPresent(DataFormats::FileDrop))
-				 e->Effect = DragDropEffects::Link;
-			 else
-				 e->Effect = DragDropEffects::None;
-		 }
-private: System::Void lstFiles_DragDrop(System::Object^  sender, System::Windows::Forms::DragEventArgs^  e) {
-			 // Get filedrop into array of strings
-			 array<String^>^ FileDropList = (array<String^>^)e->Data->GetData(DataFormats::FileDrop);
-			 String^ extension = "";
-			 String^ FileDropDirItem = "";
-			 String^ FileDropItem = "";
-
-			 // First process each item that has been dropped
-			 for each (String^ FileDropItem in FileDropList){
-				 if(Directory::Exists(FileDropItem)){
-					 // Check whether dropped item is directory and find all files in that directory
-					 for each (String^ FileDropDirItem in Directory::GetFiles(FileDropItem,"*.*",SearchOption::AllDirectories)){			
-						extension = FileDropDirItem->Substring(FileDropDirItem->LastIndexOf(".")+1);
-						if((extension == "flac") || (extension == "oga") || (extension == "ogg") || (extension == "wav")){
-							// In directory search, only add relevant files
-							lstFiles->Items->Add(FileDropDirItem);
-						}
-					}
-				} else {
-					// If not a directory, just add the dropped item
-					lstFiles->Items->Add(FileDropItem);
 				}
-			 }
-		 }
-private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-//			 if(!(File::Exists("tools/flac.exe"))){
-//				 MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-//				 exit(1);
-//			 }
-//			 if(!(File::Exists("tools/metaflac.exe"))){
-//				 MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","metaflac not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-//				 exit(1);
-//			 }
-		 }
-private: System::Void checkBoxOptionP_CheckedChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-private: System::Void checkBoxOptionE_CheckedChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-private: System::Void checkBoxOptionMT_CheckedChanged(System::Object^ sender, System::EventArgs^  e)
-		 {
-			if (checkBoxOptionMT->Checked)
-			{
-				textBoxMT->Enabled = true;
+				fileargs += "\"" + lstFiles->Items[i] + "\" ";
 			}
-			else
-			{
-				textBoxMT->Enabled = false;
+			// Run remainder
+			p->StartInfo->Arguments = args + fileargs;
+			p->Start();
+			p->WaitForExit();
+		}
+		else {
+			// Proces files in batches of 50 if output directory is same as input
+			// and ReplayGain processing is not required or Album gain has to be calculated seperately
+			for (i = 0; i < numberOfFiles; i++) {
+				if (i % 50 == 49) {
+					p->StartInfo->Arguments = args + fileargs;
+					p->Start();
+					p->WaitForExit();
+					fileargs = "";
+				}
+				fileargs += "\"" + lstFiles->Items[i] + "\" ";
 			}
-		 }
-private: System::Void textBoxMT_TextChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-private: System::Void checkBoxAddPrefix_CheckedChanged(System::Object^ sender, System::EventArgs^  e)
-		 {
-			 if (checkBoxAddPrefix->Checked)
-			 {
-				 textBoxPrefixUser->Enabled = true;
-			 }
-			 else
-			 {
-				 textBoxPrefixUser->Enabled = false;
-			 }
-		 }
-private: System::Void textBoxPrefixUser_TextChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-private: System::Void checkBoxOverwrite_CheckedChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-private: System::Void checkBoxOptionR_CheckedChanged(System::Object^ sender, System::EventArgs^  e)
-		 {
-			 if (checkBoxOptionR->Checked)
-			 {
-				 textBoxR->Enabled = true;
-				 trackBarR->Enabled = true;
-			 }
-			 else
-			 {
-				 textBoxR->Enabled = false;
-				 trackBarR->Enabled = false;
+			// Run remainder
+			p->StartInfo->Arguments = args + fileargs;
+			p->Start();
+			p->WaitForExit();
+		}
 
-			 }
-		 }
-private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^  e) {
-		 }
-};
+		// Add ReplayGain tags if album-tags have to be added 
+		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == true) {
+			fileargs = "";
+			Console::WriteLine("");
+			Console::WriteLine("Now adding ReplayGain, this can take a while... ");
+			p->StartInfo->FileName = "tools/metaflac.exe";
+			args = "--add-replay-gain ";
+			for (i = 0; i < numberOfFiles; i++) {
+				if (txtOutputDirectory->Text != "<< Same as input directory >>") {
+					fileTemp = "" + lstFiles->Items[i];
+					fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
+					fileTemp = fileTemp->Substring(0, fileTemp->LastIndexOf(".")) + ext;
+					fileargs += "\"" + fileTemp + "\" ";
+				}
+				else {
+					fileTemp = "" + lstFiles->Items[i];
+					fileTemp = fileTemp->Substring(0, fileTemp->LastIndexOf(".")) + ext;
+					fileargs += "\"" + fileTemp + "\" ";
+				}
+			}
+			p->StartInfo->Arguments = args + fileargs;
+			p->Start();
+			p->WaitForExit();
+		}
+
+		// Add pause to let console window stay 
+		p->StartInfo->FileName = "cmd";
+		p->StartInfo->Arguments = "/c PAUSE";
+		p->Start();
+		p->WaitForExit();
+		FreeConsole();
+	}
+
+	private: System::Void btnDecode_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ fileargs = "";
+		String^ command = "tools/flac.exe";
+		String^ args = "-d ";
+		String^ fileTemp = "";
+		COORD c;
+		int numberOfFiles = lstFiles->Items->Count;
+		int i;
+
+		// Retrieve settings
+		if (chkDeleteInput->Checked == true)	args += "--delete-input-file ";
+		if (chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
+		if (chkOggFlac->Checked == true)	    args += "--ogg ";
+		if (chkDecodeThroughErrors->Checked == true)	    args += "-F ";
+
+		args += AdvDialog->txtCommandLine->Text + " ";
+
+		// Get console ready and populate proces
+		FreeConsole();
+		AllocConsole();
+		c.X = 80; c.Y = 8000;
+		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		Process^ p = gcnew Process();
+		p->StartInfo->FileName = command;
+		p->StartInfo->UseShellExecute = false;
+
+
+		if (txtOutputDirectory->Text != "<< Same as input directory >>") {
+			// Proces each file seperate if output directory is specified
+			for (i = 0; i < numberOfFiles; i++) {
+				fileTemp = "" + lstFiles->Items[i];
+				fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
+				fileTemp = fileTemp->Substring(0, fileTemp->LastIndexOf(".")) + ".wav";
+				p->StartInfo->Arguments = args + "-o " + "\"" + fileTemp + "\" \"" + lstFiles->Items[i] + "\"";
+				p->Start();
+				p->WaitForExit();
+			}
+		}
+		else {
+			// Proces in batches of 50 if file is processed in same directory
+			for (i = 0; i < numberOfFiles; i++) {
+				if (i % 50 == 49) {
+					p->StartInfo->Arguments = args + fileargs;
+					p->Start();
+					p->WaitForExit();
+					fileargs = "";
+				}
+				fileargs += "\"" + lstFiles->Items[i] + "\" ";
+			}
+			// Run remainder
+			p->StartInfo->Arguments = args + fileargs;
+			p->Start();
+			p->WaitForExit();
+		}
+
+		// Add pause to let console window stay 
+		p->StartInfo->FileName = "cmd";
+		p->StartInfo->Arguments = "/c PAUSE";
+		p->Start();
+		p->WaitForExit();
+		FreeConsole();
+	}
+
+	private: System::Void btnTest_Click(System::Object^ sender, System::EventArgs^ e) {
+		// Let's first create some kind of BAT-file
+		String^ fileargs = "";
+		String^ command = "tools/flac.exe";
+		String^ args = "-t ";
+		COORD c;
+		int numberOfFiles = lstFiles->Items->Count;
+		int i;
+
+		if (chkDecodeThroughErrors->Checked == true)	args += "-F ";
+
+		// Get console ready and populate proces
+		FreeConsole();
+		AllocConsole();
+		c.X = 80; c.Y = 8000;
+		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		Process^ p = gcnew Process();
+		p->StartInfo->FileName = command;
+		p->StartInfo->UseShellExecute = false;
+
+
+		// Process in batches of 50
+		for (i = 0; i < numberOfFiles; i++) {
+			if (i % 50 == 49) {
+				p->StartInfo->Arguments = args + fileargs;
+				p->Start();
+				p->WaitForExit();
+				fileargs = "";
+			}
+			fileargs += "\"" + lstFiles->Items[i] + "\" ";
+		}
+
+		// Run remainder
+		p->StartInfo->Arguments = args + fileargs;
+		p->Start();
+		p->WaitForExit();
+
+		// Add pause to let console window stay 
+		p->StartInfo->FileName = "cmd";
+		p->StartInfo->Arguments = "/c PAUSE";
+		p->Start();
+		p->WaitForExit();
+		FreeConsole();
+
+	}
+
+	private: System::Void btnFingerprint_Click(System::Object^ sender, System::EventArgs^ e) {
+		// Let's first create some kind of BAT-file
+		String^ fileargs = "";
+		String^ command = "tools/metaflac.exe";
+		String^ args = "--show-md5sum ";
+		COORD c;
+		int numberOfFiles = lstFiles->Items->Count;
+		int i;
+
+		// Get console ready and populate proces
+		FreeConsole();
+		AllocConsole();
+		c.X = 80; c.Y = 8000;
+		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+		Process^ p = gcnew Process();
+		p->StartInfo->FileName = command;
+		p->StartInfo->UseShellExecute = false;
+
+		// Proces files in batches of 50
+		for (i = 0; i < numberOfFiles; i++) {
+			if (i % 50 == 49) {
+				p->StartInfo->Arguments = args + fileargs;
+				p->Start();
+				p->WaitForExit();
+				fileargs = "";
+			}
+			fileargs += "\"" + lstFiles->Items[i] + "\" ";
+		}
+
+		// Run remainder
+		p->StartInfo->Arguments = args + fileargs;
+		p->Start();
+		p->WaitForExit();
+
+		// Add pause to let console window stay 
+		p->StartInfo->FileName = "cmd";
+		p->StartInfo->Arguments = "/c PAUSE";
+		p->Start();
+		p->WaitForExit();
+		FreeConsole();
+	}
+
+	private: System::Void btnExit_Click(System::Object^ sender, System::EventArgs^ e) {
+		SaveSettings("settings.txt");
+		this->Close();
+	}
+
+		   // ---------------------------//
+		   // --- Drag and drop stuff --- //
+		   // ---------------------------//
+
+	private: System::Void lstFiles_DragEnter(System::Object^ sender, System::Windows::Forms::DragEventArgs^ e) {
+		// Show user that dragdrop is possible
+		if (e->Data->GetDataPresent(DataFormats::FileDrop))
+			e->Effect = DragDropEffects::Link;
+		else
+			e->Effect = DragDropEffects::None;
+	}
+	private: System::Void lstFiles_DragDrop(System::Object^ sender, System::Windows::Forms::DragEventArgs^ e) {
+		// Get filedrop into array of strings
+		array<String^>^ FileDropList = (array<String^>^)e->Data->GetData(DataFormats::FileDrop);
+		String^ extension = "";
+		String^ FileDropDirItem = "";
+		String^ FileDropItem = "";
+
+		// First process each item that has been dropped
+		for each(String ^ FileDropItem in FileDropList) {
+			if (Directory::Exists(FileDropItem)) {
+				// Check whether dropped item is directory and find all files in that directory
+				for each(String ^ FileDropDirItem in Directory::GetFiles(FileDropItem, "*.*", SearchOption::AllDirectories)) {
+					extension = FileDropDirItem->Substring(FileDropDirItem->LastIndexOf(".") + 1);
+					if ((extension == "flac") || (extension == "oga") || (extension == "ogg") || (extension == "wav")) {
+						// In directory search, only add relevant files
+						lstFiles->Items->Add(FileDropDirItem);
+					}
+				}
+			}
+			else {
+				// If not a directory, just add the dropped item
+				lstFiles->Items->Add(FileDropItem);
+			}
+		}
+	}
+	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+		LoadSettings("settings.txt");
+
+		//			 if(!(File::Exists("tools/flac.exe"))){
+		//				 MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
+		//				 exit(1);
+		//			 }
+		//			 if(!(File::Exists("tools/metaflac.exe"))){
+		//				 MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","metaflac not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
+		//				 exit(1);
+		//			 }
+	}
+	private: System::Void checkBoxOptionP_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxOptionE_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxOptionMT_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (checkBoxOptionMT->Checked)
+		{
+			textBoxMT->Enabled = true;
+		}
+		else
+		{
+			textBoxMT->Enabled = false;
+		}
+	}
+	private: System::Void textBoxMT_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxAddPrefix_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (checkBoxAddPrefix->Checked)
+		{
+			textBoxPrefixUser->Enabled = true;
+		}
+		else
+		{
+			textBoxPrefixUser->Enabled = false;
+		}
+	}
+	private: System::Void textBoxPrefixUser_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxOverwrite_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxOptionR_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (checkBoxOptionR->Checked)
+		{
+			textBoxR->Enabled = true;
+			trackBarR->Enabled = true;
+		}
+		else
+		{
+			textBoxR->Enabled = false;
+			trackBarR->Enabled = false;
+
+		}
+	}
+	private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	};
+
+	public ref class Settings {
+	public:
+		//Encoding options
+		int compressionLevel;
+		bool verify;
+		bool replayGain;
+
+		//Additional options
+		bool optionP;
+		bool optionE;
+		bool optionMT;
+		int optionMTValue;
+		bool addPrefix;
+		String^ prefixUser;
+		bool optionR;
+		int optionRValue;
+		bool noPadding;
+
+	};
 }
 
