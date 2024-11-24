@@ -35,12 +35,18 @@ namespace FLACfrontend {
 		{
 			InitializeComponent();
 			this->AdvDialog = (gcnew Advanced_options());
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 			//
 			//TODO: Add the constructor code here
 			//
 		}
 
 	protected:
+
+	private:
+		void Form1_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+			SaveSettings("settings.txt"); // Save settings on close
+		}
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
