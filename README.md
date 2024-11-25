@@ -1,4 +1,31 @@
 ![Alt text](https://ptpimg.me/25gayf.png)
+
+<b>Changes made compared to original FLAC Fronted 2.1:</b>
+
+<b>Added:</b>
+* Latest flac.exe and metaflac.exe
+    * This builds may have some bugs
+    * You may use any build you want, but be aware that multithreading was implemented for latest v.1.4.3 builds (not for 1.4.3 release)
+    * To use your builds copy flac.exe and metaflac.exe to "tools" foder
+    * FLAC build version is shown in "About" form
+* Additional compression options
+* Multithreading option
+* Ability to autosave some settings
+    * Settings like "-p", "-e" or command line options are autosaved on app close
+    * They are stored in a "settings.txt"  
+* Ability to overwright existing files (useful for re-encoding purposes)
+
+<b>Removed/Moved:</b>
+* Advanced options window
+    * These options are moved to main window
+    * CL options are now saved, so it's better to have them in sight
+
+<b>Other:</b>
+* Updated toolset
+* Project is build at VS2022
+
+
+
 ---------------------------------------------------------------------------
 ------                          COPYRIGHT                            ------
 ---------------------------------------------------------------------------
