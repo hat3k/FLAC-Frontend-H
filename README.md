@@ -1,4 +1,4 @@
-![Alt text](https://ptpimg.me/25gayf.png)
+<p align="center"><img src="https://ptpimg.me/25gayf.png"></p>
 
 <b>Changes made compared to original FLAC Fronted 2.1:</b>
 
