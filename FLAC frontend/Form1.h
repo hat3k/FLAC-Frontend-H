@@ -3,8 +3,6 @@
 #include <windows.h>
 #undef GetTempPath
 
-#include "Advanced_options.h"
-
 
 namespace FLACfrontend {
 
@@ -34,14 +32,11 @@ namespace FLACfrontend {
 		Form1(void)
 		{
 			InitializeComponent();
-			this->AdvDialog = (gcnew Advanced_options());
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 			//
 			//TODO: Add the constructor code here
 			//
 		}
-
-	protected:
 
 	private:
 		void Form1_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
@@ -59,8 +54,6 @@ namespace FLACfrontend {
 		}
 
 	private: System::Windows::Forms::ListBox^ lstFiles;
-	protected:
-
 	private: System::Windows::Forms::Button^ btnAdd;
 	private: System::Windows::Forms::Button^ btnRemove;
 	private: System::Windows::Forms::Button^ btnClear;
@@ -103,17 +96,11 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ chkKeepForeign;
 	private: System::Windows::Forms::GroupBox^ gbDecoding;
 	private: System::Windows::Forms::CheckBox^ chkDecodeThroughErrors;
-
-
-
 	private: System::Windows::Forms::Button^ btnHelp;
-
-	private: System::Windows::Forms::Button^ btnAdvanced;
-
-	private: Advanced_options^ AdvDialog;
 	private: System::Windows::Forms::ToolTip^ ttHelp;
 	private: System::Windows::Forms::Button^ btnAbout;
-	private: System::Windows::Forms::GroupBox^ groupBox1;
+	private: System::Windows::Forms::GroupBox^ groupBoxAdditionalOptions;
+
 	private: System::Windows::Forms::TextBox^ textBoxR;
 	private: System::Windows::Forms::TrackBar^ trackBarR;
 	private: System::Windows::Forms::CheckBox^ checkBoxOptionR;
@@ -125,30 +112,39 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ checkBoxOverwrite;
 	private: System::Windows::Forms::CheckBox^ checkBoxOptionE;
 	private: System::Windows::Forms::CheckBox^ checkBoxOptionMT;
-
-
-
-
+	public: System::Windows::Forms::CheckBox^ chkIgnoreChunkSize;
+	private: System::Windows::Forms::GroupBox^ grpbCuesheet;
+	public: System::Windows::Forms::TextBox^ txtCuesheet;
+	private: System::Windows::Forms::Button^ btnCueSheet;
+	private: System::Windows::Forms::GroupBox^ grpbExtraOptions;
+	public: System::Windows::Forms::TextBox^ txtCommandLine;
+	private: System::Windows::Forms::Button^ btnCommandHelp;
+	private: System::Windows::Forms::CheckBox^ checkCuesheet;
+	private: System::Windows::Forms::Button^ buttonClearCuesheet;
+	private: System::Windows::Forms::CheckBox^ checkCommandLine;
+	private: System::Windows::Forms::Button^ buttonClearCommandLine;
+	private: System::Windows::Forms::OpenFileDialog^ openCueSheet;
+	public:
 	private: System::ComponentModel::IContainer^ components;
-
-
-
 
 	private: void SaveSettings(String^ path) {
 		StreamWriter^ writer = gcnew StreamWriter(path);
-		writer->WriteLine(tbLevel->Value.ToString());
-		writer->WriteLine(chkVerify->Checked.ToString());
-		writer->WriteLine(chkReplayGain->Checked.ToString());
+		writer->WriteLine("CompressionLevel: " + tbLevel->Value.ToString());
+		writer->WriteLine("VerifyAfterEncoding: " + chkVerify->Checked.ToString());
+		writer->WriteLine("ReplayGainEnabled: " + chkReplayGain->Checked.ToString());
 
-		writer->WriteLine(checkBoxOptionP->Checked.ToString());
-		writer->WriteLine(checkBoxOptionE->Checked.ToString());
-		writer->WriteLine(checkBoxOptionMT->Checked.ToString());
-		writer->WriteLine(textBoxMT->Text);
-		writer->WriteLine(checkBoxAddPrefix->Checked.ToString());
-		writer->WriteLine(textBoxPrefixUser->Text);
-		writer->WriteLine(checkBoxOptionR->Checked.ToString());
-		writer->WriteLine(trackBarR->Value.ToString());
-		writer->WriteLine(checkBoxNoPadding->Checked.ToString());
+		writer->WriteLine("OptionP: " + checkBoxOptionP->Checked.ToString());
+		writer->WriteLine("OptionE: " + checkBoxOptionE->Checked.ToString());
+		writer->WriteLine("OptionMT: " + checkBoxOptionMT->Checked.ToString());
+		writer->WriteLine("MTThreads: " + textBoxMT->Text);
+		writer->WriteLine("AddPrefix: " + checkBoxAddPrefix->Checked.ToString());
+		writer->WriteLine("PrefixUser: " + textBoxPrefixUser->Text);
+		writer->WriteLine("OptionR: " + checkBoxOptionR->Checked.ToString());
+		writer->WriteLine("RLevel: " + trackBarR->Value.ToString());
+		writer->WriteLine("NoPadding: " + checkBoxNoPadding->Checked.ToString());
+		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
+		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
+		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
 
 		writer->Close();
 	}
@@ -157,24 +153,60 @@ namespace FLACfrontend {
 		if (File::Exists(path)) {
 			StreamReader^ reader = gcnew StreamReader(path);
 
-			tbLevel->Value = Int32::Parse(reader->ReadLine());
-			chkVerify->Checked = Boolean::Parse(reader->ReadLine());
-			chkReplayGain->Checked = Boolean::Parse(reader->ReadLine());
+			while (!reader->EndOfStream) {
+				String^ line = reader->ReadLine();
+				array<String^>^ parts = line->Split(':');
+				if (parts->Length == 2) {
+					String^ key = parts[0]->Trim();
+					String^ value = parts[1]->Trim();
 
-			checkBoxOptionP->Checked = Boolean::Parse(reader->ReadLine());
-			checkBoxOptionE->Checked = Boolean::Parse(reader->ReadLine());
-			checkBoxOptionMT->Checked = Boolean::Parse(reader->ReadLine());
-			textBoxMT->Text = reader->ReadLine();
-			checkBoxAddPrefix->Checked = Boolean::Parse(reader->ReadLine());
-			textBoxPrefixUser->Text = reader->ReadLine();
-			checkBoxOptionR->Checked = Boolean::Parse(reader->ReadLine());
-			trackBarR->Value = Int32::Parse(reader->ReadLine());
-			checkBoxNoPadding->Checked = Boolean::Parse(reader->ReadLine());
-
-
-
-
-
+					if (key == "CompressionLevel") {
+						tbLevel->Value = Int32::Parse(value);
+					}
+					else if (key == "VerifyAfterEncoding") {
+						chkVerify->Checked = Boolean::Parse(value);
+					}
+					else if (key == "ReplayGainEnabled") {
+						chkReplayGain->Checked = Boolean::Parse(value);
+					}
+					else if (key == "OptionP") {
+						checkBoxOptionP->Checked = Boolean::Parse(value);
+					}
+					else if (key == "OptionE") {
+						checkBoxOptionE->Checked = Boolean::Parse(value);
+					}
+					else if (key == "OptionMT") {
+						checkBoxOptionMT->Checked = Boolean::Parse(value);
+					}
+					else if (key == "MTThreads") {
+						textBoxMT->Text = value;
+					}
+					else if (key == "AddPrefix") {
+						checkBoxAddPrefix->Checked = Boolean::Parse(value);
+					}
+					else if (key == "PrefixUser") {
+						textBoxPrefixUser->Text = value;
+					}
+					else if (key == "OptionR") {
+						checkBoxOptionR->Checked = Boolean::Parse(value);
+					}
+					else if (key == "RLevel") {
+						trackBarR->Value = Int32::Parse(value);
+					}
+					else if (key == "NoPadding") {
+						checkBoxNoPadding->Checked = Boolean::Parse(value);
+					}
+					else if (key == "Overwrite") {
+						checkBoxOverwrite->Checked = Boolean::Parse(value);
+					}
+					else if (key == "EnableCommandLine") {
+						checkCommandLine ->Checked = Boolean::Parse(value);
+					}
+					else if (key == "CommandLineOptions") {
+						txtCommandLine->Text = value;
+					}
+				}
+			}
 
 			reader->Close();
 		}
@@ -214,6 +246,7 @@ namespace FLACfrontend {
 			this->btnOutputDirSameAsInput = (gcnew System::Windows::Forms::Button());
 			this->btnSelectDirectory = (gcnew System::Windows::Forms::Button());
 			this->txtOutputDirectory = (gcnew System::Windows::Forms::TextBox());
+			this->checkBoxOverwrite = (gcnew System::Windows::Forms::CheckBox());
 			this->btnEncode = (gcnew System::Windows::Forms::Button());
 			this->btnDecode = (gcnew System::Windows::Forms::Button());
 			this->btnTest = (gcnew System::Windows::Forms::Button());
@@ -226,7 +259,6 @@ namespace FLACfrontend {
 			this->gbDecoding = (gcnew System::Windows::Forms::GroupBox());
 			this->chkDecodeThroughErrors = (gcnew System::Windows::Forms::CheckBox());
 			this->btnHelp = (gcnew System::Windows::Forms::Button());
-			this->btnAdvanced = (gcnew System::Windows::Forms::Button());
 			this->ttHelp = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->btnAbout = (gcnew System::Windows::Forms::Button());
 			this->checkBoxNoPadding = (gcnew System::Windows::Forms::CheckBox());
@@ -234,20 +266,33 @@ namespace FLACfrontend {
 			this->textBoxPrefixUser = (gcnew System::Windows::Forms::TextBox());
 			this->checkBoxOptionP = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxAddPrefix = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBoxOverwrite = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxOptionE = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxOptionMT = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxOptionR = (gcnew System::Windows::Forms::CheckBox());
 			this->textBoxR = (gcnew System::Windows::Forms::TextBox());
 			this->trackBarR = (gcnew System::Windows::Forms::TrackBar());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBoxAdditionalOptions = (gcnew System::Windows::Forms::GroupBox());
+			this->chkIgnoreChunkSize = (gcnew System::Windows::Forms::CheckBox());
+			this->grpbCuesheet = (gcnew System::Windows::Forms::GroupBox());
+			this->buttonClearCuesheet = (gcnew System::Windows::Forms::Button());
+			this->checkCuesheet = (gcnew System::Windows::Forms::CheckBox());
+			this->txtCuesheet = (gcnew System::Windows::Forms::TextBox());
+			this->btnCueSheet = (gcnew System::Windows::Forms::Button());
+			this->grpbExtraOptions = (gcnew System::Windows::Forms::GroupBox());
+			this->buttonClearCommandLine = (gcnew System::Windows::Forms::Button());
+			this->checkCommandLine = (gcnew System::Windows::Forms::CheckBox());
+			this->txtCommandLine = (gcnew System::Windows::Forms::TextBox());
+			this->btnCommandHelp = (gcnew System::Windows::Forms::Button());
+			this->openCueSheet = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->gbEncoding->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->tbLevel))->BeginInit();
 			this->gbOutputDir->SuspendLayout();
 			this->gbGeneral->SuspendLayout();
 			this->gbDecoding->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarR))->BeginInit();
-			this->groupBox1->SuspendLayout();
+			this->groupBoxAdditionalOptions->SuspendLayout();
+			this->grpbCuesheet->SuspendLayout();
+			this->grpbExtraOptions->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// lstFiles
@@ -283,7 +328,7 @@ namespace FLACfrontend {
 			// 
 			// btnClear
 			// 
-			this->btnClear->Location = System::Drawing::Point(412, 72);
+			this->btnClear->Location = System::Drawing::Point(412, 124);
 			this->btnClear->Name = L"btnClear";
 			this->btnClear->Size = System::Drawing::Size(75, 23);
 			this->btnClear->TabIndex = 3;
@@ -391,9 +436,10 @@ namespace FLACfrontend {
 			this->gbOutputDir->Controls->Add(this->btnOutputDirSameAsInput);
 			this->gbOutputDir->Controls->Add(this->btnSelectDirectory);
 			this->gbOutputDir->Controls->Add(this->txtOutputDirectory);
-			this->gbOutputDir->Location = System::Drawing::Point(12, 436);
+			this->gbOutputDir->Controls->Add(this->checkBoxOverwrite);
+			this->gbOutputDir->Location = System::Drawing::Point(12, 558);
 			this->gbOutputDir->Name = L"gbOutputDir";
-			this->gbOutputDir->Size = System::Drawing::Size(469, 53);
+			this->gbOutputDir->Size = System::Drawing::Size(469, 71);
 			this->gbOutputDir->TabIndex = 5;
 			this->gbOutputDir->TabStop = false;
 			this->gbOutputDir->Text = L"Output directory (only for encoding and decoding)";
@@ -429,9 +475,21 @@ namespace FLACfrontend {
 			this->txtOutputDirectory->TabIndex = 0;
 			this->txtOutputDirectory->Text = L"<< Same as input directory >>";
 			// 
+			// checkBoxOverwrite
+			// 
+			this->checkBoxOverwrite->AutoSize = true;
+			this->checkBoxOverwrite->Location = System::Drawing::Point(13, 48);
+			this->checkBoxOverwrite->Name = L"checkBoxOverwrite";
+			this->checkBoxOverwrite->Size = System::Drawing::Size(163, 17);
+			this->checkBoxOverwrite->TabIndex = 19;
+			this->checkBoxOverwrite->Text = L"Overwrite existing output files";
+			this->ttHelp->SetToolTip(this->checkBoxOverwrite, L"-f, --force\r\nForce overwriting of output files.\r\nWarning! No confirmation!");
+			this->checkBoxOverwrite->UseVisualStyleBackColor = true;
+			this->checkBoxOverwrite->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOverwrite_CheckedChanged);
+			// 
 			// btnEncode
 			// 
-			this->btnEncode->Location = System::Drawing::Point(12, 495);
+			this->btnEncode->Location = System::Drawing::Point(12, 635);
 			this->btnEncode->Name = L"btnEncode";
 			this->btnEncode->Size = System::Drawing::Size(75, 23);
 			this->btnEncode->TabIndex = 6;
@@ -442,7 +500,7 @@ namespace FLACfrontend {
 			// 
 			// btnDecode
 			// 
-			this->btnDecode->Location = System::Drawing::Point(107, 495);
+			this->btnDecode->Location = System::Drawing::Point(107, 635);
 			this->btnDecode->Name = L"btnDecode";
 			this->btnDecode->Size = System::Drawing::Size(75, 23);
 			this->btnDecode->TabIndex = 7;
@@ -453,7 +511,7 @@ namespace FLACfrontend {
 			// 
 			// btnTest
 			// 
-			this->btnTest->Location = System::Drawing::Point(201, 495);
+			this->btnTest->Location = System::Drawing::Point(201, 635);
 			this->btnTest->Name = L"btnTest";
 			this->btnTest->Size = System::Drawing::Size(90, 23);
 			this->btnTest->TabIndex = 8;
@@ -464,7 +522,7 @@ namespace FLACfrontend {
 			// 
 			// btnFingerprint
 			// 
-			this->btnFingerprint->Location = System::Drawing::Point(311, 495);
+			this->btnFingerprint->Location = System::Drawing::Point(311, 635);
 			this->btnFingerprint->Name = L"btnFingerprint";
 			this->btnFingerprint->Size = System::Drawing::Size(75, 23);
 			this->btnFingerprint->TabIndex = 9;
@@ -475,7 +533,7 @@ namespace FLACfrontend {
 			// 
 			// btnExit
 			// 
-			this->btnExit->Location = System::Drawing::Point(406, 495);
+			this->btnExit->Location = System::Drawing::Point(406, 635);
 			this->btnExit->Name = L"btnExit";
 			this->btnExit->Size = System::Drawing::Size(75, 23);
 			this->btnExit->TabIndex = 10;
@@ -563,17 +621,6 @@ namespace FLACfrontend {
 			this->btnHelp->UseVisualStyleBackColor = true;
 			this->btnHelp->Click += gcnew System::EventHandler(this, &Form1::btnHelp_Click);
 			// 
-			// btnAdvanced
-			// 
-			this->btnAdvanced->Location = System::Drawing::Point(411, 167);
-			this->btnAdvanced->Name = L"btnAdvanced";
-			this->btnAdvanced->Size = System::Drawing::Size(75, 23);
-			this->btnAdvanced->TabIndex = 14;
-			this->btnAdvanced->Text = L"Ad&vanced";
-			this->ttHelp->SetToolTip(this->btnAdvanced, L"See advanced options");
-			this->btnAdvanced->UseVisualStyleBackColor = true;
-			this->btnAdvanced->Click += gcnew System::EventHandler(this, &Form1::btnAdvanced_Click);
-			// 
 			// btnAbout
 			// 
 			this->btnAbout->Location = System::Drawing::Point(412, 263);
@@ -648,18 +695,6 @@ namespace FLACfrontend {
 			this->checkBoxAddPrefix->UseVisualStyleBackColor = true;
 			this->checkBoxAddPrefix->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxAddPrefix_CheckedChanged);
 			// 
-			// checkBoxOverwrite
-			// 
-			this->checkBoxOverwrite->AutoSize = true;
-			this->checkBoxOverwrite->Location = System::Drawing::Point(13, 112);
-			this->checkBoxOverwrite->Name = L"checkBoxOverwrite";
-			this->checkBoxOverwrite->Size = System::Drawing::Size(163, 17);
-			this->checkBoxOverwrite->TabIndex = 19;
-			this->checkBoxOverwrite->Text = L"Overwrite existing output files";
-			this->ttHelp->SetToolTip(this->checkBoxOverwrite, L"-f, --force\r\nForce overwriting of output files.\r\nWarning! No confirmation!");
-			this->checkBoxOverwrite->UseVisualStyleBackColor = true;
-			this->checkBoxOverwrite->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOverwrite_CheckedChanged);
-			// 
 			// checkBoxOptionE
 			// 
 			this->checkBoxOptionE->AutoSize = true;
@@ -697,8 +732,7 @@ namespace FLACfrontend {
 			this->checkBoxOptionR->Size = System::Drawing::Size(79, 17);
 			this->checkBoxOptionR->TabIndex = 24;
 			this->checkBoxOptionR->Text = L"Option \"-r\":";
-			this->ttHelp->SetToolTip(this->checkBoxOptionR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
-				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
+			this->ttHelp->SetToolTip(this->checkBoxOptionR, resources->GetString(L"checkBoxOptionR.ToolTip"));
 			this->checkBoxOptionR->UseVisualStyleBackColor = true;
 			this->checkBoxOptionR->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionR_CheckedChanged);
 			// 
@@ -712,8 +746,7 @@ namespace FLACfrontend {
 			this->textBoxR->TabIndex = 26;
 			this->textBoxR->Text = L"8";
 			this->textBoxR->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->ttHelp->SetToolTip(this->textBoxR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
-				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
+			this->ttHelp->SetToolTip(this->textBoxR, resources->GetString(L"textBoxR.ToolTip"));
 			// 
 			// trackBarR
 			// 
@@ -723,40 +756,156 @@ namespace FLACfrontend {
 			this->trackBarR->Name = L"trackBarR";
 			this->trackBarR->Size = System::Drawing::Size(119, 45);
 			this->trackBarR->TabIndex = 25;
-			this->ttHelp->SetToolTip(this->trackBarR, L"-r [#,]#, --rice-partition-order=[#,]#\r\nSet the [min,]max residual partition orde"
-				L"r (0..15).\r\nmin defaults to 0 if unspecified. Default is -r 5.");
+			this->ttHelp->SetToolTip(this->trackBarR, resources->GetString(L"trackBarR.ToolTip"));
 			this->trackBarR->Value = 8;
 			this->trackBarR->ValueChanged += gcnew System::EventHandler(this, &Form1::trackBarR_ValueChanged);
 			// 
-			// groupBox1
+			// groupBoxAdditionalOptions
 			// 
-			this->groupBox1->Controls->Add(this->textBoxR);
-			this->groupBox1->Controls->Add(this->trackBarR);
-			this->groupBox1->Controls->Add(this->checkBoxOptionR);
-			this->groupBox1->Controls->Add(this->checkBoxNoPadding);
-			this->groupBox1->Controls->Add(this->textBoxMT);
-			this->groupBox1->Controls->Add(this->textBoxPrefixUser);
-			this->groupBox1->Controls->Add(this->checkBoxOptionP);
-			this->groupBox1->Controls->Add(this->checkBoxAddPrefix);
-			this->groupBox1->Controls->Add(this->checkBoxOverwrite);
-			this->groupBox1->Controls->Add(this->checkBoxOptionE);
-			this->groupBox1->Controls->Add(this->checkBoxOptionMT);
-			this->groupBox1->Location = System::Drawing::Point(12, 292);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(469, 138);
-			this->groupBox1->TabIndex = 23;
-			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Additional options";
+			this->groupBoxAdditionalOptions->Controls->Add(this->chkIgnoreChunkSize);
+			this->groupBoxAdditionalOptions->Controls->Add(this->textBoxR);
+			this->groupBoxAdditionalOptions->Controls->Add(this->trackBarR);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxOptionR);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxNoPadding);
+			this->groupBoxAdditionalOptions->Controls->Add(this->textBoxMT);
+			this->groupBoxAdditionalOptions->Controls->Add(this->textBoxPrefixUser);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxOptionP);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxAddPrefix);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxOptionE);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxOptionMT);
+			this->groupBoxAdditionalOptions->Location = System::Drawing::Point(12, 292);
+			this->groupBoxAdditionalOptions->Name = L"groupBoxAdditionalOptions";
+			this->groupBoxAdditionalOptions->Size = System::Drawing::Size(469, 138);
+			this->groupBoxAdditionalOptions->TabIndex = 23;
+			this->groupBoxAdditionalOptions->TabStop = false;
+			this->groupBoxAdditionalOptions->Text = L"Additional options";
+			// 
+			// chkIgnoreChunkSize
+			// 
+			this->chkIgnoreChunkSize->AutoSize = true;
+			this->chkIgnoreChunkSize->Location = System::Drawing::Point(13, 112);
+			this->chkIgnoreChunkSize->Name = L"chkIgnoreChunkSize";
+			this->chkIgnoreChunkSize->Size = System::Drawing::Size(286, 17);
+			this->chkIgnoreChunkSize->TabIndex = 26;
+			this->chkIgnoreChunkSize->Text = L"Ignore WAVE filesize (for files > 4GB, use with caution!)";
+			this->chkIgnoreChunkSize->UseVisualStyleBackColor = true;
+			// 
+			// grpbCuesheet
+			// 
+			this->grpbCuesheet->Controls->Add(this->buttonClearCuesheet);
+			this->grpbCuesheet->Controls->Add(this->checkCuesheet);
+			this->grpbCuesheet->Controls->Add(this->txtCuesheet);
+			this->grpbCuesheet->Controls->Add(this->btnCueSheet);
+			this->grpbCuesheet->Location = System::Drawing::Point(12, 498);
+			this->grpbCuesheet->Name = L"grpbCuesheet";
+			this->grpbCuesheet->Size = System::Drawing::Size(469, 54);
+			this->grpbCuesheet->TabIndex = 25;
+			this->grpbCuesheet->TabStop = false;
+			this->grpbCuesheet->Text = L"Embed cuesheet (only for encoding)";
+			// 
+			// buttonClearCuesheet
+			// 
+			this->buttonClearCuesheet->Location = System::Drawing::Point(346, 19);
+			this->buttonClearCuesheet->Name = L"buttonClearCuesheet";
+			this->buttonClearCuesheet->Size = System::Drawing::Size(48, 22);
+			this->buttonClearCuesheet->TabIndex = 3;
+			this->buttonClearCuesheet->Text = L"Clear";
+			this->buttonClearCuesheet->UseVisualStyleBackColor = true;
+			this->buttonClearCuesheet->Click += gcnew System::EventHandler(this, &Form1::buttonClearCuesheet_Click);
+			// 
+			// checkCuesheet
+			// 
+			this->checkCuesheet->AutoSize = true;
+			this->checkCuesheet->Location = System::Drawing::Point(13, 22);
+			this->checkCuesheet->Name = L"checkCuesheet";
+			this->checkCuesheet->Size = System::Drawing::Size(59, 17);
+			this->checkCuesheet->TabIndex = 2;
+			this->checkCuesheet->Text = L"Enable";
+			this->checkCuesheet->UseVisualStyleBackColor = true;
+			this->checkCuesheet->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkCuesheet_CheckedChanged);
+			// 
+			// txtCuesheet
+			// 
+			this->txtCuesheet->Location = System::Drawing::Point(78, 20);
+			this->txtCuesheet->Name = L"txtCuesheet";
+			this->txtCuesheet->Size = System::Drawing::Size(262, 20);
+			this->txtCuesheet->TabIndex = 1;
+			// 
+			// btnCueSheet
+			// 
+			this->btnCueSheet->Location = System::Drawing::Point(400, 19);
+			this->btnCueSheet->Name = L"btnCueSheet";
+			this->btnCueSheet->Size = System::Drawing::Size(58, 22);
+			this->btnCueSheet->TabIndex = 0;
+			this->btnCueSheet->Text = L"Select";
+			this->btnCueSheet->UseVisualStyleBackColor = true;
+			this->btnCueSheet->Click += gcnew System::EventHandler(this, &Form1::btnCueSheet_Click);
+			// 
+			// grpbExtraOptions
+			// 
+			this->grpbExtraOptions->Controls->Add(this->buttonClearCommandLine);
+			this->grpbExtraOptions->Controls->Add(this->checkCommandLine);
+			this->grpbExtraOptions->Controls->Add(this->txtCommandLine);
+			this->grpbExtraOptions->Controls->Add(this->btnCommandHelp);
+			this->grpbExtraOptions->Location = System::Drawing::Point(12, 436);
+			this->grpbExtraOptions->Name = L"grpbExtraOptions";
+			this->grpbExtraOptions->Size = System::Drawing::Size(469, 56);
+			this->grpbExtraOptions->TabIndex = 24;
+			this->grpbExtraOptions->TabStop = false;
+			this->grpbExtraOptions->Text = L"Extra command line options";
+			// 
+			// buttonClearCommandLine
+			// 
+			this->buttonClearCommandLine->Location = System::Drawing::Point(346, 20);
+			this->buttonClearCommandLine->Name = L"buttonClearCommandLine";
+			this->buttonClearCommandLine->Size = System::Drawing::Size(48, 22);
+			this->buttonClearCommandLine->TabIndex = 3;
+			this->buttonClearCommandLine->Text = L"Clear";
+			this->buttonClearCommandLine->UseVisualStyleBackColor = true;
+			this->buttonClearCommandLine->Click += gcnew System::EventHandler(this, &Form1::buttonClearCommandLine_Click);
+			// 
+			// checkCommandLine
+			// 
+			this->checkCommandLine->AutoSize = true;
+			this->checkCommandLine->Location = System::Drawing::Point(13, 23);
+			this->checkCommandLine->Name = L"checkCommandLine";
+			this->checkCommandLine->Size = System::Drawing::Size(59, 17);
+			this->checkCommandLine->TabIndex = 2;
+			this->checkCommandLine->Text = L"Enable";
+			this->checkCommandLine->UseVisualStyleBackColor = true;
+			this->checkCommandLine->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkCommandLine_CheckedChanged);
+			// 
+			// txtCommandLine
+			// 
+			this->txtCommandLine->Location = System::Drawing::Point(78, 21);
+			this->txtCommandLine->Name = L"txtCommandLine";
+			this->txtCommandLine->Size = System::Drawing::Size(262, 20);
+			this->txtCommandLine->TabIndex = 1;
+			// 
+			// btnCommandHelp
+			// 
+			this->btnCommandHelp->Location = System::Drawing::Point(400, 20);
+			this->btnCommandHelp->Name = L"btnCommandHelp";
+			this->btnCommandHelp->Size = System::Drawing::Size(58, 22);
+			this->btnCommandHelp->TabIndex = 0;
+			this->btnCommandHelp->Text = L"See help";
+			this->btnCommandHelp->UseVisualStyleBackColor = true;
+			this->btnCommandHelp->Click += gcnew System::EventHandler(this, &Form1::btnCommandHelp_Click);
+			// 
+			// openCueSheet
+			// 
+			this->openCueSheet->Filter = L"Cuesheet|*.cue";
 			// 
 			// Form1
 			// 
 			this->AllowDrop = true;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(493, 528);
-			this->Controls->Add(this->groupBox1);
+			this->ClientSize = System::Drawing::Size(493, 668);
+			this->Controls->Add(this->grpbCuesheet);
+			this->Controls->Add(this->grpbExtraOptions);
+			this->Controls->Add(this->groupBoxAdditionalOptions);
 			this->Controls->Add(this->btnAbout);
-			this->Controls->Add(this->btnAdvanced);
 			this->Controls->Add(this->btnHelp);
 			this->Controls->Add(this->gbDecoding);
 			this->Controls->Add(this->gbGeneral);
@@ -789,13 +938,71 @@ namespace FLACfrontend {
 			this->gbDecoding->ResumeLayout(false);
 			this->gbDecoding->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarR))->EndInit();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
+			this->groupBoxAdditionalOptions->ResumeLayout(false);
+			this->groupBoxAdditionalOptions->PerformLayout();
+			this->grpbCuesheet->ResumeLayout(false);
+			this->grpbCuesheet->PerformLayout();
+			this->grpbExtraOptions->ResumeLayout(false);
+			this->grpbExtraOptions->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
+	private: System::String^ GetFlacVersion() {
+		Process^ p = gcnew Process();
+		p->StartInfo->FileName = "tools/flac.exe";
+		p->StartInfo->Arguments = "--version";
+		p->StartInfo->UseShellExecute = false;
+		p->StartInfo->RedirectStandardOutput = true;
+		p->StartInfo->CreateNoWindow = true;
+		p->Start();
+		String^ output = p->StandardOutput->ReadToEnd();
+		p->WaitForExit();
+		return output->Trim();
+}
+	private: System::Void checkCommandLine_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtCommandLine->Enabled = checkCommandLine->Checked;
+		buttonClearCommandLine->Enabled = checkCommandLine->Checked;
+		btnCommandHelp->Enabled = checkCommandLine->Checked;
+}
+private: System::Void buttonClearCommandLine_Click(System::Object^ sender, System::EventArgs^ e) {
+	txtCommandLine->Clear();
+}
+private: System::Void btnCommandHelp_Click(System::Object^ sender, System::EventArgs^ e) {
+	COORD c;
 
+	FreeConsole();
+	AllocConsole();
+	c.X = 80; c.Y = 600;
+	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+
+	Process^ p = gcnew Process();
+	p->StartInfo->FileName = "tools/flac.exe";
+	p->StartInfo->UseShellExecute = false;
+	p->StartInfo->Arguments = "-h";
+	p->Start();
+	p->WaitForExit();
+
+	// Add pause to let console window stay 
+	p->StartInfo->FileName = "cmd";
+	p->StartInfo->Arguments = "/c PAUSE";
+	p->Start();
+	p->WaitForExit();
+
+	FreeConsole();
+}
+	private: System::Void checkCuesheet_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtCuesheet->Enabled = checkCuesheet->Checked;
+		buttonClearCuesheet->Enabled = checkCuesheet->Checked;
+		btnCueSheet->Enabled = checkCuesheet->Checked;
+}
+private: System::Void buttonClearCuesheet_Click(System::Object^ sender, System::EventArgs^ e) {
+	txtCuesheet->Clear();
+}
+private: System::Void btnCueSheet_Click(System::Object^ sender, System::EventArgs^ e) {
+	openCueSheet->ShowDialog();
+	txtCuesheet->Text = openCueSheet->FileName;
+}
 		// -------------------------------//
 		// --- Right column of buttons --- //
 		// -------------------------------//
@@ -816,17 +1023,17 @@ namespace FLACfrontend {
 		lstFiles->Items->Remove(lstFiles->SelectedItem);
 	}
 
-	private: System::Void btnAdvanced_Click(System::Object^ sender, System::EventArgs^ e) {
-		AdvDialog->ShowDialog();
-	}
-
 	private: System::Void btnHelp_Click(System::Object^ sender, System::EventArgs^ e) {
 		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
 	}
 
 	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("FLAC Frontend-H v2.1 build 20241123.1933, using FLAC 1.4.3", "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
-	}
+		String^ flacVersion = GetFlacVersion();
+		MessageBox::Show("FLAC Frontend-H v2.1 build 20241125.1\n\nUsing FLAC version: " + flacVersion,
+		"FLAC Frontend version info",
+		MessageBoxButtons::OK,
+		MessageBoxIcon::Information);
+}
 
 		   // ----------------------------------//
 		   // --- Setting fields interaction --- //
@@ -891,24 +1098,22 @@ namespace FLACfrontend {
 		}
 
 		// Retrieve settings and transform to command-line options
-		args += "-" + tbLevel->Value.ToString() + " ";
-		if (chkVerify->Checked == true)		    args += "-V ";
-		if (checkBoxOptionE->Checked == true)	args += "-e ";
-		if (checkBoxOptionP->Checked == true)	args += "-p ";
-		if (checkBoxNoPadding->Checked == true)	args += "--no-padding ";
-		if (checkBoxOverwrite->Checked == true)	args += "-f ";
-		if (checkBoxOptionMT->Checked == true)	args += "-j" + textBoxMT->Text + " ";
-		if (checkBoxOptionR->Checked == true)	args += "-r" + textBoxR->Text + " ";
-		if (checkBoxAddPrefix->Checked == true)	args += "--output-prefix=" + textBoxPrefixUser->Text;
-		if (chkDeleteInput->Checked == true)	args += "--delete-input-file ";
-		if (chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
-		if (chkOggFlac->Checked == true) { args += "--ogg "; ext = ".oga"; }
-		if (AdvDialog->chkIgnoreChunkSize->Checked == true)	    args += "--ignore-chunk-sizes ";
-		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false)
-			args += "--replay-gain ";
-		if (!String::IsNullOrEmpty(AdvDialog->txtCuesheet->Text))
-			args += "--cuesheet \"" + AdvDialog->txtCuesheet->Text + "\" ";
-		args += AdvDialog->txtCommandLine->Text + " ";
+																								args += "-" + tbLevel->Value.ToString() + " ";
+		if (chkVerify->Checked == true)															args += "-V ";
+		if (checkBoxOptionE->Checked == true)													args += "-e ";
+		if (checkBoxOptionP->Checked == true)													args += "-p ";
+		if (checkBoxNoPadding->Checked == true)													args += "--no-padding ";
+		if (checkBoxOverwrite->Checked == true)													args += "-f ";
+		if (checkBoxOptionMT->Checked == true)													args += "-j" + textBoxMT->Text + " ";
+		if (checkBoxOptionR->Checked == true)													args += "-r" + textBoxR->Text + " ";
+		if (checkBoxAddPrefix->Checked == true)													args += "--output-prefix=" + textBoxPrefixUser->Text + " ";
+		if (chkDeleteInput->Checked == true)													args += "--delete-input-file ";
+		if (chkKeepForeign->Checked == true)													args += "--keep-foreign-metadata ";
+		if (chkOggFlac->Checked == true)													  { args += "--ogg "; ext = ".oga"; }
+		if (chkIgnoreChunkSize->Checked == true)												args += "--ignore-chunk-sizes ";
+		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false)				args += "--replay-gain ";
+		if (checkCuesheet->Checked == true && !String::IsNullOrEmpty(txtCuesheet->Text))		args += "--cuesheet \"" + txtCuesheet->Text + "\" ";
+		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text))	args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate proces
 		FreeConsole();
@@ -1008,12 +1213,12 @@ namespace FLACfrontend {
 		int i;
 
 		// Retrieve settings
-		if (chkDeleteInput->Checked == true)	args += "--delete-input-file ";
-		if (chkKeepForeign->Checked == true)	args += "--keep-foreign-metadata ";
-		if (chkOggFlac->Checked == true)	    args += "--ogg ";
-		if (chkDecodeThroughErrors->Checked == true)	    args += "-F ";
-
-		args += AdvDialog->txtCommandLine->Text + " ";
+		if (chkDeleteInput->Checked == true)													args += "--delete-input-file ";
+		if (chkKeepForeign->Checked == true)													args += "--keep-foreign-metadata ";
+		if (chkOggFlac->Checked == true)														args += "--ogg ";
+		if (chkDecodeThroughErrors->Checked == true)											args += "-F ";
+		if (checkBoxOverwrite->Checked == true)													args += "-f ";
+		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text))	args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate proces
 		FreeConsole();
@@ -1192,6 +1397,11 @@ namespace FLACfrontend {
 	}
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 		LoadSettings("settings.txt");
+		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
+		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
+
+
+
 
 		//			 if(!(File::Exists("tools/flac.exe"))){
 		//				 MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
@@ -1250,7 +1460,7 @@ namespace FLACfrontend {
 	}
 	private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+};
 
 	public ref class Settings {
 	public:
@@ -1269,6 +1479,9 @@ namespace FLACfrontend {
 		bool optionR;
 		int optionRValue;
 		bool noPadding;
+		bool overwrite;
+		bool enableCommandLine;
+		String^ commandLineOptions;
 
 	};
 }

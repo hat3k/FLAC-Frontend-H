@@ -126,6 +126,9 @@
   <metadata name="dlgOutputDirectory.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 17</value>
   </metadata>
+  <metadata name="ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>285, 17</value>
+  </metadata>
   <data name="textBoxPrefixUser.ToolTip" xml:space="preserve">
     <value>--output-prefix=STRING
 Prefix each output file name with the given
@@ -146,6 +149,36 @@ with a '/' slash.
 Note!
 Do not use spaces here.</value>
   </data>
+  <data name="checkBoxOptionR.ToolTip" xml:space="preserve">
+    <value>-r [#,]#, --rice-partition-order=[#,]#
+Set the [min,]max residual partition order (0..15).
+min defaults to 0 if unspecified. Default is -r 5.
+
+If you want to use this setting &gt;8 disable this
+option and set this in command line options.
+But -r9 and higher is out of subset.</value>
+  </data>
+  <data name="textBoxR.ToolTip" xml:space="preserve">
+    <value>-r [#,]#, --rice-partition-order=[#,]#
+Set the [min,]max residual partition order (0..15).
+min defaults to 0 if unspecified. Default is -r 5.
+
+If you want to use this setting &gt;8 disable this
+option and set this in command line options.
+But -r9 and higher is out of subset.</value>
+  </data>
+  <data name="trackBarR.ToolTip" xml:space="preserve">
+    <value>-r [#,]#, --rice-partition-order=[#,]#
+Set the [min,]max residual partition order (0..15).
+min defaults to 0 if unspecified. Default is -r 5.
+
+If you want to use this setting &gt;8 disable this
+option and set this in command line options.
+But -r9 and higher is out of subset.</value>
+  </data>
+  <metadata name="openCueSheet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>372, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
