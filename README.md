@@ -1,19 +1,19 @@
 <p align="center"><img src="https://ptpimg.me/25gayf.png"></p>
 
-<b>Changes made compared to original FLAC Fronted 2.1:</b>
+<b>Changes made compared to original FLAC Frontend 2.1:</b>
 
 <b>Added:</b>
 * Latest flac.exe and metaflac.exe
-    * This builds may have some bugs
+    * These builds may have some bugs
     * You may use any build you want, but be aware that multithreading was implemented for latest v.1.4.3 builds (not for 1.4.3 release)
-    * To use your builds copy flac.exe and metaflac.exe to "tools" foder
+    * To use your builds, copy flac.exe and metaflac.exe to "tools" folder
     * FLAC build version is shown in "About" form
 * Additional compression options
 * Multithreading option
 * Ability to autosave some settings
     * Settings like "-p", "-e" or command line options are autosaved on app close
     * They are stored in a "settings.txt"  
-* Ability to overwright existing files (useful for re-encoding purposes)
+* Ability to overwrite existing files (useful for re-encoding purposes)
 
 <b>Removed/Moved:</b>
 * Advanced options window
@@ -22,7 +22,8 @@
 
 <b>Other:</b>
 * Updated toolset
-* Project is build at VS2022
+* Project is built at VS2022
+
 
 ![GitHub all releases](https://img.shields.io/github/downloads/hat3k/FLAC-Frontend-H/total)
 
