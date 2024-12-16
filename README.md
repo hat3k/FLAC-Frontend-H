@@ -24,7 +24,7 @@
 * Updated toolset
 * Project is build at VS2022
 
-
+![GitHub all releases](https://img.shields.io/github/downloads/hat3k/FLAC-Frontend-H/total)
 
 ---------------------------------------------------------------------------
 ------                          COPYRIGHT                            ------
