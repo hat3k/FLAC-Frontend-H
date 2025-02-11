@@ -3,9 +3,8 @@
 <b>Changes made compared to original FLAC Frontend 2.1:</b>
 
 <b>Added:</b>
-* Latest flac.exe and metaflac.exe
-    * These builds may have some bugs
-    * You may use any build you want, but be aware that multithreading was implemented for latest v.1.4.3 builds (not for 1.4.3 release)
+* Versions of flac.exe and metaflac.exe are 1.5.0
+    * You may use any build starting version 1.5.0
     * To use your builds, copy flac.exe and metaflac.exe to "tools" folder
     * FLAC build version is shown in "About" form
 * Additional compression options
