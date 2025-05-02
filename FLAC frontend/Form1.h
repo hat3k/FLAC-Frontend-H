@@ -1029,7 +1029,7 @@ namespace FLACfrontend {
 
 	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ flacVersion = GetFlacVersion();
-		MessageBox::Show("FLAC Frontend-H v2.1 build 20250211\n\nUsing FLAC version: " + flacVersion,
+		MessageBox::Show("FLAC Frontend-H v2.1 build 20250502\n\nUsing FLAC version: " + flacVersion,
 			"FLAC Frontend version info",
 			MessageBoxButtons::OK,
 			MessageBoxIcon::Information);
@@ -1399,18 +1399,15 @@ namespace FLACfrontend {
 		LoadSettings("settings.txt");
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
-
-
-
-
-		//			 if(!(File::Exists("tools/flac.exe"))){
-		//				 MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-		//				 exit(1);
-		//			 }
-		//			 if(!(File::Exists("tools/metaflac.exe"))){
-		//				 MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","metaflac not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-		//				 exit(1);
-		//			 }
+		
+		if(!(File::Exists("tools/flac.exe")))
+		{MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
+		// exit(1);
+		}
+		if(!(File::Exists("tools/metaflac.exe")))
+		{MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","metaflac not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
+		// exit(1);
+		}
 	}
 	private: System::Void checkBoxOptionP_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
