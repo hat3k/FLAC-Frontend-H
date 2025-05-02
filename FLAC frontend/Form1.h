@@ -1396,6 +1396,7 @@ namespace FLACfrontend {
 		}
 	}
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+		Environment::CurrentDirectory = Application::StartupPath;
 		LoadSettings("settings.txt");
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
