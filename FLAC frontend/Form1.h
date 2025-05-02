@@ -368,7 +368,7 @@ namespace FLACfrontend {
 			this->chkReplayGainAlbum->Size = System::Drawing::Size(164, 17);
 			this->chkReplayGainAlbum->TabIndex = 5;
 			this->chkReplayGainAlbum->Text = L"Treat input files as one album";
-			this->ttHelp->SetToolTip(this->chkReplayGainAlbum, L"If set, all input files will be treated");
+			this->ttHelp->SetToolTip(this->chkReplayGainAlbum, L"If set, all input files will be treated as one album");
 			this->chkReplayGainAlbum->UseVisualStyleBackColor = true;
 			// 
 			// chkReplayGain
@@ -437,7 +437,7 @@ namespace FLACfrontend {
 			this->gbOutputDir->Controls->Add(this->btnSelectDirectory);
 			this->gbOutputDir->Controls->Add(this->txtOutputDirectory);
 			this->gbOutputDir->Controls->Add(this->checkBoxOverwrite);
-			this->gbOutputDir->Location = System::Drawing::Point(12, 558);
+			this->gbOutputDir->Location = System::Drawing::Point(12, 556);
 			this->gbOutputDir->Name = L"gbOutputDir";
 			this->gbOutputDir->Size = System::Drawing::Size(469, 71);
 			this->gbOutputDir->TabIndex = 5;
@@ -489,7 +489,7 @@ namespace FLACfrontend {
 			// 
 			// btnEncode
 			// 
-			this->btnEncode->Location = System::Drawing::Point(12, 635);
+			this->btnEncode->Location = System::Drawing::Point(12, 633);
 			this->btnEncode->Name = L"btnEncode";
 			this->btnEncode->Size = System::Drawing::Size(75, 23);
 			this->btnEncode->TabIndex = 6;
@@ -500,7 +500,7 @@ namespace FLACfrontend {
 			// 
 			// btnDecode
 			// 
-			this->btnDecode->Location = System::Drawing::Point(107, 635);
+			this->btnDecode->Location = System::Drawing::Point(107, 633);
 			this->btnDecode->Name = L"btnDecode";
 			this->btnDecode->Size = System::Drawing::Size(75, 23);
 			this->btnDecode->TabIndex = 7;
@@ -511,7 +511,7 @@ namespace FLACfrontend {
 			// 
 			// btnTest
 			// 
-			this->btnTest->Location = System::Drawing::Point(201, 635);
+			this->btnTest->Location = System::Drawing::Point(201, 633);
 			this->btnTest->Name = L"btnTest";
 			this->btnTest->Size = System::Drawing::Size(90, 23);
 			this->btnTest->TabIndex = 8;
@@ -522,7 +522,7 @@ namespace FLACfrontend {
 			// 
 			// btnFingerprint
 			// 
-			this->btnFingerprint->Location = System::Drawing::Point(311, 635);
+			this->btnFingerprint->Location = System::Drawing::Point(311, 633);
 			this->btnFingerprint->Name = L"btnFingerprint";
 			this->btnFingerprint->Size = System::Drawing::Size(75, 23);
 			this->btnFingerprint->TabIndex = 9;
@@ -533,7 +533,7 @@ namespace FLACfrontend {
 			// 
 			// btnExit
 			// 
-			this->btnExit->Location = System::Drawing::Point(406, 635);
+			this->btnExit->Location = System::Drawing::Point(406, 633);
 			this->btnExit->Name = L"btnExit";
 			this->btnExit->Size = System::Drawing::Size(75, 23);
 			this->btnExit->TabIndex = 10;
@@ -586,7 +586,7 @@ namespace FLACfrontend {
 			this->chkDeleteInput->Size = System::Drawing::Size(104, 17);
 			this->chkDeleteInput->TabIndex = 0;
 			this->chkDeleteInput->Text = L"Delete input files";
-			this->ttHelp->SetToolTip(this->chkDeleteInput, L"Delete the input files after a succesful encode or decode operation");
+			this->ttHelp->SetToolTip(this->chkDeleteInput, L"Delete the input files after a successful encode or decode operation");
 			this->chkDeleteInput->UseVisualStyleBackColor = true;
 			// 
 			// gbDecoding
@@ -654,8 +654,8 @@ namespace FLACfrontend {
 			this->textBoxMT->TabIndex = 22;
 			this->textBoxMT->Text = L"1";
 			this->textBoxMT->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->ttHelp->SetToolTip(this->textBoxMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with lat"
-				L"est builds of flac.exe\r\nfrom https://github.com/xiph/flac/actions");
+			this->ttHelp->SetToolTip(this->textBoxMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with FLA"
+				L"C version 1.5.0 or higher.");
 			this->textBoxMT->TextChanged += gcnew System::EventHandler(this, &Form1::textBoxMT_TextChanged);
 			// 
 			// textBoxPrefixUser
@@ -796,7 +796,7 @@ namespace FLACfrontend {
 			this->grpbCuesheet->Controls->Add(this->checkCuesheet);
 			this->grpbCuesheet->Controls->Add(this->txtCuesheet);
 			this->grpbCuesheet->Controls->Add(this->btnCueSheet);
-			this->grpbCuesheet->Location = System::Drawing::Point(12, 498);
+			this->grpbCuesheet->Location = System::Drawing::Point(12, 496);
 			this->grpbCuesheet->Name = L"grpbCuesheet";
 			this->grpbCuesheet->Size = System::Drawing::Size(469, 54);
 			this->grpbCuesheet->TabIndex = 25;
@@ -835,7 +835,7 @@ namespace FLACfrontend {
 			// 
 			this->btnCueSheet->Location = System::Drawing::Point(400, 19);
 			this->btnCueSheet->Name = L"btnCueSheet";
-			this->btnCueSheet->Size = System::Drawing::Size(58, 22);
+			this->btnCueSheet->Size = System::Drawing::Size(60, 22);
 			this->btnCueSheet->TabIndex = 0;
 			this->btnCueSheet->Text = L"Select";
 			this->btnCueSheet->UseVisualStyleBackColor = true;
@@ -849,14 +849,14 @@ namespace FLACfrontend {
 			this->grpbExtraOptions->Controls->Add(this->btnCommandHelp);
 			this->grpbExtraOptions->Location = System::Drawing::Point(12, 436);
 			this->grpbExtraOptions->Name = L"grpbExtraOptions";
-			this->grpbExtraOptions->Size = System::Drawing::Size(469, 56);
+			this->grpbExtraOptions->Size = System::Drawing::Size(469, 54);
 			this->grpbExtraOptions->TabIndex = 24;
 			this->grpbExtraOptions->TabStop = false;
 			this->grpbExtraOptions->Text = L"Extra command line options";
 			// 
 			// buttonClearCommandLine
 			// 
-			this->buttonClearCommandLine->Location = System::Drawing::Point(346, 20);
+			this->buttonClearCommandLine->Location = System::Drawing::Point(346, 19);
 			this->buttonClearCommandLine->Name = L"buttonClearCommandLine";
 			this->buttonClearCommandLine->Size = System::Drawing::Size(48, 22);
 			this->buttonClearCommandLine->TabIndex = 3;
@@ -867,7 +867,7 @@ namespace FLACfrontend {
 			// checkCommandLine
 			// 
 			this->checkCommandLine->AutoSize = true;
-			this->checkCommandLine->Location = System::Drawing::Point(13, 23);
+			this->checkCommandLine->Location = System::Drawing::Point(13, 22);
 			this->checkCommandLine->Name = L"checkCommandLine";
 			this->checkCommandLine->Size = System::Drawing::Size(59, 17);
 			this->checkCommandLine->TabIndex = 2;
@@ -877,16 +877,16 @@ namespace FLACfrontend {
 			// 
 			// txtCommandLine
 			// 
-			this->txtCommandLine->Location = System::Drawing::Point(78, 21);
+			this->txtCommandLine->Location = System::Drawing::Point(78, 20);
 			this->txtCommandLine->Name = L"txtCommandLine";
 			this->txtCommandLine->Size = System::Drawing::Size(262, 20);
 			this->txtCommandLine->TabIndex = 1;
 			// 
 			// btnCommandHelp
 			// 
-			this->btnCommandHelp->Location = System::Drawing::Point(400, 20);
+			this->btnCommandHelp->Location = System::Drawing::Point(400, 19);
 			this->btnCommandHelp->Name = L"btnCommandHelp";
-			this->btnCommandHelp->Size = System::Drawing::Size(58, 22);
+			this->btnCommandHelp->Size = System::Drawing::Size(60, 22);
 			this->btnCommandHelp->TabIndex = 0;
 			this->btnCommandHelp->Text = L"See help";
 			this->btnCommandHelp->UseVisualStyleBackColor = true;
@@ -901,7 +901,7 @@ namespace FLACfrontend {
 			this->AllowDrop = true;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(493, 668);
+			this->ClientSize = System::Drawing::Size(493, 666);
 			this->Controls->Add(this->grpbCuesheet);
 			this->Controls->Add(this->grpbExtraOptions);
 			this->Controls->Add(this->groupBoxAdditionalOptions);
@@ -1115,7 +1115,7 @@ namespace FLACfrontend {
 		if (checkCuesheet->Checked == true && !String::IsNullOrEmpty(txtCuesheet->Text)) args += "--cuesheet \"" + txtCuesheet->Text + "\" ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
-		// Get console ready and populate proces
+		// Get console ready and populate process
 		FreeConsole();
 		AllocConsole();
 		c.X = 80; c.Y = 8000;
@@ -1125,7 +1125,7 @@ namespace FLACfrontend {
 		p->StartInfo->UseShellExecute = false;
 
 		if (txtOutputDirectory->Text != "<< Same as input directory >>") {
-			// Proces each file seperate if output directory is specified
+			// Process each file separately if output directory is specified
 			for (i = 0; i < numberOfFiles; i++) {
 				fileTemp = "" + lstFiles->Items[i];
 				fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
@@ -1136,7 +1136,7 @@ namespace FLACfrontend {
 			}
 		}
 		else if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false) {
-			// Proces files in batches of 50 if output directory is same as input
+			// Process files in batches of 50 if output directory is same as input
 			// and (not-album) ReplayGain processing is required
 			for (i = 0; i < numberOfFiles; i++) {
 				if (i % 50 == 49) {
@@ -1153,7 +1153,7 @@ namespace FLACfrontend {
 			p->WaitForExit();
 		}
 		else {
-			// Proces files in batches of 50 if output directory is same as input
+			// Process files in batches of 50 if output directory is same as input
 			// and ReplayGain processing is not required or Album gain has to be calculated seperately
 			for (i = 0; i < numberOfFiles; i++) {
 				if (i % 50 == 49) {
@@ -1220,7 +1220,7 @@ namespace FLACfrontend {
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
-		// Get console ready and populate proces
+		// Get console ready and populate process
 		FreeConsole();
 		AllocConsole();
 		c.X = 80; c.Y = 8000;
@@ -1231,7 +1231,7 @@ namespace FLACfrontend {
 
 
 		if (txtOutputDirectory->Text != "<< Same as input directory >>") {
-			// Proces each file seperate if output directory is specified
+			// Process each file separately if output directory is specified
 			for (i = 0; i < numberOfFiles; i++) {
 				fileTemp = "" + lstFiles->Items[i];
 				fileTemp = txtOutputDirectory->Text + "\\" + fileTemp->Substring(fileTemp->LastIndexOf("\\"));
@@ -1242,7 +1242,7 @@ namespace FLACfrontend {
 			}
 		}
 		else {
-			// Proces in batches of 50 if file is processed in same directory
+			// Process in batches of 50 if file is processed in same directory
 			for (i = 0; i < numberOfFiles; i++) {
 				if (i % 50 == 49) {
 					p->StartInfo->Arguments = args + fileargs;
@@ -1277,7 +1277,7 @@ namespace FLACfrontend {
 
 		if (chkDecodeThroughErrors->Checked == true)	args += "-F ";
 
-		// Get console ready and populate proces
+		// Get console ready and populate process
 		FreeConsole();
 		AllocConsole();
 		c.X = 80; c.Y = 8000;
@@ -1321,7 +1321,7 @@ namespace FLACfrontend {
 		int numberOfFiles = lstFiles->Items->Count;
 		int i;
 
-		// Get console ready and populate proces
+		// Get console ready and populate process
 		FreeConsole();
 		AllocConsole();
 		c.X = 80; c.Y = 8000;
@@ -1330,7 +1330,7 @@ namespace FLACfrontend {
 		p->StartInfo->FileName = command;
 		p->StartInfo->UseShellExecute = false;
 
-		// Proces files in batches of 50
+		// Process files in batches of 50
 		for (i = 0; i < numberOfFiles; i++) {
 			if (i % 50 == 49) {
 				p->StartInfo->Arguments = args + fileargs;
