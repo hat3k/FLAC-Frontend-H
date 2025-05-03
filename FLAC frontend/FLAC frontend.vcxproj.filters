@@ -24,6 +24,9 @@
     <ClCompile Include="Advanced_options.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Preferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Advanced_options.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Preferences.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
