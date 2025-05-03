@@ -71,37 +71,34 @@
   <PropertyGroup>
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
-<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-  <OutDir>$(SolutionDir)$(Configuration)\x86\</OutDir>
-  <IntDir>$(Configuration)\x86\</IntDir>
-  <LinkIncremental>true</LinkIncremental>
-  <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-</PropertyGroup>
-
-<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-  <OutDir>$(SolutionDir)$(Configuration)\x64\</OutDir>
-  <IntDir>$(Configuration)\x64\</IntDir>
-  <LinkIncremental>true</LinkIncremental>
-  <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-</PropertyGroup>
-
-<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-  <OutDir>$(SolutionDir)$(Configuration)\x86\</OutDir>
-  <IntDir>$(Configuration)\x86\</IntDir>
-  <LinkIncremental>false</LinkIncremental>
-  <EmbedManifest>true</EmbedManifest>
-  <TargetName>$(ProjectName)-H</TargetName>
-  <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-</PropertyGroup>
-
-<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-  <OutDir>$(SolutionDir)$(Configuration)\x64\</OutDir>
-  <IntDir>$(Configuration)\x64\</IntDir>
-  <LinkIncremental>false</LinkIncremental>
-  <EmbedManifest>true</EmbedManifest>
-  <TargetName>$(ProjectName)-H</TargetName>
-  <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\x86\</OutDir>
+    <IntDir>$(Configuration)\x86\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Configuration)\x64\</OutDir>
+    <IntDir>$(Configuration)\x64\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\x86\</OutDir>
+    <IntDir>$(Configuration)\x86\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <EmbedManifest>true</EmbedManifest>
+    <TargetName>$(ProjectName)-H</TargetName>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Configuration)\x64\</OutDir>
+    <IntDir>$(Configuration)\x64\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <EmbedManifest>true</EmbedManifest>
+    <TargetName>$(ProjectName)-H</TargetName>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -261,16 +258,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-<Target Name="CopyToolsFolder" AfterTargets="Build">
-  <ItemGroup>
-    <ToolFiles Include="tools_$(Platform)\**\*" />
-  </ItemGroup>
-  <RemoveDir Directories="$(OutDir)\tools" Condition="Exists('$(OutDir)\tools')" />
-  <MakeDir Directories="$(OutDir)\tools" Condition="!Exists('$(OutDir)\tools')" />
-  <Copy SourceFiles="@(ToolFiles)"
-        DestinationFiles="@(ToolFiles->'$(OutDir)\tools\%(RecursiveDir)%(Filename)%(Extension)')"
-        SkipUnchangedFiles="true" />
-  <Warning Text="Folder tools_$(Platform) is not found."
-           Condition="!Exists('tools_$(Platform)')" />
-</Target>
+  <Target Name="CopyToolsFolder" AfterTargets="Build">
+    <ItemGroup>
+      <ToolFiles Include="tools_$(Platform)\**\*" />
+    </ItemGroup>
+    <RemoveDir Directories="$(OutDir)\tools" Condition="Exists('$(OutDir)\tools')" />
+    <MakeDir Directories="$(OutDir)\tools" Condition="!Exists('$(OutDir)\tools')" />
+    <Copy SourceFiles="@(ToolFiles)" DestinationFiles="@(ToolFiles->'$(OutDir)\tools\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Warning Text="Folder tools_$(Platform) is not found." Condition="!Exists('tools_$(Platform)')" />
+  </Target>
 </Project>

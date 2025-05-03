@@ -3,6 +3,7 @@
 #include <windows.h>
 #undef GetTempPath
 
+#include "Advanced_options.h"
 
 namespace FLACfrontend {
 
@@ -32,6 +33,7 @@ namespace FLACfrontend {
 		Form1(void)
 		{
 			InitializeComponent();
+			this->AdvDialog = (gcnew Advanced_options());
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 			//
 			//TODO: Add the constructor code here
@@ -54,6 +56,8 @@ namespace FLACfrontend {
 		}
 
 	private: System::Windows::Forms::ListBox^ lstFiles;
+	protected:
+
 	private: System::Windows::Forms::Button^ btnAdd;
 	private: System::Windows::Forms::Button^ btnRemove;
 	private: System::Windows::Forms::Button^ btnClear;
@@ -96,11 +100,21 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ chkKeepForeign;
 	private: System::Windows::Forms::GroupBox^ gbDecoding;
 	private: System::Windows::Forms::CheckBox^ chkDecodeThroughErrors;
+
+
+
 	private: System::Windows::Forms::Button^ btnHelp;
+
+	private: System::Windows::Forms::Button^ btnAdvanced;
+
+
+
+	private: Advanced_options^ AdvDialog;
 	private: System::Windows::Forms::ToolTip^ ttHelp;
 	private: System::Windows::Forms::Button^ btnAbout;
-	private: System::Windows::Forms::GroupBox^ groupBoxAdditionalOptions;
 
+
+	private: System::Windows::Forms::GroupBox^ groupBoxAdditionalOptions;
 	private: System::Windows::Forms::TextBox^ textBoxR;
 	private: System::Windows::Forms::TrackBar^ trackBarR;
 	private: System::Windows::Forms::CheckBox^ checkBoxOptionR;
@@ -124,7 +138,10 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ checkCommandLine;
 	private: System::Windows::Forms::Button^ buttonClearCommandLine;
 	private: System::Windows::Forms::OpenFileDialog^ openCueSheet;
+
 	public:
+
+
 	private: System::ComponentModel::IContainer^ components;
 
 	private: void SaveSettings(String^ path) {
@@ -259,6 +276,7 @@ namespace FLACfrontend {
 			this->gbDecoding = (gcnew System::Windows::Forms::GroupBox());
 			this->chkDecodeThroughErrors = (gcnew System::Windows::Forms::CheckBox());
 			this->btnHelp = (gcnew System::Windows::Forms::Button());
+			this->btnAdvanced = (gcnew System::Windows::Forms::Button());
 			this->ttHelp = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->btnAbout = (gcnew System::Windows::Forms::Button());
 			this->checkBoxNoPadding = (gcnew System::Windows::Forms::CheckBox());
@@ -621,6 +639,18 @@ namespace FLACfrontend {
 			this->btnHelp->UseVisualStyleBackColor = true;
 			this->btnHelp->Click += gcnew System::EventHandler(this, &Form1::btnHelp_Click);
 			// 
+			// btnAdvanced
+			// 
+			this->btnAdvanced->Location = System::Drawing::Point(412, 167);
+			this->btnAdvanced->Name = L"btnAdvanced";
+			this->btnAdvanced->Size = System::Drawing::Size(75, 23);
+			this->btnAdvanced->TabIndex = 14;
+			this->btnAdvanced->Text = L"Advanced";
+			this->ttHelp->SetToolTip(this->btnAdvanced, L"See advanced options");
+			this->btnAdvanced->UseVisualStyleBackColor = true;
+			this->btnAdvanced->Visible = false;
+			this->btnAdvanced->Click += gcnew System::EventHandler(this, &Form1::btnAdvanced_Click);
+			// 
 			// btnAbout
 			// 
 			this->btnAbout->Location = System::Drawing::Point(412, 263);
@@ -906,6 +936,7 @@ namespace FLACfrontend {
 			this->Controls->Add(this->grpbExtraOptions);
 			this->Controls->Add(this->groupBoxAdditionalOptions);
 			this->Controls->Add(this->btnAbout);
+			this->Controls->Add(this->btnAdvanced);
 			this->Controls->Add(this->btnHelp);
 			this->Controls->Add(this->gbDecoding);
 			this->Controls->Add(this->gbGeneral);
@@ -948,6 +979,7 @@ namespace FLACfrontend {
 
 		}
 #pragma endregion
+
 	private: System::String^ GetFlacVersion() {
 		Process^ p = gcnew Process();
 		p->StartInfo->FileName = "tools/flac.exe";
@@ -1023,16 +1055,17 @@ namespace FLACfrontend {
 		lstFiles->Items->Remove(lstFiles->SelectedItem);
 	}
 
+	private: System::Void btnAdvanced_Click(System::Object^ sender, System::EventArgs^ e) {
+		AdvDialog->ShowDialog();
+	}
+
 	private: System::Void btnHelp_Click(System::Object^ sender, System::EventArgs^ e) {
 		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
 	}
 
 	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ flacVersion = GetFlacVersion();
-		MessageBox::Show("FLAC Frontend-H v2.1 build 20250502\n\nUsing FLAC version: " + flacVersion,
-			"FLAC Frontend version info",
-			MessageBoxButtons::OK,
-			MessageBoxIcon::Information);
+		MessageBox::Show("FLAC Frontend-H v2.1 build 20250502\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
 		   // ----------------------------------//
@@ -1154,7 +1187,7 @@ namespace FLACfrontend {
 		}
 		else {
 			// Process files in batches of 50 if output directory is same as input
-			// and ReplayGain processing is not required or Album gain has to be calculated seperately
+			// and ReplayGain processing is not required or Album gain has to be calculated separately
 			for (i = 0; i < numberOfFiles; i++) {
 				if (i % 50 == 49) {
 					p->StartInfo->Arguments = args + fileargs;
@@ -1217,6 +1250,7 @@ namespace FLACfrontend {
 		if (chkKeepForeign->Checked == true) args += "--keep-foreign-metadata ";
 		if (chkOggFlac->Checked == true) args += "--ogg ";
 		if (chkDecodeThroughErrors->Checked == true) args += "-F ";
+
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
@@ -1400,14 +1434,14 @@ namespace FLACfrontend {
 		LoadSettings("settings.txt");
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
-		
-		if(!(File::Exists("tools/flac.exe")))
-		{MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","FLAC not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-		// exit(1);
+
+		if (!(File::Exists("tools/flac.exe"))) {
+			MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend", "FLAC not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// exit(1);
 		}
-		if(!(File::Exists("tools/metaflac.exe")))
-		{MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend","metaflac not found",MessageBoxButtons::OK,MessageBoxIcon::Error);
-		// exit(1);
+		if (!(File::Exists("tools/metaflac.exe"))) {
+			MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend", "metaflac not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// exit(1);
 		}
 	}
 	private: System::Void checkBoxOptionP_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -1453,7 +1487,6 @@ namespace FLACfrontend {
 		{
 			textBoxR->Enabled = false;
 			trackBarR->Enabled = false;
-
 		}
 	}
 	private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
