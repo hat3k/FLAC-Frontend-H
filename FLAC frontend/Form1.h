@@ -4,6 +4,7 @@
 #undef GetTempPath
 
 #include "Advanced_options.h"
+#include "Preferences.h"
 
 namespace FLACfrontend {
 
@@ -16,6 +17,7 @@ namespace FLACfrontend {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Threading;
+	using namespace System::Net;
 
 	/// <summary>
 	/// Summary for Form1
@@ -34,7 +36,11 @@ namespace FLACfrontend {
 		{
 			InitializeComponent();
 			this->AdvDialog = (gcnew Advanced_options());
+			this->PreferencesDialog = gcnew Preferences();
+			this->programVersion = "2.1 build 20250503";
+
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
+
 			//
 			//TODO: Add the constructor code here
 			//
@@ -106,10 +112,12 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::Button^ btnHelp;
 
 	private: System::Windows::Forms::Button^ btnAdvanced;
+	private: System::Windows::Forms::Button^ buttonPreferences;
 
 
 
 	private: Advanced_options^ AdvDialog;
+	private: Preferences^ PreferencesDialog;
 	private: System::Windows::Forms::ToolTip^ ttHelp;
 	private: System::Windows::Forms::Button^ btnAbout;
 
@@ -162,6 +170,8 @@ namespace FLACfrontend {
 		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
 		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
 		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
+
+		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
 
 		writer->Close();
 	}
@@ -222,6 +232,9 @@ namespace FLACfrontend {
 					else if (key == "CommandLineOptions") {
 						txtCommandLine->Text = value;
 					}
+					else if (key == "CheckForUpdatesOnStartup") {
+						this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked = Boolean::Parse(value);
+					}
 				}
 			}
 
@@ -277,6 +290,7 @@ namespace FLACfrontend {
 			this->chkDecodeThroughErrors = (gcnew System::Windows::Forms::CheckBox());
 			this->btnHelp = (gcnew System::Windows::Forms::Button());
 			this->btnAdvanced = (gcnew System::Windows::Forms::Button());
+			this->buttonPreferences = (gcnew System::Windows::Forms::Button());
 			this->ttHelp = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->btnAbout = (gcnew System::Windows::Forms::Button());
 			this->checkBoxNoPadding = (gcnew System::Windows::Forms::CheckBox());
@@ -641,15 +655,27 @@ namespace FLACfrontend {
 			// 
 			// btnAdvanced
 			// 
+			this->btnAdvanced->Enabled = false;
 			this->btnAdvanced->Location = System::Drawing::Point(412, 167);
 			this->btnAdvanced->Name = L"btnAdvanced";
 			this->btnAdvanced->Size = System::Drawing::Size(75, 23);
 			this->btnAdvanced->TabIndex = 14;
-			this->btnAdvanced->Text = L"Advanced";
+			this->btnAdvanced->Text = L"Ad&vanced";
 			this->ttHelp->SetToolTip(this->btnAdvanced, L"See advanced options");
 			this->btnAdvanced->UseVisualStyleBackColor = true;
 			this->btnAdvanced->Visible = false;
 			this->btnAdvanced->Click += gcnew System::EventHandler(this, &Form1::btnAdvanced_Click);
+			// 
+			// buttonPreferences
+			// 
+			this->buttonPreferences->Location = System::Drawing::Point(412, 205);
+			this->buttonPreferences->Name = L"buttonPreferences";
+			this->buttonPreferences->Size = System::Drawing::Size(75, 23);
+			this->buttonPreferences->TabIndex = 26;
+			this->buttonPreferences->Text = L"&Preferences";
+			this->ttHelp->SetToolTip(this->buttonPreferences, L"App\'s preferences");
+			this->buttonPreferences->UseVisualStyleBackColor = true;
+			this->buttonPreferences->Click += gcnew System::EventHandler(this, &Form1::buttonPreferences_Click);
 			// 
 			// btnAbout
 			// 
@@ -937,6 +963,7 @@ namespace FLACfrontend {
 			this->Controls->Add(this->groupBoxAdditionalOptions);
 			this->Controls->Add(this->btnAbout);
 			this->Controls->Add(this->btnAdvanced);
+			this->Controls->Add(this->buttonPreferences);
 			this->Controls->Add(this->btnHelp);
 			this->Controls->Add(this->gbDecoding);
 			this->Controls->Add(this->gbGeneral);
@@ -980,6 +1007,7 @@ namespace FLACfrontend {
 		}
 #pragma endregion
 
+	private: String^ programVersion;
 	private: System::String^ GetFlacVersion() {
 		Process^ p = gcnew Process();
 		p->StartInfo->FileName = "tools/flac.exe";
@@ -1035,6 +1063,7 @@ namespace FLACfrontend {
 		openCueSheet->ShowDialog();
 		txtCuesheet->Text = openCueSheet->FileName;
 	}
+
 		   // -------------------------------//
 		   // --- Right column of buttons --- //
 		   // -------------------------------//
@@ -1059,13 +1088,20 @@ namespace FLACfrontend {
 		AdvDialog->ShowDialog();
 	}
 
+	private: System::Void buttonPreferences_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (PreferencesDialog->ShowDialog() == ::DialogResult::OK)
+		{
+			SaveSettings("settings.txt");
+		}
+	}
+
 	private: System::Void btnHelp_Click(System::Object^ sender, System::EventArgs^ e) {
 		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
 	}
 
 	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ flacVersion = GetFlacVersion();
-		MessageBox::Show("FLAC Frontend-H v2.1 build 20250502\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		MessageBox::Show("FLAC Frontend-H v" + this->programVersion + "\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
 		   // ----------------------------------//
@@ -1429,9 +1465,47 @@ namespace FLACfrontend {
 			}
 		}
 	}
+
+private: void CheckForUpdate()
+{
+	try {
+		// Enable modern TLS protocols for secure connection
+		ServicePointManager::SecurityProtocol = static_cast<SecurityProtocolType>(3072 | 768 | 192); // TLS 1.0, 1.1 and 1.2
+
+		// Download latest version string from GitHub
+		WebClient^ client = gcnew WebClient();
+		String^ latestFullVersion = client->DownloadString("https://raw.githubusercontent.com/hat3k/FLAC-Frontend-H/master/version.txt")->Trim();
+
+		// Get current version from programVersion field
+		String^ currentFullVersion = this->programVersion;
+
+		// Compare versions
+		if (latestFullVersion != currentFullVersion) {
+			System::Windows::Forms::DialogResult result = MessageBox::Show(
+				"A new version is available!\n\nCurrent version:\t" + currentFullVersion + "\nLatest version:\t" + latestFullVersion + "\n\nDo you want to open the releases page?",
+				"Update Available",
+				MessageBoxButtons::YesNo,
+				MessageBoxIcon::Information
+			);
+
+			if (result == ::DialogResult::Yes) {
+				Process::Start("https://github.com/hat3k/FLAC-Frontend-H/releases");
+			}
+		}
+	}
+	catch (Exception^ ex) {
+		// Show error message if network or protocol issues occur
+		MessageBox::Show("Error checking for updates:\n" + ex->Message, "Network Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+}
+
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 		Environment::CurrentDirectory = Application::StartupPath;
 		LoadSettings("settings.txt");
+		
+		if (this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked) {
+			CheckForUpdate();
+		}
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
 
@@ -1491,7 +1565,7 @@ namespace FLACfrontend {
 	}
 	private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+};
 
 	public ref class Settings {
 	public:
