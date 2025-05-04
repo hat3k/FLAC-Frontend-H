@@ -5,6 +5,7 @@
 
 #include "Advanced_options.h"
 #include "Preferences.h"
+#include "CommandLineHelp.h"
 
 namespace FLACfrontend {
 
@@ -37,7 +38,8 @@ namespace FLACfrontend {
 			InitializeComponent();
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
-			this->programVersion = "2.1 build 20250503";
+			this->CommandLineHelpDialog = gcnew CommandLineHelp();
+			this->programVersion = "2.1 build 20250504";
 
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 
@@ -118,6 +120,7 @@ namespace FLACfrontend {
 
 	private: Advanced_options^ AdvDialog;
 	private: Preferences^ PreferencesDialog;
+	private: CommandLineHelp^ CommandLineHelpDialog;
 	private: System::Windows::Forms::ToolTip^ ttHelp;
 	private: System::Windows::Forms::Button^ btnAbout;
 
@@ -1028,28 +1031,67 @@ namespace FLACfrontend {
 	private: System::Void buttonClearCommandLine_Click(System::Object^ sender, System::EventArgs^ e) {
 		txtCommandLine->Clear();
 	}
+//	private: System::Void btnCommandHelp_Click(System::Object^ sender, System::EventArgs^ e) {
+//		COORD c;
+//
+//		FreeConsole();
+//		AllocConsole();
+//		c.X = 80; c.Y = 600;
+//		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
+//
+//		Process^ p = gcnew Process();
+//		p->StartInfo->FileName = "tools/flac.exe";
+//		p->StartInfo->UseShellExecute = false;
+//		p->StartInfo->Arguments = "-h";
+//		p->Start();
+//		p->WaitForExit();
+//		   
+//		// Add pause to let console window stay
+//		p->StartInfo->FileName = "cmd";
+//		p->StartInfo->Arguments = "/c PAUSE";
+//		p->Start();
+//		p->WaitForExit();
+//
+//		FreeConsole();
+//	}
 	private: System::Void btnCommandHelp_Click(System::Object^ sender, System::EventArgs^ e) {
-		COORD c;
-
-		FreeConsole();
-		AllocConsole();
-		c.X = 80; c.Y = 600;
-		SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), c);
-
+		try {
 		Process^ p = gcnew Process();
 		p->StartInfo->FileName = "tools/flac.exe";
-		p->StartInfo->UseShellExecute = false;
 		p->StartInfo->Arguments = "-h";
+		p->StartInfo->UseShellExecute = false;
+		p->StartInfo->RedirectStandardOutput = true;
+		p->StartInfo->RedirectStandardError = true;
+		p->StartInfo->CreateNoWindow = true;
+		
 		p->Start();
+
+		String^ output = p->StandardOutput->ReadToEnd();
+		String^ error = p->StandardError->ReadToEnd();
 		p->WaitForExit();
 
-		// Add pause to let console window stay
-		p->StartInfo->FileName = "cmd";
-		p->StartInfo->Arguments = "/c PAUSE";
-		p->Start();
-		p->WaitForExit();
+		if (!String::IsNullOrEmpty(error)) {
+			MessageBox::Show("Error launching flac.exe:\n" + error, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 
-		FreeConsole();
+		// Create and configure the help form
+		CommandLineHelp^ helpForm = gcnew CommandLineHelp();
+		helpForm->SetText(output);
+		
+		// Position the help form to the right of the main window
+		helpForm->StartPosition = FormStartPosition::Manual;
+		helpForm->Location = Point(this->Location.X + this->Width, this->Location.Y);
+		
+		// Set height equal to the main window's height
+		helpForm->Size = System::Drawing::Size(helpForm->Width, this->Height);
+
+		// Show the help form non-modally (user can interact with both forms)
+		helpForm->Show(this);
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show("Failed to open help: " + ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 	private: System::Void checkCuesheet_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 		txtCuesheet->Enabled = checkCuesheet->Checked;
