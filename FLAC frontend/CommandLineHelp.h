@@ -8,6 +8,7 @@ namespace FLACfrontend {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics;
 
 	/// <summary>
 	/// Summary for CommandLineHelp
@@ -21,11 +22,16 @@ namespace FLACfrontend {
 			//
 			//TODO: Add the constructor code here
 			//
+			this->Shown += gcnew System::EventHandler(this, &CommandLineHelp::CommandLineHelp_Shown);
+			textBoxCommandLineHelpSearch->KeyDown += gcnew KeyEventHandler(this, &CommandLineHelp::textBoxCommandLineHelpSearch_KeyDown);
+			this->AcceptButton = buttonCommandLineHelpFind;
 		}
+
 		void SetText(String^ text) {
-			textBoxCommandLineHelp->Text = text;
-			textBoxCommandLineHelp->Select(0, 0);
+			richTextBoxCommandLineHelp->Text = text;
+			richTextBoxCommandLineHelp->Select(0, 0);
 		}
+
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -37,16 +43,22 @@ namespace FLACfrontend {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^ textBoxCommandLineHelp;
-	protected:
+	private: System::Windows::Forms::RichTextBox^ richTextBoxCommandLineHelp;
 
-	protected:
+	private: System::Windows::Forms::TextBox^ textBoxCommandLineHelpSearch;
+	private: System::Windows::Forms::Button^ buttonCommandLineHelpFind;
+
+	private: System::Void CommandLineHelp_Shown(System::Object^ sender, System::EventArgs^ e)
+	{
+		this->ActiveControl = textBoxCommandLineHelpSearch;
+		textBoxCommandLineHelpSearch->Select(0, 0);
+	}
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -56,37 +68,118 @@ namespace FLACfrontend {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(CommandLineHelp::typeid));
-			this->textBoxCommandLineHelp = (gcnew System::Windows::Forms::TextBox());
+			this->richTextBoxCommandLineHelp = (gcnew System::Windows::Forms::RichTextBox());
+			this->textBoxCommandLineHelpSearch = (gcnew System::Windows::Forms::TextBox());
+			this->buttonCommandLineHelpFind = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
-			// textBoxCommandLineHelp
+			// richTextBoxCommandLineHelp
 			// 
-			this->textBoxCommandLineHelp->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->textBoxCommandLineHelp->Font = (gcnew System::Drawing::Font(L"Consolas", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->richTextBoxCommandLineHelp->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->richTextBoxCommandLineHelp->Font = (gcnew System::Drawing::Font(L"Consolas", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->textBoxCommandLineHelp->HideSelection = false;
-			this->textBoxCommandLineHelp->Location = System::Drawing::Point(0, 0);
-			this->textBoxCommandLineHelp->Multiline = true;
-			this->textBoxCommandLineHelp->Name = L"textBoxCommandLineHelp";
-			this->textBoxCommandLineHelp->ReadOnly = true;
-			this->textBoxCommandLineHelp->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBoxCommandLineHelp->Size = System::Drawing::Size(624, 441);
-			this->textBoxCommandLineHelp->TabIndex = 0;
+			this->richTextBoxCommandLineHelp->HideSelection = false;
+			this->richTextBoxCommandLineHelp->Location = System::Drawing::Point(0, 46);
+			this->richTextBoxCommandLineHelp->Name = L"richTextBoxCommandLineHelp";
+			this->richTextBoxCommandLineHelp->ReadOnly = true;
+			this->richTextBoxCommandLineHelp->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
+			this->richTextBoxCommandLineHelp->Size = System::Drawing::Size(624, 394);
+			this->richTextBoxCommandLineHelp->TabIndex = 5;
+			this->richTextBoxCommandLineHelp->Text = L"";
+			// 
+			// textBoxCommandLineHelpSearch
+			// 
+			this->textBoxCommandLineHelpSearch->Location = System::Drawing::Point(12, 13);
+			this->textBoxCommandLineHelpSearch->Name = L"textBoxCommandLineHelpSearch";
+			this->textBoxCommandLineHelpSearch->Size = System::Drawing::Size(519, 20);
+			this->textBoxCommandLineHelpSearch->TabIndex = 1;
+			// 
+			// buttonCommandLineHelpFind
+			// 
+			this->buttonCommandLineHelpFind->Location = System::Drawing::Point(537, 12);
+			this->buttonCommandLineHelpFind->Name = L"buttonCommandLineHelpFind";
+			this->buttonCommandLineHelpFind->Size = System::Drawing::Size(75, 22);
+			this->buttonCommandLineHelpFind->TabIndex = 2;
+			this->buttonCommandLineHelpFind->Text = L"Find/Next";
+			this->buttonCommandLineHelpFind->UseVisualStyleBackColor = true;
+			this->buttonCommandLineHelpFind->Click += gcnew System::EventHandler(this, &CommandLineHelp::buttonCommandLineHelpFind_Click);
 			// 
 			// CommandLineHelp
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(624, 441);
-			this->Controls->Add(this->textBoxCommandLineHelp);
+			this->Controls->Add(this->buttonCommandLineHelpFind);
+			this->Controls->Add(this->textBoxCommandLineHelpSearch);
+			this->Controls->Add(this->richTextBoxCommandLineHelp);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"CommandLineHelp";
-			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
-			this->Text = L"CommandLineHelp";
+			this->Text = L"Command-line help";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+
+	private:
+		int lastSearchPos;
+		String^ lastSearchText;
+
+	public:
+		void FindTextInHelp(bool forward)
+		{
+			String^ searchText = textBoxCommandLineHelpSearch->Text;
+			if (String::IsNullOrEmpty(searchText))
+				return;
+
+			RichTextBox^ rtb = richTextBoxCommandLineHelp;
+			int startPos = lastSearchPos;
+
+			if (searchText != lastSearchText)
+			{
+				startPos = 0;
+				lastSearchText = searchText;
+			}
+
+			int foundIndex = rtb->Find(searchText, startPos, rtb->Text->Length, RichTextBoxFinds::None);
+
+			if (foundIndex >= 0)
+			{
+				rtb->SelectionStart = foundIndex;
+				rtb->SelectionLength = searchText->Length;
+				rtb->Focus();
+				lastSearchPos = foundIndex + searchText->Length;
+			}
+			else
+			{
+				if (startPos > 0)
+				{
+					MessageBox::Show("Reached end of file. Searching from the beginning.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
+					lastSearchPos = 0;
+					FindTextInHelp(forward);
+				}
+				else
+				{
+					MessageBox::Show("Text not found.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
+					lastSearchPos = 0;
+				}
+			}
+		}
+
+		System::Void buttonCommandLineHelpFind_Click(System::Object^ sender, System::EventArgs^ e)
+		{
+			FindTextInHelp(true);
+		}
+		private: System::Void textBoxCommandLineHelpSearch_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+		{
+			if (e->KeyCode == Keys::Enter)
+			{
+				FindTextInHelp(true);
+				e->Handled = true;
+				e->SuppressKeyPress = true;
+			}
+		}
 	};
 }
