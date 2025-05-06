@@ -40,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250505";
+			this->programVersion = "2.1 build 20250507";
 
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 
@@ -574,7 +574,7 @@ namespace FLACfrontend {
 			this->btnExit->Size = System::Drawing::Size(75, 23);
 			this->btnExit->TabIndex = 10;
 			this->btnExit->Text = L"E&xit";
-			this->ttHelp->SetToolTip(this->btnExit, L"Exit FLAC frontend");
+			this->ttHelp->SetToolTip(this->btnExit, L"Exit FLAC frontend-H");
 			this->btnExit->UseVisualStyleBackColor = true;
 			this->btnExit->Click += gcnew System::EventHandler(this, &Form1::btnExit_Click);
 			// 
@@ -688,7 +688,7 @@ namespace FLACfrontend {
 			this->btnAbout->Size = System::Drawing::Size(75, 23);
 			this->btnAbout->TabIndex = 15;
 			this->btnAbout->Text = L"A&bout";
-			this->ttHelp->SetToolTip(this->btnAbout, L"Get version number of FLAC Frontend");
+			this->ttHelp->SetToolTip(this->btnAbout, L"Get version number of FLAC Frontend-H");
 			this->btnAbout->UseVisualStyleBackColor = true;
 			this->btnAbout->Click += gcnew System::EventHandler(this, &Form1::btnAbout_Click);
 			// 
@@ -1144,7 +1144,7 @@ namespace FLACfrontend {
 
 	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ flacVersion = GetFlacVersion();
-		MessageBox::Show("FLAC Frontend-H v" + this->programVersion + "\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		MessageBox::Show("FLAC Frontend-H v" + this->programVersion + "\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend-H version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
 		   // ----------------------------------//
@@ -1201,7 +1201,7 @@ namespace FLACfrontend {
 
 		// Check whether possible
 		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == true && numberOfFiles > 50) {
-			MessageBox::Show("Adding Album ReplayGain for more then 50 files is not possible", "Too many files", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("Adding Album ReplayGain for more than 50 files is not possible", "Too many files", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 		if (chkReplayGain->Checked == true && chkOggFlac->Checked == true) {
@@ -1570,11 +1570,11 @@ private: Version^ ParseVersion(String^ versionStr)
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
 
 		if (!(File::Exists("tools/flac.exe"))) {
-			MessageBox::Show("flac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend", "FLAC not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("flac.exe is not found, FLAC frontend-H can't be used without it. Please reinstall FLAC frontend", "FLAC not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			// exit(1);
 		}
 		if (!(File::Exists("tools/metaflac.exe"))) {
-			MessageBox::Show("metaflac.exe is not found, FLAC frontend can't be used without it. Please reinstall FLAC frontend", "metaflac not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			MessageBox::Show("metaflac.exe is not found, FLAC frontend-H can't be used without it. Please reinstall FLAC frontend", "metaflac not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			// exit(1);
 		}
 	}
