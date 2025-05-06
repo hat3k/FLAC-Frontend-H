@@ -6,6 +6,7 @@
 #include "Advanced_options.h"
 #include "Preferences.h"
 #include "CommandLineHelp.h"
+#include <shellapi.h>
 
 namespace FLACfrontend {
 
@@ -39,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250504";
+			this->programVersion = "2.1 build 20250505";
 
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 
@@ -1520,9 +1521,12 @@ private: void CheckForUpdate()
 
 		// Get current version from programVersion field
 		String^ currentFullVersion = this->programVersion;
+		Version^ current = ParseVersion(currentFullVersion);
+		Version^ latest = ParseVersion(latestFullVersion);
 
 		// Compare versions
-		if (latestFullVersion != currentFullVersion) {
+		if (latest != nullptr && current != nullptr && latest > current)
+		{
 			System::Windows::Forms::DialogResult result = MessageBox::Show(
 				"A new version is available!\n\nCurrent version:\t" + currentFullVersion + "\nLatest version:\t" + latestFullVersion + "\n\nDo you want to open the releases page?",
 				"Update Available",
@@ -1539,6 +1543,20 @@ private: void CheckForUpdate()
 		// Show error message if network or protocol issues occur
 		MessageBox::Show("Error checking for updates:\n" + ex->Message, "Network Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
+}
+
+private: Version^ ParseVersion(String^ versionStr)
+{
+	array<String^>^ parts = versionStr->Split(' ');
+	if (parts->Length >= 3 && parts[1] == "build")
+	{
+		int buildNumber;
+		if (Int32::TryParse(parts[2], buildNumber))
+		{
+			return gcnew Version(parts[0] + "." + buildNumber);
+		}
+	}
+	return nullptr;
 }
 
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
