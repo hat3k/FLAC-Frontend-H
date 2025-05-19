@@ -40,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250507";
+			this->programVersion = "2.1 build 20250519";
 
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 
@@ -176,7 +176,7 @@ namespace FLACfrontend {
 		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
-
+		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
 		writer->Close();
 	}
 
@@ -238,6 +238,9 @@ namespace FLACfrontend {
 					}
 					else if (key == "CheckForUpdatesOnStartup") {
 						this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked = Boolean::Parse(value);
+					}
+					else if (key == "IgnoredVersion") {
+						ignoredVersion = value;
 					}
 				}
 			}
@@ -1012,6 +1015,7 @@ namespace FLACfrontend {
 #pragma endregion
 
 	private: String^ programVersion;
+	private: String^ ignoredVersion;
 	private: System::String^ GetFlacVersion() {
 		Process^ p = gcnew Process();
 		p->StartInfo->FileName = "tools/flac.exe";
@@ -1527,15 +1531,28 @@ private: void CheckForUpdate()
 		// Compare versions
 		if (latest != nullptr && current != nullptr && latest > current)
 		{
+			// Check if this version was already ignored
+			if (ignoredVersion != nullptr && ignoredVersion == latestFullVersion)
+			{
+				return; // Skip showing dialog
+			}
+
+			// Show update dialog with "Cancel = Ignore" option
 			System::Windows::Forms::DialogResult result = MessageBox::Show(
-				"A new version is available!\n\nCurrent version:\t" + currentFullVersion + "\nLatest version:\t" + latestFullVersion + "\n\nDo you want to open the releases page?",
-				"Update Available",
-				MessageBoxButtons::YesNo,
+				"A new version is available!\n\nCurrent version:\t" + currentFullVersion + "\nLatest version:\t" + latestFullVersion + "\n\nNote: Click 'Cancel' to ignore this version." + "\n\nDo you want to open the releases page?",
+				"Update",
+				MessageBoxButtons::YesNoCancel,
 				MessageBoxIcon::Information
 			);
 
 			if (result == ::DialogResult::Yes) {
-				Process::Start("https://github.com/hat3k/FLAC-Frontend-H/releases");
+				// Open releases page
+				Process::Start("https://github.com/hat3k/FLAC-Frontend-H/releases ");
+			}
+			else if (result == ::DialogResult::Cancel) {
+				// User clicked "Cancel = Ignore this version"
+				ignoredVersion = latestFullVersion;
+				SaveSettings("settings.txt"); // Save ignored version
 			}
 		}
 	}
