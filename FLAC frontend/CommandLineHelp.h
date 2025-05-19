@@ -84,13 +84,14 @@ namespace FLACfrontend {
 			this->richTextBoxCommandLineHelp->Location = System::Drawing::Point(0, 46);
 			this->richTextBoxCommandLineHelp->Name = L"richTextBoxCommandLineHelp";
 			this->richTextBoxCommandLineHelp->ReadOnly = true;
-			this->richTextBoxCommandLineHelp->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
 			this->richTextBoxCommandLineHelp->Size = System::Drawing::Size(624, 394);
 			this->richTextBoxCommandLineHelp->TabIndex = 5;
 			this->richTextBoxCommandLineHelp->Text = L"";
 			// 
 			// textBoxCommandLineHelpSearch
 			// 
+			this->textBoxCommandLineHelpSearch->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->textBoxCommandLineHelpSearch->Location = System::Drawing::Point(12, 13);
 			this->textBoxCommandLineHelpSearch->Name = L"textBoxCommandLineHelpSearch";
 			this->textBoxCommandLineHelpSearch->Size = System::Drawing::Size(519, 20);
@@ -98,6 +99,7 @@ namespace FLACfrontend {
 			// 
 			// buttonCommandLineHelpFind
 			// 
+			this->buttonCommandLineHelpFind->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->buttonCommandLineHelpFind->Location = System::Drawing::Point(537, 12);
 			this->buttonCommandLineHelpFind->Name = L"buttonCommandLineHelpFind";
 			this->buttonCommandLineHelpFind->Size = System::Drawing::Size(75, 22);
