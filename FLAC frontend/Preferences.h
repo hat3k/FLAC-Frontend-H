@@ -40,6 +40,7 @@ namespace FLACfrontend {
 		}
 	private: System::Windows::Forms::Button^ buttonOkPreferences;
 	public: System::Windows::Forms::CheckBox^ checkBoxCheckForUpdatesOnStartup;
+	public: System::Windows::Forms::CheckBox^ checkBoxDontPreserveTimestampsPermissions;
 
 	private: System::Windows::Forms::ToolTip^ toolTipPreferences;
 
@@ -67,6 +68,7 @@ namespace FLACfrontend {
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Preferences::typeid));
 			this->buttonOkPreferences = (gcnew System::Windows::Forms::Button());
 			this->checkBoxCheckForUpdatesOnStartup = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBoxDontPreserveTimestampsPermissions = (gcnew System::Windows::Forms::CheckBox());
 			this->toolTipPreferences = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->SuspendLayout();
 			// 
@@ -75,7 +77,7 @@ namespace FLACfrontend {
 			this->buttonOkPreferences->Location = System::Drawing::Point(105, 226);
 			this->buttonOkPreferences->Name = L"buttonOkPreferences";
 			this->buttonOkPreferences->Size = System::Drawing::Size(75, 23);
-			this->buttonOkPreferences->TabIndex = 0;
+			this->buttonOkPreferences->TabIndex = 3;
 			this->buttonOkPreferences->Text = L"OK";
 			this->buttonOkPreferences->UseVisualStyleBackColor = true;
 			this->buttonOkPreferences->Click += gcnew System::EventHandler(this, &Preferences::buttonOkPreferences_Click);
@@ -91,12 +93,26 @@ namespace FLACfrontend {
 			this->toolTipPreferences->SetToolTip(this->checkBoxCheckForUpdatesOnStartup, L"Automatically check if a new version is available when the program starts");
 			this->checkBoxCheckForUpdatesOnStartup->UseVisualStyleBackColor = true;
 			// 
+			// checkBoxDontPreserveTimestampsPermissions
+			// 
+			this->checkBoxDontPreserveTimestampsPermissions->AutoSize = true;
+			this->checkBoxDontPreserveTimestampsPermissions->Checked = true;
+			this->checkBoxDontPreserveTimestampsPermissions->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->checkBoxDontPreserveTimestampsPermissions->Location = System::Drawing::Point(12, 35);
+			this->checkBoxDontPreserveTimestampsPermissions->Name = L"checkBoxDontPreserveTimestampsPermissions";
+			this->checkBoxDontPreserveTimestampsPermissions->Size = System::Drawing::Size(228, 17);
+			this->checkBoxDontPreserveTimestampsPermissions->TabIndex = 2;
+			this->checkBoxDontPreserveTimestampsPermissions->Text = L"Don\'t preserve timestamps and permissions";
+			this->toolTipPreferences->SetToolTip(this->checkBoxDontPreserveTimestampsPermissions, resources->GetString(L"checkBoxDontPreserveTimestampsPermissions.ToolTip"));
+			this->checkBoxDontPreserveTimestampsPermissions->UseVisualStyleBackColor = true;
+			// 
 			// Preferences
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(284, 261);
 			this->Controls->Add(this->checkBoxCheckForUpdatesOnStartup);
+			this->Controls->Add(this->checkBoxDontPreserveTimestampsPermissions);
 			this->Controls->Add(this->buttonOkPreferences);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));

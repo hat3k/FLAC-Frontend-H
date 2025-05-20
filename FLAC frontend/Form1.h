@@ -176,6 +176,7 @@ namespace FLACfrontend {
 		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
+		writer->WriteLine("DontPreserveModTime: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
 		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
 		writer->Close();
 	}
@@ -241,6 +242,9 @@ namespace FLACfrontend {
 					}
 					else if (key == "IgnoredVersion") {
 						ignoredVersion = value;
+					}
+					else if (key == "DontPreserveModTime") {
+						this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked = Boolean::Parse(value);
 					}
 				}
 			}
@@ -1229,6 +1233,7 @@ namespace FLACfrontend {
 		if (chkIgnoreChunkSize->Checked == true) args += "--ignore-chunk-sizes ";
 		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false) args += "--replay-gain ";
 		if (checkCuesheet->Checked == true && !String::IsNullOrEmpty(txtCuesheet->Text)) args += "--cuesheet \"" + txtCuesheet->Text + "\" ";
+		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate process
@@ -1335,6 +1340,7 @@ namespace FLACfrontend {
 		if (chkDecodeThroughErrors->Checked == true) args += "-F ";
 
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
+		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate process
@@ -1664,7 +1670,7 @@ private: Version^ ParseVersion(String^ versionStr)
 		bool overwrite;
 		bool enableCommandLine;
 		String^ commandLineOptions;
-
+		bool dontPreserveModTime;
 	};
 }
 
