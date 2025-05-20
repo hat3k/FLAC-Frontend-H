@@ -40,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250519";
+			this->programVersion = "2.1 build 20250520";
 
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 
