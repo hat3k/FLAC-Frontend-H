@@ -126,9 +126,6 @@
   <metadata name="dlgOutputDirectory.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 17</value>
   </metadata>
-  <metadata name="ttHelp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>285, 17</value>
-  </metadata>
   <data name="textBoxPrefixUser.ToolTip" xml:space="preserve">
     <value>--output-prefix=STRING
 Prefix each output file name with the given

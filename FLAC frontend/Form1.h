@@ -715,6 +715,7 @@ namespace FLACfrontend {
 			// 
 			// textBoxMT
 			// 
+			this->textBoxMT->Enabled = false;
 			this->textBoxMT->Location = System::Drawing::Point(151, 63);
 			this->textBoxMT->Name = L"textBoxMT";
 			this->textBoxMT->Size = System::Drawing::Size(25, 20);
