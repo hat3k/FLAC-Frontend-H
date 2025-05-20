@@ -1151,10 +1151,24 @@ namespace FLACfrontend {
 		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
 	}
 
-	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
-		String^ flacVersion = GetFlacVersion();
-		MessageBox::Show("FLAC Frontend-H v" + this->programVersion + "\n\nUsing FLAC version: " + flacVersion, "FLAC Frontend-H version info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
+	String^ flacVersion = GetFlacVersion();
+	String^ message = "FLAC Frontend-H v" + this->programVersion + "\n"
+		"Using FLAC version: " + flacVersion + "\n\n"
+		"Do you want to visit project's homepage?\n"
+		"https://github.com/hat3k/FLAC-Frontend-H ";
+
+	System::Windows::Forms::DialogResult result = MessageBox::Show(
+		message,
+		"About",
+		MessageBoxButtons::YesNo,
+		MessageBoxIcon::Information,
+		MessageBoxDefaultButton::Button1);
+
+	if (result == ::DialogResult::Yes) {
+		Process::Start("https://github.com/hat3k/FLAC-Frontend-H ");
 	}
+}
 
 		   // ----------------------------------//
 		   // --- Setting fields interaction --- //
