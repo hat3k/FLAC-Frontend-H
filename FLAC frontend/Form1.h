@@ -995,6 +995,7 @@ namespace FLACfrontend {
 			this->Name = L"Form1";
 			this->Text = L"FLAC Frontend-H";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
+			this->Shown += gcnew System::EventHandler(this, &Form1::Form1_Shown);
 			this->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &Form1::lstFiles_DragDrop);
 			this->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &Form1::lstFiles_DragEnter);
 			this->gbEncoding->ResumeLayout(false);
@@ -1581,14 +1582,10 @@ private: Version^ ParseVersion(String^ versionStr)
 	}
 	return nullptr;
 }
-
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 		Environment::CurrentDirectory = Application::StartupPath;
 		LoadSettings("settings.txt");
 		
-		if (this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked) {
-			CheckForUpdate();
-		}
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
 
@@ -1599,6 +1596,11 @@ private: Version^ ParseVersion(String^ versionStr)
 		if (!(File::Exists("tools/metaflac.exe"))) {
 			MessageBox::Show("metaflac.exe is not found, FLAC frontend-H can't be used without it. Please reinstall FLAC frontend", "metaflac not found", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			// exit(1);
+		}
+	}
+	private: System::Void Form1_Shown(System::Object^ sender, System::EventArgs^ e) {
+		if (this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked) {
+			CheckForUpdate();
 		}
 	}
 	private: System::Void checkBoxOptionP_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
