@@ -74,7 +74,7 @@ namespace FLACfrontend {
 			// 
 			// buttonOkPreferences
 			// 
-			this->buttonOkPreferences->Location = System::Drawing::Point(105, 226);
+			this->buttonOkPreferences->Location = System::Drawing::Point(100, 76);
 			this->buttonOkPreferences->Name = L"buttonOkPreferences";
 			this->buttonOkPreferences->Size = System::Drawing::Size(75, 23);
 			this->buttonOkPreferences->TabIndex = 3;
@@ -110,7 +110,7 @@ namespace FLACfrontend {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
+			this->ClientSize = System::Drawing::Size(284, 111);
 			this->Controls->Add(this->checkBoxCheckForUpdatesOnStartup);
 			this->Controls->Add(this->checkBoxDontPreserveTimestampsPermissions);
 			this->Controls->Add(this->buttonOkPreferences);
