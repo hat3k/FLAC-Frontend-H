@@ -729,7 +729,7 @@ namespace FLACfrontend {
 			// textBoxPrefixUser
 			// 
 			this->textBoxPrefixUser->Enabled = false;
-			this->textBoxPrefixUser->Location = System::Drawing::Point(183, 87);
+			this->textBoxPrefixUser->Location = System::Drawing::Point(183, 109);
 			this->textBoxPrefixUser->Name = L"textBoxPrefixUser";
 			this->textBoxPrefixUser->Size = System::Drawing::Size(277, 20);
 			this->textBoxPrefixUser->TabIndex = 21;
@@ -754,7 +754,7 @@ namespace FLACfrontend {
 			// checkBoxAddPrefix
 			// 
 			this->checkBoxAddPrefix->AutoSize = true;
-			this->checkBoxAddPrefix->Location = System::Drawing::Point(13, 89);
+			this->checkBoxAddPrefix->Location = System::Drawing::Point(13, 111);
 			this->checkBoxAddPrefix->Name = L"checkBoxAddPrefix";
 			this->checkBoxAddPrefix->Size = System::Drawing::Size(172, 17);
 			this->checkBoxAddPrefix->TabIndex = 20;
@@ -851,11 +851,12 @@ namespace FLACfrontend {
 			// chkIgnoreChunkSize
 			// 
 			this->chkIgnoreChunkSize->AutoSize = true;
-			this->chkIgnoreChunkSize->Location = System::Drawing::Point(13, 112);
+			this->chkIgnoreChunkSize->Location = System::Drawing::Point(13, 88);
 			this->chkIgnoreChunkSize->Name = L"chkIgnoreChunkSize";
-			this->chkIgnoreChunkSize->Size = System::Drawing::Size(286, 17);
+			this->chkIgnoreChunkSize->Size = System::Drawing::Size(125, 17);
 			this->chkIgnoreChunkSize->TabIndex = 26;
-			this->chkIgnoreChunkSize->Text = L"Ignore WAVE filesize (for files > 4GB, use with caution!)";
+			this->chkIgnoreChunkSize->Text = L"Ignore WAVE filesize";
+			this->ttHelp->SetToolTip(this->chkIgnoreChunkSize, L"Ffor files > 4GB, use with caution!");
 			this->chkIgnoreChunkSize->UseVisualStyleBackColor = true;
 			// 
 			// grpbCuesheet
