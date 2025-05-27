@@ -38,9 +38,11 @@ namespace FLACfrontend {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ buttonOkPreferences;
 	public: System::Windows::Forms::CheckBox^ checkBoxCheckForUpdatesOnStartup;
 	public: System::Windows::Forms::CheckBox^ checkBoxDontPreserveTimestampsPermissions;
+	public: System::Windows::Forms::CheckBox^ checkBoxIgnoreReadOnly;
+
+	private: System::Windows::Forms::Button^ buttonOkPreferences;
 
 	private: System::Windows::Forms::ToolTip^ toolTipPreferences;
 
@@ -66,21 +68,12 @@ namespace FLACfrontend {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Preferences::typeid));
-			this->buttonOkPreferences = (gcnew System::Windows::Forms::Button());
 			this->checkBoxCheckForUpdatesOnStartup = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxDontPreserveTimestampsPermissions = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBoxIgnoreReadOnly = (gcnew System::Windows::Forms::CheckBox());
+			this->buttonOkPreferences = (gcnew System::Windows::Forms::Button());
 			this->toolTipPreferences = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->SuspendLayout();
-			// 
-			// buttonOkPreferences
-			// 
-			this->buttonOkPreferences->Location = System::Drawing::Point(100, 76);
-			this->buttonOkPreferences->Name = L"buttonOkPreferences";
-			this->buttonOkPreferences->Size = System::Drawing::Size(75, 23);
-			this->buttonOkPreferences->TabIndex = 3;
-			this->buttonOkPreferences->Text = L"OK";
-			this->buttonOkPreferences->UseVisualStyleBackColor = true;
-			this->buttonOkPreferences->Click += gcnew System::EventHandler(this, &Preferences::buttonOkPreferences_Click);
 			// 
 			// checkBoxCheckForUpdatesOnStartup
 			// 
@@ -92,6 +85,7 @@ namespace FLACfrontend {
 			this->checkBoxCheckForUpdatesOnStartup->Text = L"Check for updates on startup";
 			this->toolTipPreferences->SetToolTip(this->checkBoxCheckForUpdatesOnStartup, L"Automatically check if a new version is available when the program starts");
 			this->checkBoxCheckForUpdatesOnStartup->UseVisualStyleBackColor = true;
+			this->checkBoxCheckForUpdatesOnStartup->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxCheckForUpdatesOnStartup_CheckedChanged);
 			// 
 			// checkBoxDontPreserveTimestampsPermissions
 			// 
@@ -105,14 +99,40 @@ namespace FLACfrontend {
 			this->checkBoxDontPreserveTimestampsPermissions->Text = L"Don\'t preserve timestamps and permissions";
 			this->toolTipPreferences->SetToolTip(this->checkBoxDontPreserveTimestampsPermissions, resources->GetString(L"checkBoxDontPreserveTimestampsPermissions.ToolTip"));
 			this->checkBoxDontPreserveTimestampsPermissions->UseVisualStyleBackColor = true;
+			this->checkBoxDontPreserveTimestampsPermissions->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxDontPreserveTimestampsPermissions_CheckedChanged);
+			// 
+			// checkBoxIgnoreReadOnly
+			// 
+			this->checkBoxIgnoreReadOnly->AutoSize = true;
+			this->checkBoxIgnoreReadOnly->Enabled = false;
+			this->checkBoxIgnoreReadOnly->Location = System::Drawing::Point(12, 58);
+			this->checkBoxIgnoreReadOnly->Name = L"checkBoxIgnoreReadOnly";
+			this->checkBoxIgnoreReadOnly->Size = System::Drawing::Size(147, 17);
+			this->checkBoxIgnoreReadOnly->TabIndex = 3;
+			this->checkBoxIgnoreReadOnly->Text = L"Ignore \'read-only\' attribute";
+			this->toolTipPreferences->SetToolTip(this->checkBoxIgnoreReadOnly, resources->GetString(L"checkBoxIgnoreReadOnly.ToolTip"));
+			this->checkBoxIgnoreReadOnly->UseVisualStyleBackColor = true;
+			this->checkBoxIgnoreReadOnly->Visible = false;
+			this->checkBoxIgnoreReadOnly->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxIgnoreReadOnly_CheckedChanged);
+			// 
+			// buttonOkPreferences
+			// 
+			this->buttonOkPreferences->Location = System::Drawing::Point(100, 81);
+			this->buttonOkPreferences->Name = L"buttonOkPreferences";
+			this->buttonOkPreferences->Size = System::Drawing::Size(75, 23);
+			this->buttonOkPreferences->TabIndex = 4;
+			this->buttonOkPreferences->Text = L"OK";
+			this->buttonOkPreferences->UseVisualStyleBackColor = true;
+			this->buttonOkPreferences->Click += gcnew System::EventHandler(this, &Preferences::buttonOkPreferences_Click);
 			// 
 			// Preferences
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 111);
+			this->ClientSize = System::Drawing::Size(284, 114);
 			this->Controls->Add(this->checkBoxCheckForUpdatesOnStartup);
 			this->Controls->Add(this->checkBoxDontPreserveTimestampsPermissions);
+			this->Controls->Add(this->checkBoxIgnoreReadOnly);
 			this->Controls->Add(this->buttonOkPreferences);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
@@ -125,6 +145,13 @@ namespace FLACfrontend {
 
 		}
 #pragma endregion
+
+	private: System::Void checkBoxCheckForUpdatesOnStartup_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxDontPreserveTimestampsPermissions_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxIgnoreReadOnly_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
 	private: System::Void buttonOkPreferences_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->DialogResult = ::DialogResult::OK;
 		this->Close();

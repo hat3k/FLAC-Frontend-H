@@ -150,6 +150,8 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ checkCommandLine;
 	private: System::Windows::Forms::Button^ buttonClearCommandLine;
 	private: System::Windows::Forms::OpenFileDialog^ openCueSheet;
+	private: System::Windows::Forms::CheckBox^ checkBoxExactRice;
+	private: System::Windows::Forms::CheckBox^ checkBoxRiceParameterSearch;
 
 	public:
 
@@ -171,13 +173,16 @@ namespace FLACfrontend {
 		writer->WriteLine("OptionR: " + checkBoxOptionR->Checked.ToString());
 		writer->WriteLine("RLevel: " + trackBarR->Value.ToString());
 		writer->WriteLine("NoPadding: " + checkBoxNoPadding->Checked.ToString());
+//		writer->WriteLine("ExactRice: " + checkBoxExactRice->Checked.ToString());
+//		writer->WriteLine("RiceParameterSearch: " + checkBoxRiceParameterSearch->Checked.ToString());
 		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
 		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
 		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
-		writer->WriteLine("DontPreserveModTime: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
 		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
+		writer->WriteLine("DontPreserveModTime: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
+//		writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
 		writer->Close();
 	}
 
@@ -228,6 +233,12 @@ namespace FLACfrontend {
 					else if (key == "NoPadding") {
 						checkBoxNoPadding->Checked = Boolean::Parse(value);
 					}
+//					else if (key == "ExactRice") {
+//						checkBoxExactRice->Checked = Boolean::Parse(value);
+//					}
+//					else if (key == "RiceParameterSearch") {
+//						checkBoxRiceParameterSearch->Checked = Boolean::Parse(value);
+//					}
 					else if (key == "Overwrite") {
 						checkBoxOverwrite->Checked = Boolean::Parse(value);
 					}
@@ -246,6 +257,9 @@ namespace FLACfrontend {
 					else if (key == "DontPreserveModTime") {
 						this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked = Boolean::Parse(value);
 					}
+//					else if (key == "IgnoreReadOnly") {
+//						this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked = Boolean::Parse(value);
+//					}
 				}
 			}
 
@@ -314,8 +328,10 @@ namespace FLACfrontend {
 			this->checkBoxOptionR = (gcnew System::Windows::Forms::CheckBox());
 			this->textBoxR = (gcnew System::Windows::Forms::TextBox());
 			this->trackBarR = (gcnew System::Windows::Forms::TrackBar());
-			this->groupBoxAdditionalOptions = (gcnew System::Windows::Forms::GroupBox());
 			this->chkIgnoreChunkSize = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBoxExactRice = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBoxRiceParameterSearch = (gcnew System::Windows::Forms::CheckBox());
+			this->groupBoxAdditionalOptions = (gcnew System::Windows::Forms::GroupBox());
 			this->grpbCuesheet = (gcnew System::Windows::Forms::GroupBox());
 			this->buttonClearCuesheet = (gcnew System::Windows::Forms::Button());
 			this->checkCuesheet = (gcnew System::Windows::Forms::CheckBox());
@@ -746,8 +762,8 @@ namespace FLACfrontend {
 			this->checkBoxOptionP->Size = System::Drawing::Size(79, 17);
 			this->checkBoxOptionP->TabIndex = 16;
 			this->checkBoxOptionP->Text = L"Option \"-p\"";
-			this->ttHelp->SetToolTip(this->checkBoxOptionP, L"-p, --qlp-coeff-precision-search\r\nDo exhaustive search of LP coefficient quantiza"
-				L"tion (expensive!);\r\noverrides -q;\r\ndoes nothing if using -l 0\r\n");
+			this->ttHelp->SetToolTip(this->checkBoxOptionP, L"-p, --qlp-coeff-precision-search\r\n\r\nDo exhaustive search of LP coefficient quanti"
+				L"zation (expensive!);\r\noverrides -q;\r\ndoes nothing if using -l 0");
 			this->checkBoxOptionP->UseVisualStyleBackColor = true;
 			this->checkBoxOptionP->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionP_CheckedChanged);
 			// 
@@ -773,7 +789,7 @@ namespace FLACfrontend {
 			this->checkBoxOptionE->Size = System::Drawing::Size(79, 17);
 			this->checkBoxOptionE->TabIndex = 17;
 			this->checkBoxOptionE->Text = L"Option \"-e\"";
-			this->ttHelp->SetToolTip(this->checkBoxOptionE, L"-e, --exhaustive-model-search\r\nDo exhaustive model search (expensive!)\r\n");
+			this->ttHelp->SetToolTip(this->checkBoxOptionE, L"-e, --exhaustive-model-search\r\n\r\nDo exhaustive model search (expensive!)");
 			this->checkBoxOptionE->UseVisualStyleBackColor = true;
 			this->checkBoxOptionE->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionE_CheckedChanged);
 			// 
@@ -785,8 +801,8 @@ namespace FLACfrontend {
 			this->checkBoxOptionMT->Size = System::Drawing::Size(140, 17);
 			this->checkBoxOptionMT->TabIndex = 18;
 			this->checkBoxOptionMT->Text = L"Multithreading. Threads:";
-			this->ttHelp->SetToolTip(this->checkBoxOptionMT, L"-j##, --threads=##\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with FLA"
-				L"C version 1.5.0 or higher.");
+			this->ttHelp->SetToolTip(this->checkBoxOptionMT, L"-j##, --threads=##\r\n\r\nUse ## threads for encoding.\r\nNote!\r\nOnly compatible with F"
+				L"LAC version 1.5.0 or higher.");
 			this->checkBoxOptionMT->UseVisualStyleBackColor = true;
 			this->checkBoxOptionMT->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxOptionMT_CheckedChanged);
 			// 
@@ -828,8 +844,49 @@ namespace FLACfrontend {
 			this->trackBarR->Value = 8;
 			this->trackBarR->ValueChanged += gcnew System::EventHandler(this, &Form1::trackBarR_ValueChanged);
 			// 
+			// chkIgnoreChunkSize
+			// 
+			this->chkIgnoreChunkSize->AutoSize = true;
+			this->chkIgnoreChunkSize->Location = System::Drawing::Point(13, 88);
+			this->chkIgnoreChunkSize->Name = L"chkIgnoreChunkSize";
+			this->chkIgnoreChunkSize->Size = System::Drawing::Size(125, 17);
+			this->chkIgnoreChunkSize->TabIndex = 26;
+			this->chkIgnoreChunkSize->Text = L"Ignore WAVE filesize";
+			this->ttHelp->SetToolTip(this->chkIgnoreChunkSize, L"For files > 4GB, use with caution!");
+			this->chkIgnoreChunkSize->UseVisualStyleBackColor = true;
+			// 
+			// checkBoxExactRice
+			// 
+			this->checkBoxExactRice->AutoSize = true;
+			this->checkBoxExactRice->Enabled = false;
+			this->checkBoxExactRice->Location = System::Drawing::Point(221, 65);
+			this->checkBoxExactRice->Name = L"checkBoxExactRice";
+			this->checkBoxExactRice->Size = System::Drawing::Size(78, 17);
+			this->checkBoxExactRice->TabIndex = 27;
+			this->checkBoxExactRice->Text = L"Exact Rice";
+			this->ttHelp->SetToolTip(this->checkBoxExactRice, L"--exact-rice\r\n\r\nExact Rice codeword length calculation.");
+			this->checkBoxExactRice->UseVisualStyleBackColor = true;
+			this->checkBoxExactRice->Visible = false;
+			this->checkBoxExactRice->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxExactRice_CheckedChanged);
+			// 
+			// checkBoxRiceParameterSearch
+			// 
+			this->checkBoxRiceParameterSearch->AutoSize = true;
+			this->checkBoxRiceParameterSearch->Enabled = false;
+			this->checkBoxRiceParameterSearch->Location = System::Drawing::Point(221, 88);
+			this->checkBoxRiceParameterSearch->Name = L"checkBoxRiceParameterSearch";
+			this->checkBoxRiceParameterSearch->Size = System::Drawing::Size(133, 17);
+			this->checkBoxRiceParameterSearch->TabIndex = 28;
+			this->checkBoxRiceParameterSearch->Text = L"Rice parameter search";
+			this->ttHelp->SetToolTip(this->checkBoxRiceParameterSearch, L"--rice-parameter-search");
+			this->checkBoxRiceParameterSearch->UseVisualStyleBackColor = true;
+			this->checkBoxRiceParameterSearch->Visible = false;
+			this->checkBoxRiceParameterSearch->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxRiceParameterSearch_CheckedChanged);
+			// 
 			// groupBoxAdditionalOptions
 			// 
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxRiceParameterSearch);
+			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxExactRice);
 			this->groupBoxAdditionalOptions->Controls->Add(this->chkIgnoreChunkSize);
 			this->groupBoxAdditionalOptions->Controls->Add(this->textBoxR);
 			this->groupBoxAdditionalOptions->Controls->Add(this->trackBarR);
@@ -847,17 +904,6 @@ namespace FLACfrontend {
 			this->groupBoxAdditionalOptions->TabIndex = 23;
 			this->groupBoxAdditionalOptions->TabStop = false;
 			this->groupBoxAdditionalOptions->Text = L"Additional options";
-			// 
-			// chkIgnoreChunkSize
-			// 
-			this->chkIgnoreChunkSize->AutoSize = true;
-			this->chkIgnoreChunkSize->Location = System::Drawing::Point(13, 88);
-			this->chkIgnoreChunkSize->Name = L"chkIgnoreChunkSize";
-			this->chkIgnoreChunkSize->Size = System::Drawing::Size(125, 17);
-			this->chkIgnoreChunkSize->TabIndex = 26;
-			this->chkIgnoreChunkSize->Text = L"Ignore WAVE filesize";
-			this->ttHelp->SetToolTip(this->chkIgnoreChunkSize, L"Ffor files > 4GB, use with caution!");
-			this->chkIgnoreChunkSize->UseVisualStyleBackColor = true;
 			// 
 			// grpbCuesheet
 			// 
@@ -1243,6 +1289,8 @@ private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ 
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
 		if (checkBoxOptionMT->Checked == true) args += "-j" + textBoxMT->Text + " ";
 		if (checkBoxOptionR->Checked == true) args += "-r" + textBoxR->Text + " ";
+//		if (checkBoxExactRice->Checked == true) args += "--exact-rice ";
+//		if (checkBoxRiceParameterSearch->Checked == true) args += "--rice-parameter-search ";
 		if (checkBoxAddPrefix->Checked == true) args += "--output-prefix=" + textBoxPrefixUser->Text + " ";
 		if (chkDeleteInput->Checked == true) args += "--delete-input-file ";
 		if (chkKeepForeign->Checked == true) args += "--keep-foreign-metadata ";
@@ -1251,6 +1299,7 @@ private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ 
 		if (chkReplayGain->Checked == true && chkReplayGainAlbum->Checked == false) args += "--replay-gain ";
 		if (checkCuesheet->Checked == true && !String::IsNullOrEmpty(txtCuesheet->Text)) args += "--cuesheet \"" + txtCuesheet->Text + "\" ";
 		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
+//		if (this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked == true) args += "--ignore-read-only ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate process
@@ -1358,6 +1407,7 @@ private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ 
 
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
 		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
+//		if (this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked == true) args += "--ignore-read-only ";
 		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
 
 		// Get console ready and populate process
@@ -1666,6 +1716,10 @@ private: Version^ ParseVersion(String^ versionStr)
 	}
 	private: System::Void checkBoxNoPadding_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
+	private: System::Void checkBoxExactRice_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkBoxRiceParameterSearch_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
 };
 
 	public ref class Settings {
@@ -1688,7 +1742,13 @@ private: Version^ ParseVersion(String^ versionStr)
 		bool overwrite;
 		bool enableCommandLine;
 		String^ commandLineOptions;
+//		bool exactRice;
+//		bool riceParameterSearch;
+
+		// Preferences
+		bool checkBoxCheckForUpdatesOnStartup;
 		bool dontPreserveModTime;
+//		bool checkBoxIgnoreReadOnly;
 	};
 }
 
