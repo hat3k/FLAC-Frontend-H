@@ -181,8 +181,10 @@ namespace FLACfrontend {
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
 		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
-		writer->WriteLine("DontPreserveModTime: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
+		writer->WriteLine("DontPreserveTimestampsPermissions: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
 //		writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
+		writer->WriteLine("SaveCommandLineHistory: " + this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked.ToString());
+		writer->WriteLine("CommandLineHistoryLimit: " + this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value.ToString());
 		writer->Close();
 	}
 
@@ -254,15 +256,20 @@ namespace FLACfrontend {
 					else if (key == "IgnoredVersion") {
 						ignoredVersion = value;
 					}
-					else if (key == "DontPreserveModTime") {
+					else if (key == "DontPreserveTimestampsPermissions") {
 						this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked = Boolean::Parse(value);
 					}
 //					else if (key == "IgnoreReadOnly") {
 //						this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked = Boolean::Parse(value);
 //					}
+					else if (key == "SaveCommandLineHistory") {
+						this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked = Boolean::Parse(value);
+					}
+					else if (key == "CommandLineHistoryLimit") {
+						this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value = Int32::Parse(value);
+					}
 				}
 			}
-
 			reader->Close();
 		}
 	}
@@ -1652,6 +1659,9 @@ private: Version^ ParseVersion(String^ versionStr)
 		Environment::CurrentDirectory = Application::StartupPath;
 		LoadSettings("settings.txt");
 		
+		checkBoxOptionMT_CheckedChanged(checkBoxOptionMT, nullptr);
+		checkBoxAddPrefix_CheckedChanged(checkBoxAddPrefix, nullptr);
+		checkBoxOptionR_CheckedChanged(checkBoxOptionR, nullptr);
 		checkCommandLine_CheckedChanged(checkCommandLine, nullptr);
 		checkCuesheet_CheckedChanged(checkCuesheet, nullptr);
 
@@ -1746,9 +1756,11 @@ private: Version^ ParseVersion(String^ versionStr)
 //		bool riceParameterSearch;
 
 		// Preferences
-		bool checkBoxCheckForUpdatesOnStartup;
-		bool dontPreserveModTime;
-//		bool checkBoxIgnoreReadOnly;
+		bool checkForUpdatesOnStartup;
+		bool dontPreserveTimestampsPermissions;
+		bool saveCommandLineHistory;
+		int commandLineHistoryLimit;
+//		bool ignoreReadOnly;
 	};
 }
 
