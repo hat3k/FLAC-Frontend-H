@@ -144,6 +144,7 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::Button^ btnCueSheet;
 	private: System::Windows::Forms::GroupBox^ grpbExtraOptions;
 	public: System::Windows::Forms::TextBox^ txtCommandLine;
+	public: System::Windows::Forms::ComboBox^ comboBoxCommandLine;
 	private: System::Windows::Forms::Button^ btnCommandHelp;
 	private: System::Windows::Forms::CheckBox^ checkCuesheet;
 	private: System::Windows::Forms::Button^ buttonClearCuesheet;
@@ -177,7 +178,8 @@ namespace FLACfrontend {
 //		writer->WriteLine("RiceParameterSearch: " + checkBoxRiceParameterSearch->Checked.ToString());
 		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
 		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
-		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
+//		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
+		writer->WriteLine("CommandLineOptions: " + comboBoxCommandLine->Text);
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
 		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
@@ -247,8 +249,11 @@ namespace FLACfrontend {
 					else if (key == "EnableCommandLine") {
 						checkCommandLine->Checked = Boolean::Parse(value);
 					}
+//					else if (key == "CommandLineOptions") {
+//						txtCommandLine->Text = value;
+//					}
 					else if (key == "CommandLineOptions") {
-						txtCommandLine->Text = value;
+						comboBoxCommandLine->Text = value;
 					}
 					else if (key == "CheckForUpdatesOnStartup") {
 						this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked = Boolean::Parse(value);
@@ -348,6 +353,7 @@ namespace FLACfrontend {
 			this->buttonClearCommandLine = (gcnew System::Windows::Forms::Button());
 			this->checkCommandLine = (gcnew System::Windows::Forms::CheckBox());
 			this->txtCommandLine = (gcnew System::Windows::Forms::TextBox());
+			this->comboBoxCommandLine = (gcnew System::Windows::Forms::ComboBox());
 			this->btnCommandHelp = (gcnew System::Windows::Forms::Button());
 			this->openCueSheet = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->gbEncoding->SuspendLayout();
@@ -968,6 +974,7 @@ namespace FLACfrontend {
 			this->grpbExtraOptions->Controls->Add(this->buttonClearCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->checkCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->txtCommandLine);
+			this->grpbExtraOptions->Controls->Add(this->comboBoxCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->btnCommandHelp);
 			this->grpbExtraOptions->Location = System::Drawing::Point(12, 436);
 			this->grpbExtraOptions->Name = L"grpbExtraOptions";
@@ -1003,6 +1010,17 @@ namespace FLACfrontend {
 			this->txtCommandLine->Name = L"txtCommandLine";
 			this->txtCommandLine->Size = System::Drawing::Size(262, 20);
 			this->txtCommandLine->TabIndex = 1;
+			this->txtCommandLine->Visible = false;
+			// 
+			// comboBoxCommandLine
+			// 
+			this->comboBoxCommandLine->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
+			this->comboBoxCommandLine->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
+			this->comboBoxCommandLine->FormattingEnabled = true;
+			this->comboBoxCommandLine->Location = System::Drawing::Point(204, -3);
+			this->comboBoxCommandLine->Name = L"comboBoxCommandLine";
+			this->comboBoxCommandLine->Size = System::Drawing::Size(121, 21);
+			this->comboBoxCommandLine->TabIndex = 4;
 			// 
 			// btnCommandHelp
 			// 
@@ -1090,11 +1108,13 @@ namespace FLACfrontend {
 	}
 	private: System::Void checkCommandLine_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 		txtCommandLine->Enabled = checkCommandLine->Checked;
+		comboBoxCommandLine->Enabled = checkCommandLine->Checked;
 		buttonClearCommandLine->Enabled = checkCommandLine->Checked;
 		btnCommandHelp->Enabled = checkCommandLine->Checked;
 	}
 	private: System::Void buttonClearCommandLine_Click(System::Object^ sender, System::EventArgs^ e) {
 		txtCommandLine->Clear();
+		comboBoxCommandLine->Text="";
 	}
 //	private: System::Void btnCommandHelp_Click(System::Object^ sender, System::EventArgs^ e) {
 //		COORD c;
@@ -1307,7 +1327,8 @@ private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ 
 		if (checkCuesheet->Checked == true && !String::IsNullOrEmpty(txtCuesheet->Text)) args += "--cuesheet \"" + txtCuesheet->Text + "\" ";
 		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
 //		if (this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked == true) args += "--ignore-read-only ";
-		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
+//		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
+		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(comboBoxCommandLine->Text)) args += comboBoxCommandLine->Text + " ";
 
 		// Get console ready and populate process
 		FreeConsole();
@@ -1415,7 +1436,8 @@ private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ 
 		if (checkBoxOverwrite->Checked == true) args += "-f ";
 		if (this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked == true) args += "--no-preserve-modtime ";
 //		if (this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked == true) args += "--ignore-read-only ";
-		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
+//		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(txtCommandLine->Text)) args += txtCommandLine->Text + " ";
+		if (checkCommandLine->Checked == true && !String::IsNullOrEmpty(comboBoxCommandLine->Text)) args += comboBoxCommandLine->Text + " ";
 
 		// Get console ready and populate process
 		FreeConsole();

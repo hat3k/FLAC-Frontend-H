@@ -115,6 +115,7 @@ namespace FLACfrontend {
 			this->numericUpDownCommandLineHistoryLimit->Enabled = false;
 			this->numericUpDownCommandLineHistoryLimit->Location = System::Drawing::Point(196, 57);
 			this->numericUpDownCommandLineHistoryLimit->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
+			this->numericUpDownCommandLineHistoryLimit->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->numericUpDownCommandLineHistoryLimit->Name = L"numericUpDownCommandLineHistoryLimit";
 			this->numericUpDownCommandLineHistoryLimit->Size = System::Drawing::Size(44, 20);
 			this->numericUpDownCommandLineHistoryLimit->TabIndex = 3;
