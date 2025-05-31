@@ -42,8 +42,14 @@ namespace FLACfrontend {
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
 			this->programVersion = "2.1 build 20250520";
 
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
+			comboBoxCommandLine->Validated += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Validated);
+			comboBoxCommandLine->Leave += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Leave);
+			comboBoxCommandLine->KeyDown += gcnew KeyEventHandler(this, &Form1::comboBoxCommandLine_KeyDown);
+			comboBoxCommandLine->TextChanged += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_TextChanged);
+			PreferencesDialog->numericUpDownCommandLineHistoryLimit->ValueChanged += gcnew System::EventHandler(this, &Form1::numericUpDownCommandLineHistoryLimit_ValueChanged);
+			PreferencesDialog->checkBoxSaveCommandLineHistory->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxSaveCommandLineHistory_CheckedChanged);
 
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &Form1::Form1_FormClosing);
 			//
 			//TODO: Add the constructor code here
 			//
@@ -117,8 +123,6 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::Button^ btnAdvanced;
 	private: System::Windows::Forms::Button^ buttonPreferences;
 
-
-
 	private: Advanced_options^ AdvDialog;
 	private: Preferences^ PreferencesDialog;
 	private: CommandLineHelp^ CommandLineHelpDialog;
@@ -143,7 +147,7 @@ namespace FLACfrontend {
 	public: System::Windows::Forms::TextBox^ txtCuesheet;
 	private: System::Windows::Forms::Button^ btnCueSheet;
 	private: System::Windows::Forms::GroupBox^ grpbExtraOptions;
-	public: System::Windows::Forms::TextBox^ txtCommandLine;
+//	public: System::Windows::Forms::TextBox^ txtCommandLine;
 	public: System::Windows::Forms::ComboBox^ comboBoxCommandLine;
 	private: System::Windows::Forms::Button^ btnCommandHelp;
 	private: System::Windows::Forms::CheckBox^ checkCuesheet;
@@ -154,8 +158,6 @@ namespace FLACfrontend {
 	private: System::Windows::Forms::CheckBox^ checkBoxExactRice;
 	private: System::Windows::Forms::CheckBox^ checkBoxRiceParameterSearch;
 
-	public:
-
 
 	private: System::ComponentModel::IContainer^ components;
 
@@ -164,7 +166,6 @@ namespace FLACfrontend {
 		writer->WriteLine("CompressionLevel: " + tbLevel->Value.ToString());
 		writer->WriteLine("VerifyAfterEncoding: " + chkVerify->Checked.ToString());
 		writer->WriteLine("ReplayGainEnabled: " + chkReplayGain->Checked.ToString());
-
 		writer->WriteLine("OptionP: " + checkBoxOptionP->Checked.ToString());
 		writer->WriteLine("OptionE: " + checkBoxOptionE->Checked.ToString());
 		writer->WriteLine("OptionMT: " + checkBoxOptionMT->Checked.ToString());
@@ -187,6 +188,11 @@ namespace FLACfrontend {
 //		writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
 		writer->WriteLine("SaveCommandLineHistory: " + this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked.ToString());
 		writer->WriteLine("CommandLineHistoryLimit: " + this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value.ToString());
+		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
+			for each (String ^ cmd in comboBoxCommandLine->Items) {
+				writer->WriteLine("CommandLineHistory: " + cmd);
+			}
+		}
 		writer->Close();
 	}
 
@@ -273,6 +279,9 @@ namespace FLACfrontend {
 					else if (key == "CommandLineHistoryLimit") {
 						this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value = Int32::Parse(value);
 					}
+					else if (key == "CommandLineHistory" && PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
+						comboBoxCommandLine->Items->Add(value);
+					}
 				}
 			}
 			reader->Close();
@@ -352,7 +361,7 @@ namespace FLACfrontend {
 			this->grpbExtraOptions = (gcnew System::Windows::Forms::GroupBox());
 			this->buttonClearCommandLine = (gcnew System::Windows::Forms::Button());
 			this->checkCommandLine = (gcnew System::Windows::Forms::CheckBox());
-			this->txtCommandLine = (gcnew System::Windows::Forms::TextBox());
+//			this->txtCommandLine = (gcnew System::Windows::Forms::TextBox());
 			this->comboBoxCommandLine = (gcnew System::Windows::Forms::ComboBox());
 			this->btnCommandHelp = (gcnew System::Windows::Forms::Button());
 			this->openCueSheet = (gcnew System::Windows::Forms::OpenFileDialog());
@@ -896,6 +905,17 @@ namespace FLACfrontend {
 			this->checkBoxRiceParameterSearch->Visible = false;
 			this->checkBoxRiceParameterSearch->CheckedChanged += gcnew System::EventHandler(this, &Form1::checkBoxRiceParameterSearch_CheckedChanged);
 			// 
+			// buttonClearCommandLine
+			// 
+			this->buttonClearCommandLine->Location = System::Drawing::Point(346, 19);
+			this->buttonClearCommandLine->Name = L"buttonClearCommandLine";
+			this->buttonClearCommandLine->Size = System::Drawing::Size(48, 22);
+			this->buttonClearCommandLine->TabIndex = 3;
+			this->buttonClearCommandLine->Text = L"Clear";
+			this->ttHelp->SetToolTip(this->buttonClearCommandLine, L"\'Click\" clears current line.\r\n\r\n\'Shift+Click\' clears the whole history.");
+			this->buttonClearCommandLine->UseVisualStyleBackColor = true;
+			this->buttonClearCommandLine->Click += gcnew System::EventHandler(this, &Form1::buttonClearCommandLine_Click);
+			// 
 			// groupBoxAdditionalOptions
 			// 
 			this->groupBoxAdditionalOptions->Controls->Add(this->checkBoxRiceParameterSearch);
@@ -973,7 +993,7 @@ namespace FLACfrontend {
 			// 
 			this->grpbExtraOptions->Controls->Add(this->buttonClearCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->checkCommandLine);
-			this->grpbExtraOptions->Controls->Add(this->txtCommandLine);
+//			this->grpbExtraOptions->Controls->Add(this->txtCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->comboBoxCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->btnCommandHelp);
 			this->grpbExtraOptions->Location = System::Drawing::Point(12, 436);
@@ -982,16 +1002,6 @@ namespace FLACfrontend {
 			this->grpbExtraOptions->TabIndex = 24;
 			this->grpbExtraOptions->TabStop = false;
 			this->grpbExtraOptions->Text = L"Extra command line options";
-			// 
-			// buttonClearCommandLine
-			// 
-			this->buttonClearCommandLine->Location = System::Drawing::Point(346, 19);
-			this->buttonClearCommandLine->Name = L"buttonClearCommandLine";
-			this->buttonClearCommandLine->Size = System::Drawing::Size(48, 22);
-			this->buttonClearCommandLine->TabIndex = 3;
-			this->buttonClearCommandLine->Text = L"Clear";
-			this->buttonClearCommandLine->UseVisualStyleBackColor = true;
-			this->buttonClearCommandLine->Click += gcnew System::EventHandler(this, &Form1::buttonClearCommandLine_Click);
 			// 
 			// checkCommandLine
 			// 
@@ -1006,20 +1016,20 @@ namespace FLACfrontend {
 			// 
 			// txtCommandLine
 			// 
-			this->txtCommandLine->Location = System::Drawing::Point(78, 20);
-			this->txtCommandLine->Name = L"txtCommandLine";
-			this->txtCommandLine->Size = System::Drawing::Size(262, 20);
-			this->txtCommandLine->TabIndex = 1;
-			this->txtCommandLine->Visible = false;
+			//this->txtCommandLine->Location = System::Drawing::Point(78, 20);
+			//this->txtCommandLine->Name = L"txtCommandLine";
+			//this->txtCommandLine->Size = System::Drawing::Size(84, 20);
+			//this->txtCommandLine->TabIndex = 1;
+			//this->txtCommandLine->Visible = false;
 			// 
 			// comboBoxCommandLine
 			// 
-			this->comboBoxCommandLine->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::SuggestAppend;
+			this->comboBoxCommandLine->AutoCompleteMode = System::Windows::Forms::AutoCompleteMode::Suggest;
 			this->comboBoxCommandLine->AutoCompleteSource = System::Windows::Forms::AutoCompleteSource::ListItems;
 			this->comboBoxCommandLine->FormattingEnabled = true;
-			this->comboBoxCommandLine->Location = System::Drawing::Point(204, -3);
+			this->comboBoxCommandLine->Location = System::Drawing::Point(78, 20);
 			this->comboBoxCommandLine->Name = L"comboBoxCommandLine";
-			this->comboBoxCommandLine->Size = System::Drawing::Size(121, 21);
+			this->comboBoxCommandLine->Size = System::Drawing::Size(262, 21);
 			this->comboBoxCommandLine->TabIndex = 4;
 			// 
 			// btnCommandHelp
@@ -1107,14 +1117,20 @@ namespace FLACfrontend {
 		return output->Trim();
 	}
 	private: System::Void checkCommandLine_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		txtCommandLine->Enabled = checkCommandLine->Checked;
+//		txtCommandLine->Enabled = checkCommandLine->Checked;
 		comboBoxCommandLine->Enabled = checkCommandLine->Checked;
 		buttonClearCommandLine->Enabled = checkCommandLine->Checked;
 		btnCommandHelp->Enabled = checkCommandLine->Checked;
 	}
 	private: System::Void buttonClearCommandLine_Click(System::Object^ sender, System::EventArgs^ e) {
-		txtCommandLine->Clear();
-		comboBoxCommandLine->Text="";
+//		txtCommandLine->Clear();
+		if (Control::ModifierKeys == Keys::Shift) {
+			comboBoxCommandLine->Items->Clear();
+			comboBoxCommandLine->Text = "";
+		}
+		else {
+			comboBoxCommandLine->Text = "";
+		}
 	}
 //	private: System::Void btnCommandHelp_Click(System::Object^ sender, System::EventArgs^ e) {
 //		COORD c;
@@ -1649,7 +1665,7 @@ private: void CheckForUpdate()
 
 			if (result == ::DialogResult::Yes) {
 				// Open releases page
-				Process::Start("https://github.com/hat3k/FLAC-Frontend-H/releases ");
+				Process::Start("https://github.com/hat3k/FLAC-Frontend-H/releases");
 			}
 			else if (result == ::DialogResult::Cancel) {
 				// User clicked "Cancel = Ignore this version"
@@ -1751,6 +1767,48 @@ private: Version^ ParseVersion(String^ versionStr)
 	private: System::Void checkBoxExactRice_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void checkBoxRiceParameterSearch_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void comboBoxCommandLine_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked && String::IsNullOrWhiteSpace(comboBoxCommandLine->Text)) {
+			if (comboBoxCommandLine->Items->Contains("")) {
+				comboBoxCommandLine->Items->Remove("");
+			}
+		}
+	}
+	private: System::Void numericUpDownCommandLineHistoryLimit_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
+			while (comboBoxCommandLine->Items->Count > PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value) {
+				comboBoxCommandLine->Items->RemoveAt(comboBoxCommandLine->Items->Count - 1);
+			}
+		}
+	}
+	private: System::Void checkBoxSaveCommandLineHistory_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (!PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
+			comboBoxCommandLine->Items->Clear();
+		}
+	}
+	private: System::Void comboBoxCommandLine_Validated(System::Object^ sender, System::EventArgs^ e) {
+		comboBoxCommandLine->SelectionStart = comboBoxCommandLine->Text->Length;
+		comboBoxCommandLine->SelectionLength = 0;
+	}
+	private: System::Void comboBoxCommandLine_Leave(System::Object^ sender, System::EventArgs^ e) {
+		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked &&
+			!String::IsNullOrWhiteSpace(comboBoxCommandLine->Text)) {
+
+			if (!comboBoxCommandLine->Items->Contains(comboBoxCommandLine->Text)) {
+				comboBoxCommandLine->Items->Insert(0, comboBoxCommandLine->Text);
+			}
+			while (comboBoxCommandLine->Items->Count > PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value) {
+				comboBoxCommandLine->Items->RemoveAt(comboBoxCommandLine->Items->Count - 1);
+			}
+		}
+	}
+	private: System::Void comboBoxCommandLine_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (e->KeyCode == Keys::Enter) {
+			comboBoxCommandLine_Leave(sender, e);
+			e->Handled = true;
+			e->SuppressKeyPress = true;
+		}
 	}
 };
 
