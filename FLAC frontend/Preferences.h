@@ -1,9 +1,5 @@
 #pragma once
 
-#include <windows.h>
-
-using namespace System::Windows::Forms;
-
 namespace FLACfrontend {
 
 	using namespace System;
