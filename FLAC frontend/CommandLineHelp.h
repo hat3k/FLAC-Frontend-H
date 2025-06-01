@@ -25,6 +25,8 @@ namespace FLACfrontend {
 			this->Shown += gcnew System::EventHandler(this, &CommandLineHelp::CommandLineHelp_Shown);
 			textBoxCommandLineHelpSearch->KeyDown += gcnew KeyEventHandler(this, &CommandLineHelp::textBoxCommandLineHelpSearch_KeyDown);
 			this->AcceptButton = buttonCommandLineHelpFind;
+			this->KeyPreview = true;
+			this->KeyDown += gcnew KeyEventHandler(this, &CommandLineHelp::Form_KeyDown);
 		}
 
 		void SetText(String^ text) {
@@ -85,7 +87,7 @@ namespace FLACfrontend {
 			this->richTextBoxCommandLineHelp->Name = L"richTextBoxCommandLineHelp";
 			this->richTextBoxCommandLineHelp->ReadOnly = true;
 			this->richTextBoxCommandLineHelp->Size = System::Drawing::Size(624, 394);
-			this->richTextBoxCommandLineHelp->TabIndex = 5;
+			this->richTextBoxCommandLineHelp->TabIndex = 2;
 			this->richTextBoxCommandLineHelp->Text = L"";
 			// 
 			// textBoxCommandLineHelpSearch
@@ -95,7 +97,7 @@ namespace FLACfrontend {
 			this->textBoxCommandLineHelpSearch->Location = System::Drawing::Point(12, 13);
 			this->textBoxCommandLineHelpSearch->Name = L"textBoxCommandLineHelpSearch";
 			this->textBoxCommandLineHelpSearch->Size = System::Drawing::Size(519, 20);
-			this->textBoxCommandLineHelpSearch->TabIndex = 1;
+			this->textBoxCommandLineHelpSearch->TabIndex = 0;
 			// 
 			// buttonCommandLineHelpFind
 			// 
@@ -103,7 +105,7 @@ namespace FLACfrontend {
 			this->buttonCommandLineHelpFind->Location = System::Drawing::Point(537, 12);
 			this->buttonCommandLineHelpFind->Name = L"buttonCommandLineHelpFind";
 			this->buttonCommandLineHelpFind->Size = System::Drawing::Size(75, 22);
-			this->buttonCommandLineHelpFind->TabIndex = 2;
+			this->buttonCommandLineHelpFind->TabIndex = 1;
 			this->buttonCommandLineHelpFind->Text = L"Find/Next";
 			this->buttonCommandLineHelpFind->UseVisualStyleBackColor = true;
 			this->buttonCommandLineHelpFind->Click += gcnew System::EventHandler(this, &CommandLineHelp::buttonCommandLineHelpFind_Click);
@@ -129,8 +131,7 @@ namespace FLACfrontend {
 		int lastSearchPos;
 		String^ lastSearchText;
 
-	public:
-		void FindTextInHelp(bool forward)
+		private: void FindTextInHelp(bool forward)
 		{
 			String^ searchText = textBoxCommandLineHelpSearch->Text;
 			if (String::IsNullOrEmpty(searchText))
@@ -169,8 +170,7 @@ namespace FLACfrontend {
 				}
 			}
 		}
-
-		System::Void buttonCommandLineHelpFind_Click(System::Object^ sender, System::EventArgs^ e)
+		private: System::Void buttonCommandLineHelpFind_Click(System::Object^ sender, System::EventArgs^ e)
 		{
 			FindTextInHelp(true);
 		}
@@ -179,6 +179,23 @@ namespace FLACfrontend {
 			if (e->KeyCode == Keys::Enter)
 			{
 				FindTextInHelp(true);
+				e->Handled = true;
+				e->SuppressKeyPress = true;
+			}
+		}
+		private: System::Void Form_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+		{
+			if (e->KeyCode == Keys::F3)
+			{
+				FindTextInHelp(true);
+				e->Handled = true;
+				e->SuppressKeyPress = true;
+			}
+			else if (e->Control && e->KeyCode == Keys::F)
+			{
+				textBoxCommandLineHelpSearch->Focus();
+				textBoxCommandLineHelpSearch->SelectAll();
+
 				e->Handled = true;
 				e->SuppressKeyPress = true;
 			}
