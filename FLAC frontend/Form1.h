@@ -178,16 +178,16 @@ namespace FLACfrontend {
 //		writer->WriteLine("ExactRice: " + checkBoxExactRice->Checked.ToString());
 //		writer->WriteLine("RiceParameterSearch: " + checkBoxRiceParameterSearch->Checked.ToString());
 		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
-		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
-//		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
-		writer->WriteLine("CommandLineOptions: " + comboBoxCommandLine->Text);
 
 		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
 		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
 		writer->WriteLine("DontPreserveTimestampsPermissions: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
 //		writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
+		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
 		writer->WriteLine("SaveCommandLineHistory: " + this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked.ToString());
 		writer->WriteLine("CommandLineHistoryLimit: " + this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value.ToString());
+//		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
+		writer->WriteLine("CommandLineOptions: " + comboBoxCommandLine->Text);
 		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
 			for each (String ^ cmd in comboBoxCommandLine->Items) {
 				writer->WriteLine("CommandLineHistory: " + cmd);
@@ -252,15 +252,6 @@ namespace FLACfrontend {
 					else if (key == "Overwrite") {
 						checkBoxOverwrite->Checked = Boolean::Parse(value);
 					}
-					else if (key == "EnableCommandLine") {
-						checkCommandLine->Checked = Boolean::Parse(value);
-					}
-//					else if (key == "CommandLineOptions") {
-//						txtCommandLine->Text = value;
-//					}
-					else if (key == "CommandLineOptions") {
-						comboBoxCommandLine->Text = value;
-					}
 					else if (key == "CheckForUpdatesOnStartup") {
 						this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked = Boolean::Parse(value);
 					}
@@ -273,11 +264,20 @@ namespace FLACfrontend {
 //					else if (key == "IgnoreReadOnly") {
 //						this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked = Boolean::Parse(value);
 //					}
+					else if (key == "EnableCommandLine") {
+						checkCommandLine->Checked = Boolean::Parse(value);
+					}
 					else if (key == "SaveCommandLineHistory") {
 						this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked = Boolean::Parse(value);
 					}
 					else if (key == "CommandLineHistoryLimit") {
 						this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value = Int32::Parse(value);
+					}
+//					else if (key == "CommandLineOptions") {
+//						txtCommandLine->Text = value;
+//					}
+					else if (key == "CommandLineOptions") {
+						comboBoxCommandLine->Text = value;
 					}
 					else if (key == "CommandLineHistory" && PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
 						comboBoxCommandLine->Items->Add(value);
