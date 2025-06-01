@@ -103,6 +103,8 @@ namespace FLACfrontend {
 			// checkBoxSaveCommandLineHistory
 			// 
 			this->checkBoxSaveCommandLineHistory->AutoSize = true;
+			this->checkBoxSaveCommandLineHistory->Checked = true;
+			this->checkBoxSaveCommandLineHistory->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxSaveCommandLineHistory->Location = System::Drawing::Point(12, 58);
 			this->checkBoxSaveCommandLineHistory->Name = L"checkBoxSaveCommandLineHistory";
 			this->checkBoxSaveCommandLineHistory->Size = System::Drawing::Size(182, 17);
@@ -113,7 +115,6 @@ namespace FLACfrontend {
 			// 
 			// numericUpDownCommandLineHistoryLimit
 			// 
-			this->numericUpDownCommandLineHistoryLimit->Enabled = false;
 			this->numericUpDownCommandLineHistoryLimit->Location = System::Drawing::Point(196, 57);
 			this->numericUpDownCommandLineHistoryLimit->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
 			this->numericUpDownCommandLineHistoryLimit->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
@@ -140,7 +141,7 @@ namespace FLACfrontend {
 			// buttonOkPreferences
 			// 
 			this->buttonOkPreferences->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
-			this->buttonOkPreferences->Location = System::Drawing::Point(100, 106);
+			this->buttonOkPreferences->Location = System::Drawing::Point(89, 106);
 			this->buttonOkPreferences->Name = L"buttonOkPreferences";
 			this->buttonOkPreferences->Size = System::Drawing::Size(75, 23);
 			this->buttonOkPreferences->TabIndex = 5;
@@ -152,7 +153,7 @@ namespace FLACfrontend {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 139);
+			this->ClientSize = System::Drawing::Size(253, 139);
 			this->Controls->Add(this->checkBoxCheckForUpdatesOnStartup);
 			this->Controls->Add(this->checkBoxDontPreserveTimestampsPermissions);
 			this->Controls->Add(this->checkBoxSaveCommandLineHistory);
