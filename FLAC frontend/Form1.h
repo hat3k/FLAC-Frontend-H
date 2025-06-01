@@ -40,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250520";
+			this->programVersion = "2.1 build 20250601";
 
 			comboBoxCommandLine->Validated += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Validated);
 			comboBoxCommandLine->Leave += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Leave);
@@ -1242,24 +1242,24 @@ namespace FLACfrontend {
 		ttHelp->Show("Place your mouse pointer over a specific option to get more information", btnHelp);
 	}
 
-private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
-	String^ flacVersion = GetFlacVersion();
-	String^ message = "FLAC Frontend-H v" + this->programVersion + "\n"
-		"Using FLAC version: " + flacVersion + "\n\n"
-		"Do you want to visit project's homepage?\n"
-		"https://github.com/hat3k/FLAC-Frontend-H ";
+	private: System::Void btnAbout_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ flacVersion = GetFlacVersion();
+		String^ message = "FLAC Frontend-H v" + this->programVersion + "\n"
+			"Using FLAC version: " + flacVersion + "\n\n"
+			"Do you want to visit project's homepage?\n"
+			"https://github.com/hat3k/FLAC-Frontend-H";
 
-	System::Windows::Forms::DialogResult result = MessageBox::Show(
-		message,
-		"About",
-		MessageBoxButtons::YesNo,
-		MessageBoxIcon::Information,
-		MessageBoxDefaultButton::Button1);
+		System::Windows::Forms::DialogResult result = MessageBox::Show(
+			message,
+			"About",
+			MessageBoxButtons::YesNo,
+			MessageBoxIcon::Information,
+			MessageBoxDefaultButton::Button1);
 
-	if (result == ::DialogResult::Yes) {
-		Process::Start("https://github.com/hat3k/FLAC-Frontend-H ");
+		if (result == ::DialogResult::Yes) {
+			Process::Start("https://github.com/hat3k/FLAC-Frontend-H");
+		}
 	}
-}
 
 		   // ----------------------------------//
 		   // --- Setting fields interaction --- //

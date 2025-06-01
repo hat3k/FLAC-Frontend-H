@@ -83,7 +83,8 @@ namespace FLACfrontend {
 			this->checkBoxCheckForUpdatesOnStartup->Size = System::Drawing::Size(163, 17);
 			this->checkBoxCheckForUpdatesOnStartup->TabIndex = 0;
 			this->checkBoxCheckForUpdatesOnStartup->Text = L"Check for updates on startup";
-			this->toolTipPreferences->SetToolTip(this->checkBoxCheckForUpdatesOnStartup, L"Automatically check if a new version is available when the program starts");
+			this->toolTipPreferences->SetToolTip(this->checkBoxCheckForUpdatesOnStartup, L"Automatically check for updates at startup.\r\n\r\nThis feature might fail on Windows"
+				L" XP due to outdated TLS protocols.");
 			this->checkBoxCheckForUpdatesOnStartup->UseVisualStyleBackColor = true;
 			this->checkBoxCheckForUpdatesOnStartup->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxCheckForUpdatesOnStartup_CheckedChanged);
 			// 
