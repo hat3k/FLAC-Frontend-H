@@ -1,15 +1,14 @@
 #pragma once
 
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
+using namespace System::Diagnostics;
+
 namespace FLACfrontend {
-
-	using namespace System;
-	using namespace System::ComponentModel;
-	using namespace System::Collections;
-	using namespace System::Windows::Forms;
-	using namespace System::Data;
-	using namespace System::Drawing;
-	using namespace System::Diagnostics;
-
 	/// <summary>
 	/// Summary for CommandLineHelp
 	/// </summary>
@@ -27,6 +26,8 @@ namespace FLACfrontend {
 			this->AcceptButton = buttonCommandLineHelpFind;
 			this->KeyPreview = true;
 			this->KeyDown += gcnew KeyEventHandler(this, &CommandLineHelp::Form_KeyDown);
+
+			SetAppropriateFont();
 		}
 
 		void SetText(String^ text) {
@@ -74,9 +75,9 @@ namespace FLACfrontend {
 			this->textBoxCommandLineHelpSearch = (gcnew System::Windows::Forms::TextBox());
 			this->buttonCommandLineHelpFind = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
-			// 
+			//
 			// richTextBoxCommandLineHelp
-			// 
+			//
 			this->richTextBoxCommandLineHelp->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
@@ -89,18 +90,18 @@ namespace FLACfrontend {
 			this->richTextBoxCommandLineHelp->Size = System::Drawing::Size(624, 394);
 			this->richTextBoxCommandLineHelp->TabIndex = 2;
 			this->richTextBoxCommandLineHelp->Text = L"";
-			// 
+			//
 			// textBoxCommandLineHelpSearch
-			// 
+			//
 			this->textBoxCommandLineHelpSearch->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->textBoxCommandLineHelpSearch->Location = System::Drawing::Point(12, 13);
 			this->textBoxCommandLineHelpSearch->Name = L"textBoxCommandLineHelpSearch";
 			this->textBoxCommandLineHelpSearch->Size = System::Drawing::Size(519, 20);
 			this->textBoxCommandLineHelpSearch->TabIndex = 0;
-			// 
+			//
 			// buttonCommandLineHelpFind
-			// 
+			//
 			this->buttonCommandLineHelpFind->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->buttonCommandLineHelpFind->Location = System::Drawing::Point(537, 12);
 			this->buttonCommandLineHelpFind->Name = L"buttonCommandLineHelpFind";
@@ -109,9 +110,9 @@ namespace FLACfrontend {
 			this->buttonCommandLineHelpFind->Text = L"Find/Next";
 			this->buttonCommandLineHelpFind->UseVisualStyleBackColor = true;
 			this->buttonCommandLineHelpFind->Click += gcnew System::EventHandler(this, &CommandLineHelp::buttonCommandLineHelpFind_Click);
-			// 
+			//
 			// CommandLineHelp
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(624, 441);
@@ -131,74 +132,99 @@ namespace FLACfrontend {
 		int lastSearchPos;
 		String^ lastSearchText;
 
-		private: void FindTextInHelp(bool forward)
+	private: bool IsFontInstalled(String^ fontName)
+	{
+		System::Drawing::Text::InstalledFontCollection^ fonts = gcnew System::Drawing::Text::InstalledFontCollection();
+		for each (System::Drawing::FontFamily ^ family in fonts->Families)
 		{
-			String^ searchText = textBoxCommandLineHelpSearch->Text;
-			if (String::IsNullOrEmpty(searchText))
-				return;
+			if (family->Name == fontName)
+				return true;
+		}
+		return false;
+	}
+	private: void SetAppropriateFont()
+	{
+		String^ preferredFont = "Consolas";
+		String^ fallbackFont = "Lucida Console";
 
-			RichTextBox^ rtb = richTextBoxCommandLineHelp;
-			int startPos = lastSearchPos;
+		if (IsFontInstalled(preferredFont))
+		{
+			richTextBoxCommandLineHelp->Font = gcnew System::Drawing::Font(preferredFont, 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point);
+		}
+		else
+		{
+			richTextBoxCommandLineHelp->Font = gcnew System::Drawing::Font(fallbackFont, 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point);
+		}
+	}
 
-			if (searchText != lastSearchText)
+	private: void FindTextInHelp(bool forward)
+	{
+		String^ searchText = textBoxCommandLineHelpSearch->Text;
+		if (String::IsNullOrEmpty(searchText))
+			return;
+
+		RichTextBox^ rtb = richTextBoxCommandLineHelp;
+		int startPos = lastSearchPos;
+
+		if (searchText != lastSearchText)
+		{
+			startPos = 0;
+			lastSearchText = searchText;
+		}
+
+		int foundIndex = rtb->Find(searchText, startPos, rtb->Text->Length, RichTextBoxFinds::None);
+
+		if (foundIndex >= 0)
+		{
+			rtb->SelectionStart = foundIndex;
+			rtb->SelectionLength = searchText->Length;
+			rtb->Focus();
+			lastSearchPos = foundIndex + searchText->Length;
+		}
+		else
+		{
+			if (startPos > 0)
 			{
-				startPos = 0;
-				lastSearchText = searchText;
-			}
-
-			int foundIndex = rtb->Find(searchText, startPos, rtb->Text->Length, RichTextBoxFinds::None);
-
-			if (foundIndex >= 0)
-			{
-				rtb->SelectionStart = foundIndex;
-				rtb->SelectionLength = searchText->Length;
-				rtb->Focus();
-				lastSearchPos = foundIndex + searchText->Length;
+				MessageBox::Show("Reached end of file. Searching from the beginning.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				lastSearchPos = 0;
+				FindTextInHelp(forward);
 			}
 			else
 			{
-				if (startPos > 0)
-				{
-					MessageBox::Show("Reached end of file. Searching from the beginning.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
-					lastSearchPos = 0;
-					FindTextInHelp(forward);
-				}
-				else
-				{
-					MessageBox::Show("Text not found.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
-					lastSearchPos = 0;
-				}
+				MessageBox::Show("Text not found.", "Find", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				lastSearchPos = 0;
 			}
 		}
-		private: System::Void buttonCommandLineHelpFind_Click(System::Object^ sender, System::EventArgs^ e)
+	}
+	private: System::Void buttonCommandLineHelpFind_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		FindTextInHelp(true);
+	}
+	private: System::Void textBoxCommandLineHelpSearch_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+	{
+		if (e->KeyCode == Keys::Enter)
 		{
 			FindTextInHelp(true);
+			e->Handled = true;
+			e->SuppressKeyPress = true;
 		}
-		private: System::Void textBoxCommandLineHelpSearch_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+	}
+	private: System::Void Form_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+	{
+		if (e->KeyCode == Keys::F3)
 		{
-			if (e->KeyCode == Keys::Enter)
-			{
-				FindTextInHelp(true);
-				e->Handled = true;
-				e->SuppressKeyPress = true;
-			}
+			FindTextInHelp(true);
+			e->Handled = true;
+			e->SuppressKeyPress = true;
 		}
-		private: System::Void Form_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+		else if (e->Control && e->KeyCode == Keys::F)
 		{
-			if (e->KeyCode == Keys::F3)
-			{
-				FindTextInHelp(true);
-				e->Handled = true;
-				e->SuppressKeyPress = true;
-			}
-			else if (e->Control && e->KeyCode == Keys::F)
-			{
-				textBoxCommandLineHelpSearch->Focus();
-				textBoxCommandLineHelpSearch->SelectAll();
+			textBoxCommandLineHelpSearch->Focus();
+			textBoxCommandLineHelpSearch->SelectAll();
 
-				e->Handled = true;
-				e->SuppressKeyPress = true;
-			}
+			e->Handled = true;
+			e->SuppressKeyPress = true;
 		}
+	}
 	};
 }
