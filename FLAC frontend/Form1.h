@@ -1603,7 +1603,6 @@ namespace FLACfrontend {
 	}
 
 	private: System::Void btnExit_Click(System::Object^ sender, System::EventArgs^ e) {
-		SaveSettings("settings.txt");
 		this->Close();
 	}
 
