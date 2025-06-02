@@ -162,37 +162,48 @@ namespace FLACfrontend {
 	private: System::ComponentModel::IContainer^ components;
 
 	private: void SaveSettings(String^ path) {
-		StreamWriter^ writer = gcnew StreamWriter(path);
-		writer->WriteLine("CompressionLevel: " + tbLevel->Value.ToString());
-		writer->WriteLine("VerifyAfterEncoding: " + chkVerify->Checked.ToString());
-		writer->WriteLine("ReplayGainEnabled: " + chkReplayGain->Checked.ToString());
-		writer->WriteLine("OptionP: " + checkBoxOptionP->Checked.ToString());
-		writer->WriteLine("OptionE: " + checkBoxOptionE->Checked.ToString());
-		writer->WriteLine("OptionMT: " + checkBoxOptionMT->Checked.ToString());
-		writer->WriteLine("MTThreads: " + textBoxMT->Text);
-		writer->WriteLine("AddPrefix: " + checkBoxAddPrefix->Checked.ToString());
-		writer->WriteLine("PrefixUser: " + textBoxPrefixUser->Text);
-		writer->WriteLine("OptionR: " + checkBoxOptionR->Checked.ToString());
-		writer->WriteLine("RLevel: " + trackBarR->Value.ToString());
-		writer->WriteLine("NoPadding: " + checkBoxNoPadding->Checked.ToString());
-//		writer->WriteLine("ExactRice: " + checkBoxExactRice->Checked.ToString());
-//		writer->WriteLine("RiceParameterSearch: " + checkBoxRiceParameterSearch->Checked.ToString());
-		writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
-		writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
-		writer->WriteLine("IgnoredVersion: " + ignoredVersion);
-		writer->WriteLine("DontPreserveTimestampsPermissions: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
-//		writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
-		writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
-		writer->WriteLine("SaveCommandLineHistory: " + this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked.ToString());
-		writer->WriteLine("CommandLineHistoryLimit: " + this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value.ToString());
-//		writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
-		writer->WriteLine("CommandLineOptions: " + comboBoxCommandLine->Text);
-		if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
-			for each (String ^ cmd in comboBoxCommandLine->Items) {
-				writer->WriteLine("CommandLineHistory: " + cmd);
+		try {
+			StreamWriter^ writer = gcnew StreamWriter(path);
+			writer->WriteLine("CompressionLevel: " + tbLevel->Value.ToString());
+			writer->WriteLine("VerifyAfterEncoding: " + chkVerify->Checked.ToString());
+			writer->WriteLine("ReplayGainEnabled: " + chkReplayGain->Checked.ToString());
+			writer->WriteLine("OptionP: " + checkBoxOptionP->Checked.ToString());
+			writer->WriteLine("OptionE: " + checkBoxOptionE->Checked.ToString());
+			writer->WriteLine("OptionMT: " + checkBoxOptionMT->Checked.ToString());
+			writer->WriteLine("MTThreads: " + textBoxMT->Text);
+			writer->WriteLine("AddPrefix: " + checkBoxAddPrefix->Checked.ToString());
+			writer->WriteLine("PrefixUser: " + textBoxPrefixUser->Text);
+			writer->WriteLine("OptionR: " + checkBoxOptionR->Checked.ToString());
+			writer->WriteLine("RLevel: " + trackBarR->Value.ToString());
+			writer->WriteLine("NoPadding: " + checkBoxNoPadding->Checked.ToString());
+//			writer->WriteLine("ExactRice: " + checkBoxExactRice->Checked.ToString());
+//			writer->WriteLine("RiceParameterSearch: " + checkBoxRiceParameterSearch->Checked.ToString());
+			writer->WriteLine("Overwrite: " + checkBoxOverwrite->Checked.ToString());
+			writer->WriteLine("CheckForUpdatesOnStartup: " + this->PreferencesDialog->checkBoxCheckForUpdatesOnStartup->Checked.ToString());
+			writer->WriteLine("IgnoredVersion: " + ignoredVersion);
+			writer->WriteLine("DontPreserveTimestampsPermissions: " + this->PreferencesDialog->checkBoxDontPreserveTimestampsPermissions->Checked.ToString());
+//			writer->WriteLine("IgnoreReadOnly: " + this->PreferencesDialog->checkBoxIgnoreReadOnly->Checked.ToString());
+			writer->WriteLine("EnableCommandLine: " + checkCommandLine->Checked.ToString());
+			writer->WriteLine("SaveCommandLineHistory: " + this->PreferencesDialog->checkBoxSaveCommandLineHistory->Checked.ToString());
+			writer->WriteLine("CommandLineHistoryLimit: " + this->PreferencesDialog->numericUpDownCommandLineHistoryLimit->Value.ToString());
+//			writer->WriteLine("CommandLineOptions: " + txtCommandLine->Text);
+			writer->WriteLine("CommandLineOptions: " + comboBoxCommandLine->Text);
+
+			if (PreferencesDialog->checkBoxSaveCommandLineHistory->Checked) {
+				for each(String ^ cmd in comboBoxCommandLine->Items) {
+					writer->WriteLine("CommandLineHistory: " + cmd);
+				}
 			}
+			delete writer;
 		}
-		writer->Close();
+		catch (Exception^ ex) {
+			MessageBox::Show(
+				"Failed to save settings file:\n" + ex->Message,
+				"Error",
+				MessageBoxButtons::OK,
+				MessageBoxIcon::Error
+			);
+		}
 	}
 
 	private: void LoadSettings(String^ path) {
