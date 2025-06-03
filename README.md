@@ -13,16 +13,14 @@
     * Settings like "-p", "-e" or command line options are autosaved on app close
     * They are stored in a "settings.txt"  
 * Ability to overwrite existing files (useful for re-encoding purposes)
+* Ability not to preserve timestamps and permissions (do not copy 'read-only' attribute) (visit 'Preferences')
+* Command-line options history may be saved (visit 'Preferences')
+* Abilty to check for updates on startup (visit 'Preferences')
 
 <b>Removed/Moved:</b>
 * Advanced options window
     * These options are moved to main window
     * CL options are now saved, so it's better to have them in sight
-
-<b>Other:</b>
-* Updated toolset
-* Project is built at VS2022
-
 
 ![GitHub all releases](https://img.shields.io/github/downloads/hat3k/FLAC-Frontend-H/total)
 
