@@ -34,7 +34,6 @@ namespace FLACfrontend {
 			richTextBoxCommandLineHelp->Text = text;
 			richTextBoxCommandLineHelp->Select(0, 0);
 		}
-
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -47,7 +46,6 @@ namespace FLACfrontend {
 			}
 		}
 	private: System::Windows::Forms::RichTextBox^ richTextBoxCommandLineHelp;
-
 	private: System::Windows::Forms::TextBox^ textBoxCommandLineHelpSearch;
 	private: System::Windows::Forms::Button^ buttonCommandLineHelpFind;
 

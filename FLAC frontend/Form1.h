@@ -40,7 +40,7 @@ namespace FLACfrontend {
 			this->AdvDialog = (gcnew Advanced_options());
 			this->PreferencesDialog = gcnew Preferences();
 			this->CommandLineHelpDialog = gcnew CommandLineHelp();
-			this->programVersion = "2.1 build 20250601";
+			this->programVersion = "2.2 build 20250603";
 
 			comboBoxCommandLine->Validated += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Validated);
 			comboBoxCommandLine->Leave += gcnew System::EventHandler(this, &Form1::comboBoxCommandLine_Leave);
@@ -362,6 +362,7 @@ namespace FLACfrontend {
 			this->chkIgnoreChunkSize = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxExactRice = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxRiceParameterSearch = (gcnew System::Windows::Forms::CheckBox());
+			this->buttonClearCommandLine = (gcnew System::Windows::Forms::Button());
 			this->groupBoxAdditionalOptions = (gcnew System::Windows::Forms::GroupBox());
 			this->grpbCuesheet = (gcnew System::Windows::Forms::GroupBox());
 			this->buttonClearCuesheet = (gcnew System::Windows::Forms::Button());
@@ -369,9 +370,7 @@ namespace FLACfrontend {
 			this->txtCuesheet = (gcnew System::Windows::Forms::TextBox());
 			this->btnCueSheet = (gcnew System::Windows::Forms::Button());
 			this->grpbExtraOptions = (gcnew System::Windows::Forms::GroupBox());
-			this->buttonClearCommandLine = (gcnew System::Windows::Forms::Button());
 			this->checkCommandLine = (gcnew System::Windows::Forms::CheckBox());
-//			this->txtCommandLine = (gcnew System::Windows::Forms::TextBox());
 			this->comboBoxCommandLine = (gcnew System::Windows::Forms::ComboBox());
 			this->btnCommandHelp = (gcnew System::Windows::Forms::Button());
 			this->openCueSheet = (gcnew System::Windows::Forms::OpenFileDialog());
@@ -750,8 +749,6 @@ namespace FLACfrontend {
 			// checkBoxNoPadding
 			// 
 			this->checkBoxNoPadding->AutoSize = true;
-			this->checkBoxNoPadding->Checked = true;
-			this->checkBoxNoPadding->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxNoPadding->Location = System::Drawing::Point(221, 42);
 			this->checkBoxNoPadding->Name = L"checkBoxNoPadding";
 			this->checkBoxNoPadding->Size = System::Drawing::Size(108, 17);
@@ -787,8 +784,6 @@ namespace FLACfrontend {
 			// checkBoxOptionP
 			// 
 			this->checkBoxOptionP->AutoSize = true;
-			this->checkBoxOptionP->Checked = true;
-			this->checkBoxOptionP->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxOptionP->Location = System::Drawing::Point(13, 19);
 			this->checkBoxOptionP->Name = L"checkBoxOptionP";
 			this->checkBoxOptionP->Size = System::Drawing::Size(79, 17);
@@ -814,8 +809,6 @@ namespace FLACfrontend {
 			// checkBoxOptionE
 			// 
 			this->checkBoxOptionE->AutoSize = true;
-			this->checkBoxOptionE->Checked = true;
-			this->checkBoxOptionE->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxOptionE->Location = System::Drawing::Point(13, 42);
 			this->checkBoxOptionE->Name = L"checkBoxOptionE";
 			this->checkBoxOptionE->Size = System::Drawing::Size(79, 17);
@@ -841,8 +834,6 @@ namespace FLACfrontend {
 			// checkBoxOptionR
 			// 
 			this->checkBoxOptionR->AutoSize = true;
-			this->checkBoxOptionR->Checked = true;
-			this->checkBoxOptionR->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxOptionR->Location = System::Drawing::Point(221, 19);
 			this->checkBoxOptionR->Name = L"checkBoxOptionR";
 			this->checkBoxOptionR->Size = System::Drawing::Size(79, 17);
@@ -855,6 +846,7 @@ namespace FLACfrontend {
 			// textBoxR
 			// 
 			this->textBoxR->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->textBoxR->Enabled = false;
 			this->textBoxR->Location = System::Drawing::Point(299, 17);
 			this->textBoxR->Name = L"textBoxR";
 			this->textBoxR->ReadOnly = true;
@@ -866,6 +858,7 @@ namespace FLACfrontend {
 			// 
 			// trackBarR
 			// 
+			this->trackBarR->Enabled = false;
 			this->trackBarR->LargeChange = 1;
 			this->trackBarR->Location = System::Drawing::Point(326, 13);
 			this->trackBarR->Maximum = 8;
@@ -1003,7 +996,6 @@ namespace FLACfrontend {
 			// 
 			this->grpbExtraOptions->Controls->Add(this->buttonClearCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->checkCommandLine);
-//			this->grpbExtraOptions->Controls->Add(this->txtCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->comboBoxCommandLine);
 			this->grpbExtraOptions->Controls->Add(this->btnCommandHelp);
 			this->grpbExtraOptions->Location = System::Drawing::Point(12, 436);

@@ -69,9 +69,9 @@ namespace FLACfrontend {
 			this->toolTipPreferences = (gcnew System::Windows::Forms::ToolTip(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDownCommandLineHistoryLimit))->BeginInit();
 			this->SuspendLayout();
-			//
+			// 
 			// checkBoxCheckForUpdatesOnStartup
-			//
+			// 
 			this->checkBoxCheckForUpdatesOnStartup->AutoSize = true;
 			this->checkBoxCheckForUpdatesOnStartup->Location = System::Drawing::Point(12, 12);
 			this->checkBoxCheckForUpdatesOnStartup->Name = L"checkBoxCheckForUpdatesOnStartup";
@@ -82,9 +82,9 @@ namespace FLACfrontend {
 				L" XP due to outdated TLS protocols.");
 			this->checkBoxCheckForUpdatesOnStartup->UseVisualStyleBackColor = true;
 			this->checkBoxCheckForUpdatesOnStartup->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxCheckForUpdatesOnStartup_CheckedChanged);
-			//
+			// 
 			// checkBoxDontPreserveTimestampsPermissions
-			//
+			// 
 			this->checkBoxDontPreserveTimestampsPermissions->AutoSize = true;
 			this->checkBoxDontPreserveTimestampsPermissions->Location = System::Drawing::Point(12, 35);
 			this->checkBoxDontPreserveTimestampsPermissions->Name = L"checkBoxDontPreserveTimestampsPermissions";
@@ -94,12 +94,10 @@ namespace FLACfrontend {
 			this->toolTipPreferences->SetToolTip(this->checkBoxDontPreserveTimestampsPermissions, resources->GetString(L"checkBoxDontPreserveTimestampsPermissions.ToolTip"));
 			this->checkBoxDontPreserveTimestampsPermissions->UseVisualStyleBackColor = true;
 			this->checkBoxDontPreserveTimestampsPermissions->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxDontPreserveTimestampsPermissions_CheckedChanged);
-			//
+			// 
 			// checkBoxSaveCommandLineHistory
-			//
+			// 
 			this->checkBoxSaveCommandLineHistory->AutoSize = true;
-			this->checkBoxSaveCommandLineHistory->Checked = true;
-			this->checkBoxSaveCommandLineHistory->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->checkBoxSaveCommandLineHistory->Location = System::Drawing::Point(12, 58);
 			this->checkBoxSaveCommandLineHistory->Name = L"checkBoxSaveCommandLineHistory";
 			this->checkBoxSaveCommandLineHistory->Size = System::Drawing::Size(182, 17);
@@ -107,9 +105,10 @@ namespace FLACfrontend {
 			this->checkBoxSaveCommandLineHistory->Text = L"Save command-line history. Limit:";
 			this->checkBoxSaveCommandLineHistory->UseVisualStyleBackColor = true;
 			this->checkBoxSaveCommandLineHistory->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxSaveCommandLineHistory_CheckedChanged);
-			//
+			// 
 			// numericUpDownCommandLineHistoryLimit
-			//
+			// 
+			this->numericUpDownCommandLineHistoryLimit->Enabled = false;
 			this->numericUpDownCommandLineHistoryLimit->Location = System::Drawing::Point(196, 57);
 			this->numericUpDownCommandLineHistoryLimit->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
 			this->numericUpDownCommandLineHistoryLimit->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
@@ -118,9 +117,9 @@ namespace FLACfrontend {
 			this->numericUpDownCommandLineHistoryLimit->TabIndex = 3;
 			this->numericUpDownCommandLineHistoryLimit->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
 			this->numericUpDownCommandLineHistoryLimit->ValueChanged += gcnew System::EventHandler(this, &Preferences::numericUpDownCommandLineHistoryLimit_ValueChanged);
-			//
+			// 
 			// checkBoxIgnoreReadOnly
-			//
+			// 
 			this->checkBoxIgnoreReadOnly->AutoSize = true;
 			this->checkBoxIgnoreReadOnly->Enabled = false;
 			this->checkBoxIgnoreReadOnly->Location = System::Drawing::Point(12, 81);
@@ -132,9 +131,9 @@ namespace FLACfrontend {
 			this->checkBoxIgnoreReadOnly->UseVisualStyleBackColor = true;
 			this->checkBoxIgnoreReadOnly->Visible = false;
 			this->checkBoxIgnoreReadOnly->CheckedChanged += gcnew System::EventHandler(this, &Preferences::checkBoxIgnoreReadOnly_CheckedChanged);
-			//
+			// 
 			// buttonOkPreferences
-			//
+			// 
 			this->buttonOkPreferences->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->buttonOkPreferences->Location = System::Drawing::Point(89, 106);
 			this->buttonOkPreferences->Name = L"buttonOkPreferences";
@@ -143,9 +142,9 @@ namespace FLACfrontend {
 			this->buttonOkPreferences->Text = L"OK";
 			this->buttonOkPreferences->UseVisualStyleBackColor = true;
 			this->buttonOkPreferences->Click += gcnew System::EventHandler(this, &Preferences::buttonOkPreferences_Click);
-			//
+			// 
 			// Preferences
-			//
+			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(253, 139);
